@@ -11,7 +11,7 @@ import Icon from '../../../assets/images/Icon';
 const TopTitle = ({ title, onPress, disableBack, isTransparent }) => (
   <View
     style={[
-      styles.topTitleContainer,
+      container.topTitleContainer,
       {
         backgroundColor: isTransparent ? 'transparent' : color_string.black,
       },

@@ -18,7 +18,8 @@ import { color_string } from '../../../assets/stylesheets/global/Color';
 // Icons
 import Icon from '../../../assets/images/Icon';
 
-const Content = ({ type, text, dismiss, onPress, showLogo }) => {
+function Content({ data, dismiss, value, onTextChange }) {
+  const { type, text, buttonText, onPress, showLogo } = data;
   switch (type) {
     case 'check':
       return (
@@ -34,7 +35,7 @@ const Content = ({ type, text, dismiss, onPress, showLogo }) => {
             )}
             <Text style={[styles.textCenter, styles.textDefault]}>{text}</Text>
           </View>
-          <View style={{ height: 80 }}>
+          <View style={{ height: 80, marginBottom: 6 }}>
             <_SquareButton
               text="확인"
               backgroundColor={color_string.green_light}
@@ -47,9 +48,9 @@ const Content = ({ type, text, dismiss, onPress, showLogo }) => {
       return (
         <View style={container.modalContainer}>
           <View style={[styles.flex_1, styles.alignCenter]}>
-            <Text styles={[styles.textCenter, styles.textDefault]}>{text}</Text>
+            <Text style={[styles.textCenter, styles.textDefault]}>{text}</Text>
           </View>
-          <View style={styles.horizontalCenter}>
+          <View style={[styles.rowDirection, { marginBottom: 6 }]}>
             <_SquareButton
               index={0}
               backgroundColor={color_string.green_dark_dark}
@@ -58,9 +59,42 @@ const Content = ({ type, text, dismiss, onPress, showLogo }) => {
             />
             <_SquareButton
               index={1}
+              backgroundColor={color_string.green_light}
+              text={buttonText}
+              onPress={() => {
+                onPress(value);
+                dismiss();
+              }}
+            />
+          </View>
+        </View>
+      );
+    case 'input':
+      return (
+        <View style={container.modalContainer}>
+          <View style={[styles.flex_1, styles.alignCenter]}>
+            <Text style={[styles.textCenter, styles.textDefault]}>{text}</Text>
+          </View>
+          <_GreenInput
+            placeholder="비밀번호를 입력하세요"
+            onTextChange={onTextChange}
+            errorMessage="비밀번호가 올바르지 않습니다."
+          />
+          <View style={[styles.rowDirection, { marginBottom: 6 }]}>
+            <_SquareButton
+              index={0}
               backgroundColor={color_string.green_dark_dark}
-              text={text}
-              onPress={onPress}
+              text="취소"
+              onPress={dismiss}
+            />
+            <_SquareButton
+              index={1}
+              backgroundColor={color_string.green_light}
+              text={buttonText}
+              onPress={() => {
+                onPress();
+                dismiss();
+              }}
             />
           </View>
         </View>
@@ -68,14 +102,18 @@ const Content = ({ type, text, dismiss, onPress, showLogo }) => {
     case 'notice':
       return (
         <View style={[container.modalContainer, styles.alignCenter]}>
-          <Text styles={[styles.textCenter, styles.textDefault]}>{text}</Text>
+          <Text style={[styles.textCenter, styles.textDefault]}>{text}</Text>
         </View>
       );
   }
-};
+}
 
 class Modal extends Component {
+  state = { value: '' };
+
   hideModal = () => this.props.dispatch({ type: ModalAction.HIDE_MODAL });
+
+  _handleValue = text => this.setState({ value: text });
 
   componentDidMount() {
     const { data } = this.props;
@@ -88,11 +126,10 @@ class Modal extends Component {
     return show ? (
       <View style={[styles.modalBackground, styles.alignCenter]}>
         <Content
-          type={data.type}
-          text={data.text}
-          showLogo={data.showLogo}
-          onPress={data.onPress}
+          data={data}
           dismiss={this.hideModal}
+          onTextChange={this._handleValue}
+          value={this.state.value}
         />
       </View>
     ) : null;

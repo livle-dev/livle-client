@@ -19,7 +19,7 @@ import {
 import { goStyle } from '../../../assets/stylesheets/local/goPageStyle';
 import { color, color_string } from '../../../assets/stylesheets/global/Color';
 // Actions
-import { ReservationAction } from '../../../reducers/Actions';
+import { ReservationAction, MessageBarAction } from '../../../reducers/Actions';
 // Views
 import ShowReservation from '../partials/ShowReservation';
 import _SquareButton from '../partials/_SquareButton';
@@ -138,17 +138,20 @@ export default class GoPage extends Component {
               />
             </View>
           )}
-          {/* TODO: 정말로 취소하시겠습니까? 하고 물어보는 모달 띄우기 */}
           {hasItem &&
             !isKeyboardShow && (
               <TouchableOpacity
                 style={[styles.flex_1, styles.alignCenter]}
-                onPress={() =>
+                onPress={() => {
                   dispatch({
                     type: ReservationAction.DELETE_RESERVATION,
                     id: item[curIndex].id,
-                  })
-                }
+                  });
+                  dispatch({
+                    type: MessageBarAction.SHOW_MESSAGE_BAR,
+                    data: '예약이 취소되었습니다.',
+                  });
+                }}
               >
                 <Text style={goStyle.cancel_text}>
                   {go_string.cancelReservation}

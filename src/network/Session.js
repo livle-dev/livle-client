@@ -155,3 +155,26 @@ export const confirmEmail = email => dispatch => {
       });
     });
 };
+
+export const withdraw = (email, password) => dispatch => {
+  return axios
+    .delete('/user', { email: email, password: password })
+    .then(() => {
+      dispatch({ type: AppAction.LOGOUT });
+      dispatch({
+        type: MessageBarAction.SHOW_MESSAGE_BAR,
+        data: '계정이 삭제되었습니다',
+      });
+    })
+    .catch(err => {
+      /**
+       * 400: 잘못된 요청 (이메일이나 비밀번호가 없음)
+       * 403: 이미 존재하는 아이디
+       * 404:	잘못된 이메일 형식
+       */
+      dispatch({
+        type: HandleErrorAction.SIGNUP_ERROR,
+        status: err.response.status,
+      });
+    });
+};

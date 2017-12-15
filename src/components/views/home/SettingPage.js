@@ -7,6 +7,8 @@ import _SettingCard from '../partials/_SettingCard';
 import _SquareButton from '../partials/_SquareButton';
 // Network
 import { logout } from '../../../network';
+// Action
+import { ModalAction } from '../../../reducers/Actions';
 // Strings
 import {
   setting_string,
@@ -113,12 +115,33 @@ class SettingPage extends Component {
           <_SquareButton
             backgroundColor={color_string.green_dark_dark}
             text={setting_string.logout}
-            onPress={() => logout(navigation.dispatch)}
+            onPress={() =>
+              navigation.dispatch({
+                type: ModalAction.SHOW_MODAL,
+                data: {
+                  type: 'select',
+                  text: '로그아웃 하시겠어요?',
+                  buttonText: '로그아웃',
+                  onPress: () => logout(navigation.dispatch),
+                },
+              })
+            }
           />
           <_SquareButton
             backgroundColor={color_string.green_dark_dark}
             text={setting_string.withdraw}
-            onPress={() => {}}
+            onPress={() =>
+              navigation.dispatch({
+                type: ModalAction.SHOW_MODAL,
+                data: {
+                  type: 'input',
+                  text: '정말 탈퇴하시겠어요?',
+                  buttonText: '탈퇴하기',
+                  onPress: value =>
+                    logout(userInfo.email || '', value)(navigation.dispatch),
+                },
+              })
+            }
           />
         </View>
       </ScrollView>

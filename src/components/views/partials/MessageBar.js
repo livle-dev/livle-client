@@ -44,7 +44,7 @@ class MessageBar extends Component {
   render() {
     const { status } = this.props;
 
-    return (
+    return status.show ? (
       <Animated.View
         style={[
           container.messagebarContainer,
@@ -54,7 +54,7 @@ class MessageBar extends Component {
       >
         <Text style={styles.textDefault}>{status.message}</Text>
       </Animated.View>
-    );
+    ) : null;
   }
 }
 

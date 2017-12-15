@@ -122,9 +122,7 @@ class _MainCard extends Component {
           showTopButton={showTopButton}
           clickTop={() => this.carousel.snapToPrev()}
           onPress={() => {
-            this.setState({
-              isGo: !isGo,
-            });
+            this.setState({ isGo: !isGo });
 
             if (isGo) {
               dispatch({
