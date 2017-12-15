@@ -9,6 +9,7 @@ export const go_string = new LocalizedStrings({
     entryConfirmed: 'Entry Confirmed!',
     showToStaff: 'Show to Staff When Entering',
     cancelReservation: 'Cancel Reservation',
+    reservationCanceled: 'Reservation has been Canceled.',
   },
   ko: {
     noReservation: '예약내역이 없습니다.',
@@ -18,5 +19,6 @@ export const go_string = new LocalizedStrings({
     entryConfirmed: '입장이 확인되었습니다',
     showToStaff: '공연장에 입장할 때 보여주세요',
     cancelReservation: '예약취소',
+    reservationCanceled: '예약이 취속되었습니다.',
   },
 });

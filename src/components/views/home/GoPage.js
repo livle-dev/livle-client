@@ -58,7 +58,6 @@ export default class GoPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      item: props.reservation.goList,
       curIndex: 0,
       isKeyboardShow: false,
     };
@@ -77,20 +76,23 @@ export default class GoPage extends Component {
     );
   }
 
+  componentWillUpdate(props, state) {
+    const { curIndex } = state;
+    const itemLength = props.reservation.goList.length;
+    if (itemLength > 0 && curIndex >= itemLength)
+      this.setState({ curIndex: curIndex - 1 });
+  }
+
   componentWillUnmount() {
     this.keyboardShowListener.remove();
     this.keyboardHideListener.remove();
   }
 
-  componentWillReceiveProps(props) {
-    this.setState({ item: props.reservation.goList });
-  }
-
   render() {
-    const { item, curIndex, isKeyboardShow } = this.state;
+    const { curIndex, isKeyboardShow } = this.state;
     const { dispatch } = this.props;
-    const hasItem = item.length > 0;
-    const hasEntryCode = hasItem && item[curIndex].code.length === 4;
+    const { goList } = this.props.reservation;
+    const hasItem = goList.length > 0;
 
     return (
       <KeyboardAwareScrollView
@@ -106,7 +108,7 @@ export default class GoPage extends Component {
                 ref={c => {
                   this.carousel = c;
                 }}
-                data={item}
+                data={goList}
                 renderItem={({ item }) => <ShowReservation item={item} />}
                 sliderWidth={width.full}
                 itemWidth={width.full}
@@ -119,37 +121,36 @@ export default class GoPage extends Component {
             )}
           </View>
 
-          {isKeyboardShow && (
+          {hasItem && isKeyboardShow ? (
             <View style={goStyle.bottomContainer}>
               <_SquareButton
                 backgroundColor={
-                  hasEntryCode
+                  goList[curIndex].code.length >= 4
                     ? color_string.green_light
                     : color_string.gray_light
                 }
                 text={go_string.confirmEntry}
-                disabled={!hasEntryCode}
+                disabled={goList[curIndex].code.length < 4}
                 onPress={() =>
                   dispatch({
                     type: ReservationAction.CONFIRM_ENTRY,
-                    id: item[curIndex].id,
+                    id: goList[curIndex].id,
                   })
                 }
               />
             </View>
-          )}
-          {hasItem &&
+          ) : (
             !isKeyboardShow && (
               <TouchableOpacity
                 style={[styles.flex_1, styles.alignCenter]}
                 onPress={() => {
                   dispatch({
                     type: ReservationAction.DELETE_RESERVATION,
-                    id: item[curIndex].id,
+                    id: goList[curIndex].id,
                   });
                   dispatch({
                     type: MessageBarAction.SHOW_MESSAGE_BAR,
-                    data: '예약이 취소되었습니다.',
+                    data: go_string.reservationCanceled,
                   });
                 }}
               >
@@ -157,7 +158,8 @@ export default class GoPage extends Component {
                   {go_string.cancelReservation}
                 </Text>
               </TouchableOpacity>
-            )}
+            )
+          )}
         </View>
       </KeyboardAwareScrollView>
     );
