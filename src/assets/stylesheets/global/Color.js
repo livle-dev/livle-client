@@ -68,6 +68,7 @@ export const color_string = {
   white: '#FFFFFF',
   gray_light: '#bababa',
   black: '#000000',
+  black_opacity: rgba('#060c08', 0.5),
   black_clear: rgba('#060c08', 0.9),
   blue_facebook: '#1E396F',
   red: '#FF0000',

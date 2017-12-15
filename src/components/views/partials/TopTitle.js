@@ -3,7 +3,7 @@ import React from 'react';
 import { View, TouchableOpacity, Text } from 'react-native';
 import PropTypes from 'prop-types';
 // Styles
-import { styles } from '../../../assets/stylesheets/global/Style';
+import { styles, container } from '../../../assets/stylesheets/global/Style';
 import { color_string } from '../../../assets/stylesheets/global/Color';
 // Icon
 import Icon from '../../../assets/images/Icon';
@@ -24,7 +24,7 @@ const TopTitle = ({ title, onPress, disableBack, isTransparent }) => (
       <Icon
         src="ic_back"
         height={24}
-        style={[styles.backButtonContainer, styles.verticalCenter]}
+        style={[container.backButtonContainer, styles.verticalCenter]}
         onPress={onPress}
       />
     )}

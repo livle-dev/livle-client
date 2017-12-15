@@ -10,7 +10,7 @@ import _SquareButton from '../partials/_SquareButton';
 // Strings
 import { membership_string } from '../../../assets/strings';
 // Styles
-import { styles } from '../../../assets/stylesheets/global/Style';
+import { styles, container } from '../../../assets/stylesheets/global/Style';
 import { noticeStyle } from '../../../assets/stylesheets/local/settingPageStyle';
 import { color_string } from '../../../assets/stylesheets/global/Color';
 
@@ -52,7 +52,7 @@ const MembershipPage = ({ navigation }) => {
             },
           ]}
         />
-        <View style={styles.textContainer}>
+        <View style={container.textContainer}>
           <_SquareButton
             backgroundColor={color_string.green_dark_dark}
             text="카드 변경하기"

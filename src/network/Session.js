@@ -35,7 +35,6 @@ export const checkSession = dispatch => {
       .get('/user')
       .then(response => {
         const data = response.data;
-        console.log('SESSION: signed in');
         dispatch({
           type: AppAction.LOGIN,
           data: {
@@ -56,7 +55,7 @@ export const checkSession = dispatch => {
           case 401:
             break;
           case 403:
-            console.log('SESSION: signed out');
+            // console.log('SESSION: signed out');
             break;
         }
       });
@@ -118,6 +117,10 @@ export const signUp = (email, password, nickname) => dispatch => {
         token: data.token,
         data: { email: data.email, nickname: nickname },
       });
+      dispatch({
+        type: MessageBarAction.SHOW_MESSAGE_BAR,
+        data: '가입 완료!',
+      });
     })
     .catch(err => {
       /**
@@ -136,7 +139,10 @@ export const confirmEmail = email => dispatch => {
   return axios
     .get(`/user/password?email=${email}`)
     .then(response => {
-      console.log('send email to ' + email);
+      dispatch({
+        type: MessageBarAction.SHOW_MESSAGE_BAR,
+        data: '메일을 보냈습니다!',
+      });
     })
     .catch(err => {
       /**

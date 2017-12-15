@@ -2,7 +2,7 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 // Actions
-import { NavbarAction, MessageBarAction } from './Actions';
+import { NavbarAction, MessageBarAction, ModalAction } from './Actions';
 // Reducers
 import { auth, handleError } from './Auth';
 import { appReducer, homeReducer, navNavbar, navMainCard } from './Navigations';
@@ -34,6 +34,20 @@ function showMessageBar(state = { show: false, message: '' }, action) {
   }
 }
 
+function showModal(state = { show: false, data: null }, action) {
+  switch (action.type) {
+    case ModalAction.SHOW_MODAL:
+      /**
+       * action.data = PropTypes.obj.isRequired
+       **/
+      return { show: true, data: action.data };
+    case ModalAction.HIDE_MODAL:
+      return { show: false, data: null };
+    default:
+      return state;
+  }
+}
+
 // COMBINE REDUCERS
 const Reducer = combineReducers({
   // Auth
@@ -49,6 +63,7 @@ const Reducer = combineReducers({
   // Tool
   disableNavbar: disableNavbar,
   showMessageBar: showMessageBar,
+  showModal: showModal,
 });
 
 // EXPORT STORE

@@ -17,7 +17,11 @@ import {
   license_string,
 } from '../../../assets/strings';
 // Styles
-import { styles, navbar } from '../../../assets/stylesheets/global/Style';
+import {
+  styles,
+  container,
+  navbar,
+} from '../../../assets/stylesheets/global/Style';
 import { color_string } from '../../../assets/stylesheets/global/Color';
 
 class SettingPage extends Component {
@@ -105,7 +109,7 @@ class SettingPage extends Component {
             },
           ]}
         />
-        <View style={styles.textContainer}>
+        <View style={container.textContainer}>
           <_SquareButton
             backgroundColor={color_string.green_dark_dark}
             text={setting_string.logout}

@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 // Actions
 import { HomeAction } from '../../../reducers/Actions';
 // Styles
-import { styles } from '../../../assets/stylesheets/global/Style';
+import { styles, container } from '../../../assets/stylesheets/global/Style';
 import { percent } from '../../../assets/stylesheets/global/Scale';
 // Icons
 import { NAV_ICONS } from '../../../assets/images/Icon';
@@ -54,7 +54,7 @@ class TopNavbar extends Component {
     return (
       <View
         style={[
-          disableNavbar ? styles.displayNone : styles.navbarContainer,
+          disableNavbar ? styles.displayNone : container.navbarContainer,
           styles.alignCenter,
         ]}
       >

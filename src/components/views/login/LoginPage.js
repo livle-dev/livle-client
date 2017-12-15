@@ -8,7 +8,11 @@ import {
 } from 'react-native';
 // Styles
 import { loginStyle } from '../../../assets/stylesheets/local/loginPageStyle';
-import { styles, width } from '../../../assets/stylesheets/global/Style';
+import {
+  styles,
+  width,
+  container,
+} from '../../../assets/stylesheets/global/Style';
 import { color_string } from '../../../assets/stylesheets/global/Color';
 import { font_size, font_style } from '../../../assets/fonts/Font';
 // Actions
@@ -42,7 +46,7 @@ export default class LoginPage extends Component {
     return (
       <View style={styles.blackBackground}>
         <KeyboardAvoidingView
-          style={[styles.fullContainer, styles.alignCenter]}
+          style={[container.fullContainer, styles.alignCenter]}
         >
           <Icon
             src="logo_livle"
@@ -60,7 +64,7 @@ export default class LoginPage extends Component {
             secureTextEntry={true}
             onChangeText={this._handlePassword}
           />
-          <View style={styles.wrapContainer}>
+          <View style={container.wrapContainer}>
             <View style={styles.rowDirection}>
               <_SquareButton
                 backgroundColor={color_string.green_dark}

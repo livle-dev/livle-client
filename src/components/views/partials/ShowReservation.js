@@ -3,7 +3,11 @@ import React, { Component } from 'react';
 import { View, Text, Image, ImageBackground, Platform } from 'react-native';
 // Styles
 import { goStyle } from '../../../assets/stylesheets/local/goPageStyle';
-import { styles, navbar } from '../../../assets/stylesheets/global/Style';
+import {
+  styles,
+  container,
+  navbar,
+} from '../../../assets/stylesheets/global/Style';
 // Views
 import GreenNumbox from './GreenNumbox';
 import ShowInfo from './ShowInfo';
@@ -40,7 +44,7 @@ export default ({ item }) => {
       style={goStyle.background_size}
       imageStyle={goStyle.background_ticket}
     >
-      <View style={styles.contentContainer}>
+      <View style={container.contentContainer}>
         <ShowInfo data={data} />
         <View style={[goStyle.confirm_container, styles.alignCenter]}>
           <GoCheckEnter dataId={data.id} isConfirmed={isConfirmed} />

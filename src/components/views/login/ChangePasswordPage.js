@@ -8,7 +8,7 @@ import _SquareButton from '../partials/_SquareButton';
 // Strings
 import { login_string } from '../../../assets/strings';
 // Styles
-import { styles } from '../../../assets/stylesheets/global/Style';
+import { styles, container } from '../../../assets/stylesheets/global/Style';
 import { color_string } from '../../../assets/stylesheets/global/Color';
 
 export default class ChangePasswordPage extends Component {
@@ -39,7 +39,7 @@ export default class ChangePasswordPage extends Component {
           secureTextEntry={true}
           onChangeText={this._handleConfirmPassword}
         />
-        <View style={[styles.wrapContainer, styles.rowDirection]}>
+        <View style={[container.wrapContainer, styles.rowDirection]}>
           <_SquareButton
             backgroundColor={color_string.green_aqua}
             text={login_string.changePassword}

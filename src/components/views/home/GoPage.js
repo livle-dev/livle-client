@@ -11,7 +11,11 @@ import {
 import Carousel from 'react-native-snap-carousel';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 // Styles
-import { styles, width } from '../../../assets/stylesheets/global/Style';
+import {
+  styles,
+  container,
+  width,
+} from '../../../assets/stylesheets/global/Style';
 import { goStyle } from '../../../assets/stylesheets/local/goPageStyle';
 import { color, color_string } from '../../../assets/stylesheets/global/Color';
 // Actions
@@ -32,7 +36,7 @@ function NoReservation() {
       style={goStyle.background_size}
       imageStyle={goStyle.background_ticket}
     >
-      <View style={[styles.contentContainer, styles.alignCenter]}>
+      <View style={[container.contentContainer, styles.alignCenter]}>
         <Icon
           src={'logo_livle'}
           width={width.logo}
@@ -95,7 +99,7 @@ export default class GoPage extends Component {
         enableAutoAutomaticScroll={false}
         keyboardShouldPersistTaps="always"
       >
-        <View style={styles.fullContainer}>
+        <View style={container.fullContainer}>
           <View style={styles.horizontalCenter}>
             {hasItem ? (
               <Carousel

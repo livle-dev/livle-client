@@ -5,7 +5,11 @@ import { connect } from 'react-redux';
 // Action
 import { MessageBarAction } from '../../../reducers/Actions';
 // Styles
-import { styles, height } from '../../../assets/stylesheets/global/Style';
+import {
+  styles,
+  container,
+  height,
+} from '../../../assets/stylesheets/global/Style';
 import Scale from '../../../assets/stylesheets/global/Scale';
 
 class MessageBar extends Component {
@@ -43,7 +47,7 @@ class MessageBar extends Component {
     return (
       <Animated.View
         style={[
-          styles.messagebarContainer,
+          container.messagebarContainer,
           styles.alignCenter,
           { top: this.state.barPosition },
         ]}

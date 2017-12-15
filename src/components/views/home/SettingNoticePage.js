@@ -5,14 +5,14 @@ import PropTypes from 'prop-types';
 // Views
 import StackPage from '../partials/StackPage';
 // Styles
-import { styles } from '../../../assets/stylesheets/global/Style';
+import { styles, container } from '../../../assets/stylesheets/global/Style';
 import { noticeStyle } from '../../../assets/stylesheets/local/settingPageStyle';
 
 const SettingNoticePage = ({ navigation }) => {
   const { title, body } = navigation.state.params;
   return (
     <StackPage title={title} navigation={navigation}>
-      <ScrollView style={[styles.blackBackground, styles.textContainer]}>
+      <ScrollView style={[styles.blackBackground, container.textContainer]}>
         <FlatList
           data={body}
           keyExtractor={(item, index) => item.title}

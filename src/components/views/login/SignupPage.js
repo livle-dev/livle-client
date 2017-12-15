@@ -17,7 +17,7 @@ import { login_string } from '../../../assets/strings';
 import { signUp } from '../../../network';
 // Styles
 import { loginStyle } from '../../../assets/stylesheets/local/loginPageStyle';
-import { styles } from '../../../assets/stylesheets/global/Style';
+import { styles, container } from '../../../assets/stylesheets/global/Style';
 import { color_string } from '../../../assets/stylesheets/global/Color';
 
 export default class SignupPage extends Component {
@@ -42,7 +42,7 @@ export default class SignupPage extends Component {
           title={login_string.signUp}
           onPress={() => navigation.goBack()}
         />
-        <View style={[styles.fullContainer, styles.alignCenter]}>
+        <View style={[container.fullContainer, styles.alignCenter]}>
           <_GreenInput
             placeholder={login_string.email}
             keyboardType="email-address"
@@ -64,7 +64,7 @@ export default class SignupPage extends Component {
             onChangeText={this._handleNickname}
           />
 
-          <View style={[styles.wrapContainer, styles.rowDirection]}>
+          <View style={[container.wrapContainer, styles.rowDirection]}>
             <_SquareButton
               backgroundColor={color_string.green_aqua}
               text={login_string.signUp}

@@ -36,3 +36,7 @@ export const MessageBarAction = {
   SHOW_MESSAGE_BAR: 'SHOW_MESSAGE_BAR',
   ANIMATE_ENDED: 'ANIMATE_ENDED',
 };
+export const ModalAction = {
+  SHOW_MODAL: 'SHOW_MODAL',
+  HIDE_MODAL: 'HIDE_MODAL',
+};

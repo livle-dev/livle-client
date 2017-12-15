@@ -19,8 +19,10 @@ const _SquareButton = ({
     style={[
       styles.buttonDefault,
       styles.alignCenter,
-      { backgroundColor: backgroundColor },
-      { marginLeft: (index || 0) > 0 ? 20 : 0 },
+      {
+        backgroundColor: backgroundColor,
+        marginLeft: (index || 0) > 0 ? 20 : 0,
+      },
     ]}
     activeOpacity={disabled ? 1 : 0.4}
     onPress={!disabled ? onPress : undefined}

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import Carousel from 'react-native-snap-carousel';
 import { connect } from 'react-redux';
 // Actions
-import { ReservationAction } from '../../../reducers/Actions';
+import { ReservationAction, ModalAction } from '../../../reducers/Actions';
 // Views
 import _ArtistProfile from './_ArtistProfile';
 import FirstContent from './FirstContent';
@@ -18,7 +18,6 @@ import {
 } from '../../../assets/stylesheets/local/mainCardStyle';
 import { percent } from '../../../assets/stylesheets/global/Scale';
 import Icon from '../../../assets/images/Icon';
-import { reservation } from '../../../reducers/Reservation';
 
 const HoverButtons = ({ isGo, showTopButton, clickTop, ...option }) => {
   return (
@@ -127,15 +126,25 @@ class _MainCard extends Component {
               isGo: !isGo,
             });
 
-            isGo
-              ? dispatch({
-                  type: ReservationAction.DELETE_RESERVATION,
-                  id: data.id,
-                })
-              : dispatch({
-                  type: ReservationAction.ADD_RESERVATION,
-                  data: data,
-                });
+            if (isGo) {
+              dispatch({
+                type: ReservationAction.DELETE_RESERVATION,
+                id: data.id,
+              });
+            } else {
+              dispatch({
+                type: ReservationAction.ADD_RESERVATION,
+                data: data,
+              });
+              dispatch({
+                type: ModalAction.SHOW_MODAL,
+                data: {
+                  type: 'check',
+                  text: '예약되었습니다!',
+                  showLogo: true,
+                },
+              });
+            }
           }}
         />
       </View>

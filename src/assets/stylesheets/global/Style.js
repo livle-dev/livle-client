@@ -83,6 +83,44 @@ export const styles = StyleSheet.create({
       font_style.semi_bold,
     ]),
   },
+  // backgrounds
+  blackBackground: {
+    position: 'relative',
+    bottom: 0,
+    flex: 1,
+    backgroundColor: color_string.black,
+  },
+  modalBackground: {
+    position: 'absolute',
+    zIndex: 999,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    left: 0,
+    backgroundColor: color_string.black_opacity,
+  },
+  // icons & logos & images
+  navbarLogo: {
+    width: percent('width', 42),
+    height: Scale.NAVBAR_ICON_HEIGHT,
+    resizeMode: 'contain',
+  },
+  profileImg: {
+    width: Scale.ARTIST_PROFILE_SIZE,
+    height: Scale.ARTIST_PROFILE_SIZE,
+    borderRadius: Scale.ARTIST_PROFILE_SIZE / 2,
+    marginVertical: 16,
+  },
+  // buttons
+  buttonDefault: {
+    flex: 1,
+    height: height.button,
+    borderRadius: 3,
+    marginVertical: 10,
+  },
+});
+
+export const container = {
   // containers
   fullContainer: {
     position: 'relative',
@@ -108,6 +146,15 @@ export const styles = StyleSheet.create({
     height: height.messagebar,
     backgroundColor: color_string.green_light,
     paddingTop: Platform.select({ ios: Scale.STATUSBAR_HEIGHT, android: 0 }),
+  },
+  modalContainer: {
+    width: percent('width', 88),
+    height: percent('height', 38),
+    backgroundColor: color_string.black_clear,
+    borderWidth: 2,
+    borderColor: color_string.white,
+    borderRadius: 3,
+    paddingHorizontal: width.defaultPadding,
   },
   iconContainer: {
     flex: 1,
@@ -143,33 +190,7 @@ export const styles = StyleSheet.create({
     paddingTop: Scale.STATUSBAR_HEIGHT,
     paddingHorizontal: width.defaultPadding,
   },
-  // backgrounds
-  blackBackground: {
-    position: 'relative',
-    bottom: 0,
-    flex: 1,
-    backgroundColor: color_string.black,
-  },
-  // icons & logos & images
-  navbarLogo: {
-    width: percent('width', 42),
-    height: Scale.NAVBAR_ICON_HEIGHT,
-    resizeMode: 'contain',
-  },
-  profileImg: {
-    width: Scale.ARTIST_PROFILE_SIZE,
-    height: Scale.ARTIST_PROFILE_SIZE,
-    borderRadius: Scale.ARTIST_PROFILE_SIZE / 2,
-    marginVertical: 16,
-  },
-  // buttons
-  buttonDefault: {
-    flex: 1,
-    height: height.button,
-    borderRadius: 3,
-    marginVertical: 10,
-  },
-});
+};
 
 export const navbar = {
   navbarArea: {

@@ -3,7 +3,7 @@ import React from 'react';
 import { View, TouchableOpacity, Switch, Text } from 'react-native';
 import PropTypes from 'prop-types';
 // Styles
-import { styles } from '../../../assets/stylesheets/global/Style';
+import { styles, container } from '../../../assets/stylesheets/global/Style';
 import {
   settingStyle,
   settingHeight,
@@ -19,7 +19,7 @@ const CardContent = ({ type, index, content }) => {
       return (
         <View
           style={[
-            styles.textContainer,
+            container.textContainer,
             styles.rowDirection,
             { marginTop: index > 0 ? 24 : 0 },
           ]}
@@ -34,7 +34,7 @@ const CardContent = ({ type, index, content }) => {
       return (
         <View
           style={[
-            styles.textContainer,
+            container.textContainer,
             styles.rowDirection,
             { marginTop: index > 0 ? 24 : 0 },
           ]}
@@ -49,7 +49,7 @@ const CardContent = ({ type, index, content }) => {
       return (
         <TouchableOpacity
           style={[
-            styles.textContainer,
+            container.textContainer,
             styles.rowDirection,
             { marginTop: index > 0 ? 24 : 0 },
           ]}
@@ -70,7 +70,7 @@ const CardContent = ({ type, index, content }) => {
       return (
         <TouchableOpacity
           style={[
-            styles.textContainer,
+            container.textContainer,
             styles.rowDirection,
             { marginTop: index > 0 ? 24 : 0 },
           ]}
@@ -107,7 +107,7 @@ const _SettingCard = ({ title, type, contents }) => {
   return (
     <View style={styles.fullWidth}>
       <View style={[settingStyle.titleContainer, styles.verticalCenter]}>
-        <Text style={[settingStyle.titleText, styles.textContainer]}>
+        <Text style={[settingStyle.titleText, container.textContainer]}>
           {title}
         </Text>
       </View>
