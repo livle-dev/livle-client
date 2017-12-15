@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 // Actions
 import { ReservationAction, ModalAction } from '../../../reducers/Actions';
 // Views
-import _ArtistProfile from './_ArtistProfile';
 import FirstContent from './FirstContent';
 import SecondContent from './SecondContent';
 // Strings

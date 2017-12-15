@@ -3,7 +3,7 @@ import React from 'react';
 import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 // Views
-import _ArtistProfile from './_ArtistProfile';
+import ArtistProfile from './ArtistProfile';
 // Strings
 import { main_string } from '../../../assets/strings';
 // Styles
@@ -13,22 +13,37 @@ import {
 } from '../../../assets/stylesheets/local/mainCardStyle';
 import { styles, navbar } from '../../../assets/stylesheets/global/Style';
 
-export default ({ data }) => {
+const Container = ({ children }) => {
+  return (
+    <View
+      style={[
+        mainCard.detailContainer,
+        styles.fullWidth,
+        styles.horizontalCenter,
+      ]}
+    >
+      {children}
+    </View>
+  );
+};
+
+const SecondContent = ({ data }) => {
   return (
     <ScrollView style={mainCard.innerContainer}>
       <View style={navbar.navbarAreaFit} />
-      <View
-        style={[
-          mainCard.detailContainer,
-          styles.fullWidth,
-          styles.horizontalCenter,
-        ]}
-      >
+      <Container>
         <Text style={[mainCard.textDefault, styles.textCenter]}>
           {main_string.lineUp}
         </Text>
-        <_ArtistProfile artists={data.artists} />
-      </View>
+        <ArtistProfile artists={data.artists} />
+      </Container>
+      <Container>
+        <Text style={[mainCard.textDefault, styles.textCenter]}>
+          {main_string.lineUp}
+        </Text>
+      </Container>
     </ScrollView>
   );
 };
+
+export default SecondContent;

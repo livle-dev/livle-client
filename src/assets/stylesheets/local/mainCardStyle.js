@@ -20,7 +20,7 @@ export const mainCard = StyleSheet.create({
     position: 'relative',
     width: percent('width', 88),
     height: HEIGHT.card,
-    paddingHorizontal: percent('width', 8), //for contents
+    paddingHorizontal: percent('width', 4), //for contents
   },
   // containers
   imgContainer: {

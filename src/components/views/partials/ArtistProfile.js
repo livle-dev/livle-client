@@ -23,7 +23,7 @@ export const Profile = props => {
   );
 };
 
-export default (_ArtistProfile = ({ artists }) => {
+const ArtistProfile = ({ artists }) => {
   return (
     <FlatList
       data={artists}
@@ -35,10 +35,12 @@ export default (_ArtistProfile = ({ artists }) => {
           <Profile
             name={item.name}
             profile={item.image}
-            style={index % 3 !== 0 ? { marginLeft: 16 } : {}}
+            style={index % 3 !== 0 ? { marginLeft: 20 } : {}}
           />
         );
       }}
     />
   );
-});
+};
+
+export default ArtistProfile;

@@ -119,7 +119,7 @@ export const styles = StyleSheet.create({
     width: Scale.ARTIST_PROFILE_SIZE,
     height: Scale.ARTIST_PROFILE_SIZE,
     borderRadius: Scale.ARTIST_PROFILE_SIZE / 2,
-    marginVertical: 16,
+    marginVertical: 12,
   },
   // buttons
   buttonDefault: {

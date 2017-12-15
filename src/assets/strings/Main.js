@@ -4,7 +4,7 @@ export const main_string = new LocalizedStrings({
   en: {
     vacancies: ' seats left',
     booked: 'FULL',
-    lineUP: 'LINE - UP',
+    lineUp: 'LINE - UP',
     concertBooked: 'Successfully Booked!',
   },
   ko: {
