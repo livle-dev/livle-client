@@ -120,8 +120,8 @@ class SettingPage extends Component {
                 type: ModalAction.SHOW_MODAL,
                 data: {
                   type: 'select',
-                  text: '로그아웃 하시겠어요?',
-                  buttonText: '로그아웃',
+                  text: setting_string.wantToLogout,
+                  buttonText: setting_string.logout,
                   onPress: () => logout(navigation.dispatch),
                 },
               })
@@ -135,8 +135,8 @@ class SettingPage extends Component {
                 type: ModalAction.SHOW_MODAL,
                 data: {
                   type: 'input',
-                  text: '정말 탈퇴하시겠어요?',
-                  buttonText: '탈퇴하기',
+                  text: setting_string.wantToWithdraw,
+                  buttonText: setting_string.withdraw,
                   onPress: value =>
                     withdraw(userInfo.email || '', value)(navigation.dispatch),
                 },

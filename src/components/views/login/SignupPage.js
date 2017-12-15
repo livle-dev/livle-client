@@ -1,12 +1,7 @@
 // Libraries
 import React, { Component } from 'react';
-import {
-  View,
-  ScrollView,
-  KeyboardAvoidingView,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import { View, ScrollView, Text, TouchableOpacity } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 // Views
 import TopTitle from '../partials/TopTitle';
 import _GreenInput from '../partials/_GreenInput';
@@ -37,7 +32,7 @@ export default class SignupPage extends Component {
     const { navigation } = this.props;
 
     return (
-      <KeyboardAvoidingView style={styles.blackBackground}>
+      <KeyboardAwareScrollView style={styles.blackBackground}>
         <TopTitle
           title={login_string.signUp}
           onPress={() => navigation.goBack()}
@@ -92,7 +87,7 @@ export default class SignupPage extends Component {
             </Text>
           </TouchableOpacity>
         </View>
-      </KeyboardAvoidingView>
+      </KeyboardAwareScrollView>
     );
   }
 }

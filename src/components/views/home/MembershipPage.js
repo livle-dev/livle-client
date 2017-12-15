@@ -5,7 +5,7 @@ import {
   ScrollView,
   Text,
   TouchableOpacity,
-  PlatformIOS,
+  Platform,
 } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -26,7 +26,7 @@ const MembershipPage = ({ navigation }) => {
   return (
     <StackPage title={title} navigation={navigation}>
       <ScrollView style={styles.blackBackground}>
-        {PlatformIOS && <View style={{ height: 20 }} />}
+        {Platform.OS === 'ios' && <View style={{ height: 20 }} />}
         <_SettingCard
           type="string"
           title={membership_string.membershipInfo}

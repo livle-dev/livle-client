@@ -10,6 +10,8 @@ import { ReservationAction, ModalAction } from '../../../reducers/Actions';
 import _ArtistProfile from './_ArtistProfile';
 import FirstContent from './FirstContent';
 import SecondContent from './SecondContent';
+// Strings
+import { main_string } from '../../../assets/strings';
 // Styles
 import {
   mainCard,
@@ -138,7 +140,7 @@ class _MainCard extends Component {
                 type: ModalAction.SHOW_MODAL,
                 data: {
                   type: 'check',
-                  text: '예약되었습니다!',
+                  text: main_string.concertBooked,
                   showLogo: true,
                 },
               });

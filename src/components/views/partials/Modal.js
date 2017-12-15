@@ -8,6 +8,8 @@ import _GreenInput from './_GreenInput';
 import _SquareButton from './_SquareButton';
 // Actions
 import { ModalAction } from '../../../reducers/Actions';
+// String
+import { global_string } from '../../../assets/strings';
 // Styles
 import {
   styles,
@@ -37,7 +39,7 @@ function Content({ data, dismiss, value, onTextChange }) {
           </View>
           <View style={{ height: 80, marginBottom: 6 }}>
             <_SquareButton
-              text="확인"
+              text={global_string.confirm}
               backgroundColor={color_string.green_light}
               onPress={dismiss}
             />
@@ -54,7 +56,7 @@ function Content({ data, dismiss, value, onTextChange }) {
             <_SquareButton
               index={0}
               backgroundColor={color_string.green_dark_dark}
-              text="취소"
+              text={global_string.cancel}
               onPress={dismiss}
             />
             <_SquareButton
@@ -76,7 +78,7 @@ function Content({ data, dismiss, value, onTextChange }) {
             <Text style={[styles.textCenter, styles.textDefault]}>{text}</Text>
           </View>
           <_GreenInput
-            placeholder="비밀번호를 입력하세요"
+            placeholder={global_string.enterPassword}
             onTextChange={onTextChange}
             errorMessage="비밀번호가 올바르지 않습니다."
             secureTextEntry={true}
@@ -85,7 +87,7 @@ function Content({ data, dismiss, value, onTextChange }) {
             <_SquareButton
               index={0}
               backgroundColor={color_string.green_dark_dark}
-              text="취소"
+              text={global_string.cancel}
               onPress={dismiss}
             />
             <_SquareButton
