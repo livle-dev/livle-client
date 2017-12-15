@@ -56,4 +56,5 @@ export const font_size = StyleSheet.create({
   fs_2: { fontSize: 18 },
   fs_3: { fontSize: 16 },
   fs_4: { fontSize: 14 },
+  fs_5: { fontSize: 12 },
 });

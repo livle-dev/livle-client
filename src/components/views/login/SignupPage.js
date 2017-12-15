@@ -30,6 +30,7 @@ export default class SignupPage extends Component {
 
   render() {
     const { navigation } = this.props;
+    const { password, confirmPassword } = this.state;
 
     return (
       <KeyboardAwareScrollView style={styles.blackBackground}>
@@ -64,15 +65,12 @@ export default class SignupPage extends Component {
               backgroundColor={color_string.green_aqua}
               text={login_string.signUp}
               onPress={() => {
-                if (this.state.confirmPassword) {
+                if (this.state.confirmPassword)
                   signUp(
                     this.state.email,
                     this.state.password,
                     this.state.nickname
                   )(navigation.dispatch);
-                } else {
-                  alert('비밀번호가 일치하지 않습니다');
-                }
               }}
             />
           </View>

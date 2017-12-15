@@ -152,8 +152,10 @@ class _MainCard extends Component {
   }
 }
 
-export default connect(state => {
+const mapStateToProps = state => {
   return {
     reservation: state.reservation,
   };
-})(_MainCard);
+};
+
+export default connect(mapStateToProps)(_MainCard);

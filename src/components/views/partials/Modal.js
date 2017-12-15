@@ -20,10 +20,17 @@ import { color_string } from '../../../assets/stylesheets/global/Color';
 // Icons
 import Icon from '../../../assets/images/Icon';
 
+export const modalType = {
+  check: 'check',
+  select: 'select',
+  input: 'input',
+  notice: 'notice',
+};
+
 function Content({ data, dismiss, value, onTextChange }) {
   const { type, text, buttonText, onPress, showLogo } = data;
   switch (type) {
-    case 'check':
+    case modalType.check:
       return (
         <View style={container.modalContainer}>
           <View style={[styles.flex_1, styles.alignCenter]}>
@@ -46,7 +53,7 @@ function Content({ data, dismiss, value, onTextChange }) {
           </View>
         </View>
       );
-    case 'select':
+    case modalType.select:
       return (
         <View style={container.modalContainer}>
           <View style={[styles.flex_1, styles.alignCenter]}>
@@ -71,7 +78,7 @@ function Content({ data, dismiss, value, onTextChange }) {
           </View>
         </View>
       );
-    case 'input':
+    case modalType.input:
       return (
         <View style={container.modalContainer}>
           <View style={[styles.flex_1, styles.alignCenter]}>
@@ -102,7 +109,7 @@ function Content({ data, dismiss, value, onTextChange }) {
           </View>
         </View>
       );
-    case 'notice':
+    case modalType.notice:
       return (
         <View style={[container.modalContainer, styles.alignCenter]}>
           <Text style={[styles.textCenter, styles.textDefault]}>{text}</Text>
@@ -118,9 +125,10 @@ class Modal extends Component {
 
   _handleValue = text => this.setState({ value: text });
 
-  componentDidMount() {
-    const { data } = this.props;
-    if (data) data.type === 'notice' && setTimeout(hideModal, 1500);
+  componentWillUpdate(props) {
+    const { data } = props.status;
+    if (data)
+      data.type === modalType.notice && setTimeout(this.hideModal, 1200);
   }
 
   render() {

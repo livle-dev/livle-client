@@ -4,7 +4,7 @@ import thunk from 'redux-thunk';
 // Actions
 import { NavbarAction, MessageBarAction, ModalAction } from './Actions';
 // Reducers
-import { auth, handleError } from './Auth';
+import { auth } from './Auth';
 import { appReducer, homeReducer, navNavbar, navMainCard } from './Navigations';
 import { reservation } from './Reservation';
 
@@ -26,9 +26,9 @@ function showMessageBar(state = { show: false, message: '' }, action) {
       /**
        * action.data = PropTypes.string.isRequired
        * data = {
-       *  type: PropTypes.string.isRequired,
+       *  type: 'check', 'select', 'input', 'notice'
        *  text: PropTypes.string.isRequired,
-       *  buttonText: PropTypes.string.isRequired,
+       *  buttonText: PropTypes.string,
        *  onPress: PropTypes.object,
        *  showLogo: PropTypes.bool,
        * }
@@ -59,7 +59,6 @@ function showModal(state = { show: false, data: null }, action) {
 const Reducer = combineReducers({
   // Auth
   auth: auth,
-  handleError: handleError,
   // Navigation
   appReducer: appReducer,
   homeReducer: homeReducer,

@@ -35,6 +35,9 @@ export const styles = StyleSheet.create({
   verticalCenter: {
     justifyContent: 'center',
   },
+  horizontalRight: {
+    alignItems: 'flex-end',
+  },
   rowDirection: {
     flexDirection: 'row',
   },
@@ -53,7 +56,7 @@ export const styles = StyleSheet.create({
         height: 36,
       },
     }),
-    marginBottom: 32,
+    marginBottom: 10,
     borderBottomWidth: 2,
     borderBottomColor: color_string.green_light,
   },
@@ -75,6 +78,13 @@ export const styles = StyleSheet.create({
   },
   textDefault: {
     ...StyleSheet.flatten([color.white, font_size.fs_3, font_style.semi_bold]),
+  },
+  textError: {
+    ...StyleSheet.flatten([
+      color.green_light,
+      font_size.fs_5,
+      font_style.light,
+    ]),
   },
   textTitle: {
     ...StyleSheet.flatten([
@@ -172,6 +182,10 @@ export const container = {
   },
   textContainer: {
     paddingHorizontal: width.defaultPadding,
+  },
+  textInputContainer: {
+    width: width.wrapContainer,
+    marginBottom: 14,
   },
   topTitleContainer: {
     position: 'absolute',

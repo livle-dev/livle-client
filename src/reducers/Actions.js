@@ -1,10 +1,3 @@
-// User
-export const HandleErrorAction = {
-  SIGNUP_ERROR: 'SIGNUP_ERROR',
-  LOGIN_ERROR: 'LOGIN_ERROR',
-  CONFIRM_EMAIL_ERROR: 'CONFIRM_EMAIL_ERROR',
-  RESET: 'RESET',
-};
 // Navigation
 export const AppAction = {
   LOGIN: 'LOGIN',
