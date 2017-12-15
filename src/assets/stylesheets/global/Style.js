@@ -12,6 +12,10 @@ export const width = {
 };
 export const height = {
   button: 60,
+  messagebar: Platform.select({
+    ios: Scale.STATUSBAR_HEIGHT + percent('height', 4),
+    android: percent('height', 4),
+  }),
 };
 export const styles = StyleSheet.create({
   // flex_options
@@ -94,6 +98,16 @@ export const styles = StyleSheet.create({
     height: Scale.NAVBAR_HEIGHT,
     paddingTop: Scale.STATUSBAR_HEIGHT,
     backgroundColor: color_string.black_clear,
+  },
+  messagebarContainer: {
+    position: 'absolute',
+    zIndex: 999,
+    left: 0,
+    right: 0,
+    width: width.full,
+    height: height.messagebar,
+    backgroundColor: color_string.green_light,
+    paddingTop: Platform.select({ ios: Scale.STATUSBAR_HEIGHT, android: 0 }),
   },
   iconContainer: {
     flex: 1,

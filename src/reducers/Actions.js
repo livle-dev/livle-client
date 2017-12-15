@@ -27,8 +27,12 @@ export const ReservationAction = {
   CONFIRM_ENTRY: 'CONFIRM_ENTRY',
 };
 
-// Custom
+// Tool
 export const NavbarAction = {
   DISABLE_NAVBAR: 'DISABLE_NAVBAR',
   ENABLE_NAVBAR: 'ENABLE_NAVBAR',
+};
+export const MessageBarAction = {
+  SHOW_MESSAGE_BAR: 'SHOW_MESSAGE_BAR',
+  ANIMATE_ENDED: 'ANIMATE_ENDED',
 };

@@ -1,6 +1,10 @@
 import axios from './axios';
 import { AsyncStorage } from 'react-native';
-import { AppAction, HandleErrorAction } from '../reducers/Actions';
+import {
+  AppAction,
+  HandleErrorAction,
+  MessageBarAction,
+} from '../reducers/Actions';
 
 /**
  *  TEST SESSION
@@ -74,8 +78,10 @@ export const login = (email, password) => dispatch => {
           is_subsrcibing: data.is_subsrcibing,
         },
       });
-      // TODO: alert -> message bar
-      alert('로그인 되었습니다.');
+      dispatch({
+        type: MessageBarAction.SHOW_MESSAGE_BAR,
+        data: '로그인 되었습니다',
+      });
     })
     .catch(err => {
       /**
@@ -94,8 +100,10 @@ export const logout = dispatch => {
   _removeToken()
     .then(() => {
       dispatch({ type: AppAction.LOGOUT });
-      // TODO: alert -> message bar
-      alert('로그아웃 되었습니다.');
+      dispatch({
+        type: MessageBarAction.SHOW_MESSAGE_BAR,
+        data: '로그아웃 되었습니다',
+      });
     })
     .catch();
 };

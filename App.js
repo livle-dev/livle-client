@@ -1,16 +1,22 @@
 // Libraries
 import React, { Component } from 'react';
+import { View } from 'react-native';
 import { Provider } from 'react-redux';
 // Navigator
 import AppNavigation from './src/components/navigations/AppNavigation';
 // Reducer
 import store from './src/reducers';
+// Views
+import MessageBar from './src/components/views/partials/MessageBar';
 
 export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-        <AppNavigation />
+        <View style={{ flex: 1 }}>
+          <AppNavigation />
+          <MessageBar />
+        </View>
       </Provider>
     );
   }

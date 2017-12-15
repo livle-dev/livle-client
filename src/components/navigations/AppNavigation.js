@@ -29,7 +29,6 @@ const mapStateToProps = state => {
 
 class AppNavigation extends Component {
   componentDidMount() {
-    // Check Token from AsyncStorage
     checkSession(this.props.dispatch);
   }
 
