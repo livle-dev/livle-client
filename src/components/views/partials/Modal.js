@@ -128,7 +128,7 @@ class Modal extends Component {
   componentWillUpdate(props) {
     const { data } = props.status;
     if (data)
-      data.type === modalType.notice && setTimeout(this.hideModal, 1200);
+      data.type === modalType.notice && setTimeout(this.hideModal, 1500);
   }
 
   render() {

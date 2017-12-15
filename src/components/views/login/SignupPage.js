@@ -30,21 +30,38 @@ export default class SignupPage extends Component {
       nickname: '',
     },
   };
-  _handleEmail = text => this.setState({ email: text });
-  _handlePassword = text => {
-    const updateError = this.state.error;
-    if (text.length >= MIN_PASSWORD_LENGTH) updateError.pwd = '';
 
-    this.setState({ password: text, error: updateError });
-  };
-  _handleConfirmPassword = text => {
-    const status = text === this.state.password;
+  _checkError = (type, data) => {
     const updateError = this.state.error;
-    if (status) updateError.confirmPwd = '';
-
-    this.setState({ confirmPassword: status });
+    switch (type) {
+      case 'email':
+        let check_email_exist = data.length !== 0;
+        updateError.email = !check_email_exist ? '이메일을 입력해주세요' : '';
+        break;
+      case 'password':
+        let check_password_length = data.length < MIN_PASSWORD_LENGTH;
+        updateError.pwd = check_password_length
+          ? '비밀번호를 8자리 이상 입력해주세요'
+          : '';
+        break;
+      case 'confirmPassword':
+        updateError.confirmPwd = !data ? '비밀번호가 일치하지 않습니다' : '';
+        break;
+      case 'nickname':
+        let check_nickname_exist = data.length !== 0;
+        updateError.nickname = !check_nickname_exist
+          ? '닉네임을 입력해주세요'
+          : '';
+        break;
+    }
+    this.setState({ [type]: data, error: updateError });
   };
-  _handleNickname = text => this.setState({ nickname: text });
+
+  _handleEmail = text => this._checkError('email', text);
+  _handlePassword = text => this._checkError('password', text);
+  _handleConfirmPassword = text =>
+    this._checkError('confirmPassword', text === this.state.password);
+  _handleNickname = text => this._checkError('nickname', text);
 
   render() {
     const { navigation } = this.props;
@@ -69,26 +86,12 @@ export default class SignupPage extends Component {
             secureTextEntry={true}
             onChangeText={this._handlePassword}
             errorMessage={error.pwd}
-            // callback
-            onBlur={() => {
-              const updateError = error;
-              if (password.length < MIN_PASSWORD_LENGTH)
-                updateError.pwd = '비밀번호를 8자리 이상 입력해주세요';
-              this.setState({ error: updateError });
-            }}
           />
           <_GreenInput
             placeholder={login_string.confirmPassword}
             secureTextEntry={true}
             onChangeText={this._handleConfirmPassword}
             errorMessage={error.confirmPwd}
-            // callback
-            onBlur={() => {
-              const updateError = error;
-              if (!confirmPassword)
-                updateError.confirmPwd = '비밀번호가 일치하지 않습니다';
-              this.setState({ error: updateError });
-            }}
           />
           <_GreenInput
             placeholder={login_string.nickname}

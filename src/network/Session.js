@@ -84,6 +84,13 @@ export const login = (email, password) => dispatch => {
        * 403: 해당 아이디로 가입된 정보는 있으나 비밀번호가 틀림
        * 404:	해당 아이디로 가입된 정보가 없음
        */
+      dispatch({
+        type: ModalAction.SHOW_MODAL,
+        data: {
+          type: 'notice',
+          text: err.response.data,
+        },
+      });
     });
 };
 
@@ -120,37 +127,13 @@ export const signUp = (email, password, nickname) => dispatch => {
        * 403: 이미 존재하는 아이디
        * 404:	잘못된 이메일 형식
        */
-      const { status } = err.response;
-      switch (status) {
-        case 400:
-          dispatch({
-            type: ModalAction.SHOW_MODAL,
-            data: {
-              type: 'notice',
-              text: '이메일 또는 비밀번호가 존재하지 않습니다.',
-            },
-          });
-          break;
-        case 403:
-          dispatch({
-            type: ModalAction.SHOW_MODAL,
-            data: {
-              type: 'notice',
-              text: '이미 존재하는 아이디입니다.',
-            },
-          });
-          break;
-        case 404:
-          dispatch({
-            type: ModalAction.SHOW_MODAL,
-            data: {
-              type: 'notice',
-              text: '잘못된 이메일 형식입니다.',
-            },
-          });
-          break;
-        default:
-      }
+      dispatch({
+        type: ModalAction.SHOW_MODAL,
+        data: {
+          type: 'notice',
+          text: err.response.data,
+        },
+      });
     });
 };
 
@@ -168,6 +151,13 @@ export const confirmEmail = email => dispatch => {
        * 400: 이메일이 없거나 잘못된 형식
        * 404:	해당하는 유저가 없음
        */
+      dispatch({
+        type: ModalAction.SHOW_MODAL,
+        data: {
+          type: 'notice',
+          text: err.response.data,
+        },
+      });
     });
 };
 
@@ -182,10 +172,12 @@ export const withdraw = (email, password) => dispatch => {
       });
     })
     .catch(err => {
-      /**
-       * 400: 잘못된 요청 (이메일이나 비밀번호가 없음)
-       * 403: 이미 존재하는 아이디
-       * 404:	잘못된 이메일 형식
-       */
+      dispatch({
+        type: ModalAction.SHOW_MODAL,
+        data: {
+          type: 'notice',
+          text: err.response.data,
+        },
+      });
     });
 };

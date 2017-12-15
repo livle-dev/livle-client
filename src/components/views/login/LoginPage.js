@@ -28,17 +28,10 @@ import { login_string } from '../../../assets/strings';
 import Icon from '../../../assets/images/Icon';
 
 export default class LoginPage extends Component {
-  state = {
-    email: '',
-    password: '',
-  };
+  state = { email: '', password: '' };
 
-  _handleEmail = text => {
-    this.setState({ email: text });
-  };
-  _handlePassword = text => {
-    this.setState({ password: text });
-  };
+  _handleEmail = text => this.setState({ email: text });
+  _handlePassword = text => this.setState({ password: text });
 
   render() {
     const { navigation } = this.props;
@@ -75,11 +68,10 @@ export default class LoginPage extends Component {
               <_SquareButton
                 backgroundColor={color_string.green_aqua}
                 text={login_string.logIn}
-                onPress={() =>
-                  login(this.state.email, this.state.password)(
-                    navigation.dispatch
-                  )
-                }
+                onPress={() => {
+                  const { email, password } = this.state;
+                  login(email, password)(navigation.dispatch);
+                }}
                 index={1}
               />
             </View>
