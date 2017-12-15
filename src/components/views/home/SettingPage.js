@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import _SettingCard from '../partials/_SettingCard';
 import _SquareButton from '../partials/_SquareButton';
 // Network
-import { logout } from '../../../network';
+import { logout, withdraw } from '../../../network';
 // Action
 import { ModalAction } from '../../../reducers/Actions';
 // Strings
@@ -138,7 +138,7 @@ class SettingPage extends Component {
                   text: '정말 탈퇴하시겠어요?',
                   buttonText: '탈퇴하기',
                   onPress: value =>
-                    logout(userInfo.email || '', value)(navigation.dispatch),
+                    withdraw(userInfo.email || '', value)(navigation.dispatch),
                 },
               })
             }

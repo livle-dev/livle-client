@@ -62,7 +62,7 @@ function Content({ data, dismiss, value, onTextChange }) {
               backgroundColor={color_string.green_light}
               text={buttonText}
               onPress={() => {
-                onPress(value);
+                onPress();
                 dismiss();
               }}
             />
@@ -79,6 +79,7 @@ function Content({ data, dismiss, value, onTextChange }) {
             placeholder="비밀번호를 입력하세요"
             onTextChange={onTextChange}
             errorMessage="비밀번호가 올바르지 않습니다."
+            secureTextEntry={true}
           />
           <View style={[styles.rowDirection, { marginBottom: 6 }]}>
             <_SquareButton
@@ -92,7 +93,7 @@ function Content({ data, dismiss, value, onTextChange }) {
               backgroundColor={color_string.green_light}
               text={buttonText}
               onPress={() => {
-                onPress();
+                onPress(value);
                 dismiss();
               }}
             />
