@@ -6,7 +6,7 @@ import { percent } from '../global/Scale';
 export const loginStyle = StyleSheet.create({
   textButton: {
     position: 'absolute',
-    bottom: percent('height', 7.5),
+    bottom: percent('height', 7),
   },
   defaultText: StyleSheet.flatten([
     color.green_light,
