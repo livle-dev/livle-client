@@ -15,7 +15,7 @@ import { main_string } from '../../../assets/strings';
 import {
   mainCard,
   mainWidth,
-  HEIGHT,
+  mainHeight,
 } from '../../../assets/stylesheets/local/mainCardStyle';
 import { percent } from '../../../assets/stylesheets/global/Scale';
 import Icon from '../../../assets/images/Icon';
@@ -39,37 +39,27 @@ const HoverButtons = ({ isGo, showTopButton, clickTop, ...option }) => {
 };
 
 class _MainCard extends Component {
+  _updateGoState = (data, reservation) =>
+    reservation.goList.find(book => book.id === data.id) !== undefined;
+
   state = {
-    isGo: false, //initial state
+    isGo: this._updateGoState(this.props.data, this.props.reservation),
     showTopButton: false,
   };
 
+  componentWillReceiveProps(props) {
+    this.setState({
+      isGo: this._updateGoState(props.data, props.reservation),
+    });
+  }
+
   _renderContent = ({ item, index }) => {
     return index === 0 ? (
-      <FirstContent
-        data={item}
-        showDetail={() => {
-          this.carousel.snapToNext();
-        }}
-      />
+      <FirstContent data={item} showDetail={() => this.carousel.snapToNext()} />
     ) : (
       <SecondContent data={item} />
     );
   };
-
-  _updateGoState = (data, reservation) => {
-    this.setState({
-      isGo: reservation.goList.find(book => book.id === data.id) ? true : false,
-    });
-  };
-
-  componentDidMount() {
-    this._updateGoState(this.props.data, this.props.reservation);
-  }
-
-  componentWillReceiveProps(props) {
-    this._updateGoState(props.data, props.reservation);
-  }
 
   render() {
     const { data, dispatch } = this.props;
@@ -103,8 +93,8 @@ class _MainCard extends Component {
           data={ticket_info}
           renderItem={this._renderContent}
           vertical={true}
-          sliderHeight={HEIGHT.card}
-          itemHeight={HEIGHT.card}
+          sliderHeight={mainHeight.card}
+          itemHeight={mainHeight.card}
           inactiveSlideScale={1}
           inactiveSlideOpacity={1}
           onSnapToItem={index => {

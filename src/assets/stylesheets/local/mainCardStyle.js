@@ -6,8 +6,10 @@ import { font_size, font_style } from '../../fonts/Font';
 export const mainWidth = {
   icMore: 30,
   icCircle: Scale.CIRCLE_BUTTON_SIZE,
+  innerContainer: percent('width', 88),
+  innerPadding: percent('width', 4),
 };
-export const HEIGHT = {
+export const mainHeight = {
   card: Platform.select({
     ios:
       percent('height', 100) - (Scale.CALANDER_HEIGHT + Scale.STATUSBAR_HEIGHT),
@@ -18,9 +20,9 @@ export const HEIGHT = {
 export const mainCard = StyleSheet.create({
   innerContainer: {
     position: 'relative',
-    width: percent('width', 88),
-    height: HEIGHT.card,
-    paddingHorizontal: percent('width', 4), //for contents
+    width: mainWidth.innerContainer,
+    height: mainHeight.card,
+    paddingHorizontal: mainWidth.innerPadding,
   },
   // containers
   imgContainer: {

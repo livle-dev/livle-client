@@ -28,12 +28,14 @@ const mapStateToProps = state => {
 };
 
 class AppNavigation extends Component {
-  componentDidMount() {
-    checkSession(this.props.dispatch);
+  constructor(props) {
+    super(props);
+    checkSession(props.dispatch);
   }
 
   render() {
     const { dispatch, navState } = this.props;
+
     return (
       <AppScreen
         navigation={addNavigationHelpers({
