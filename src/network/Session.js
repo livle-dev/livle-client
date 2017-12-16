@@ -46,14 +46,6 @@ export const checkSession = dispatch => {
          * 401: 헤더에 토큰이 없음
          * 403: 헤더에 토큰이 있지만 유효하지 않음
          */
-        const status = err.response.status;
-        switch (status) {
-          case 401:
-            break;
-          case 403:
-            // console.log('SESSION: signed out');
-            break;
-        }
       });
   });
 };

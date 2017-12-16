@@ -1,6 +1,7 @@
 // Libraries
 import LocalizedStrings from 'react-native-localization';
 
+export * from './Constant';
 export * from './Go';
 export * from './Login';
 export * from './Main';
