@@ -1,6 +1,13 @@
 // Libraries
 import React, { Component } from 'react';
-import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
+import {
+  View,
+  Text,
+  ScrollView,
+  Image,
+  TouchableOpacity,
+  PlatformOSType,
+} from 'react-native';
 import YouTube from 'react-native-youtube';
 import PropTypes from 'prop-types';
 // Views
@@ -29,22 +36,25 @@ const Container = ({ children }) => {
 };
 
 class VideoPlayer extends Component {
+  state = {
+    height: (mainWidth.innerContainer - mainWidth.innerPadding) * (9 / 16),
+  };
+
   render() {
-    const { videoId, innerRef, onReady, ...option } = this.props;
-    const playerHeight =
-      (mainWidth.innerContainer - mainWidth.innerPadding) * (9 / 16);
+    const { videoId, innerRef, ...option } = this.props;
 
     return (
       <YouTube
         apiKey={api_key.youtube}
         videoId={videoId}
         ref={innerRef}
-        controls={1}
+        controls={PlatformOSType === 'ios' ? 1 : 2}
         play={true}
+        showFullscreenButton={true}
         // style
-        style={{ alignSelf: 'stretch', height: playerHeight }}
+        style={{ alignSelf: 'stretch', height: this.state.height }}
         // callback
-        onReady={onReady}
+        onReady={this.handleReady}
         {...option}
       />
     );
@@ -66,7 +76,7 @@ export default class SecondContent extends Component {
         </Container>
         <Container>
           <Text style={[mainCard.textDefault, styles.textCenter]}>
-            영상 보기
+            관련 영상
           </Text>
           {!removePlayer && (
             <VideoPlayer

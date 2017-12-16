@@ -43,7 +43,7 @@ for (let i = 0; i < TICKET_SIZE; i++) {
     vacancies: faker.random.number(MAX.VACANCIES),
     place: places[faker.random.number(places.length - 1)],
     music_id: null,
-    video_id: 'AenmqoozqoA',
+    video_id: 'T9fKvVGBBy4',
     article: null,
   });
   for (let a = 0; a < faker.random.number({ min: 1, max: MAX.ARTISTS }); a++) {

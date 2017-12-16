@@ -30,7 +30,7 @@ export const mainCard = StyleSheet.create({
     height: percent('height', 38),
   },
   detailContainer: {
-    paddingVertical: 24,
+    paddingVertical: 20,
     borderBottomWidth: 2,
     borderBottomColor: color_string.green_deep,
   },
