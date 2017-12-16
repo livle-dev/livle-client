@@ -30,7 +30,7 @@ const Container = ({ children }) => {
 
 class VideoPlayer extends Component {
   render() {
-    const { videoId, innerRef } = this.props;
+    const { videoId, innerRef, onReady, ...option } = this.props;
     const playerHeight =
       (mainWidth.innerContainer - mainWidth.innerPadding) * (9 / 16);
 
@@ -43,6 +43,9 @@ class VideoPlayer extends Component {
         play={true}
         // style
         style={{ alignSelf: 'stretch', height: playerHeight }}
+        // callback
+        onReady={onReady}
+        {...option}
       />
     );
   }
@@ -50,7 +53,7 @@ class VideoPlayer extends Component {
 
 export default class SecondContent extends Component {
   render() {
-    const { data } = this.props;
+    const { data, removePlayer } = this.props;
 
     return (
       <ScrollView style={mainCard.innerContainer}>
@@ -65,10 +68,12 @@ export default class SecondContent extends Component {
           <Text style={[mainCard.textDefault, styles.textCenter]}>
             영상 보기
           </Text>
-          <VideoPlayer
-            videoId={data.video_id}
-            innerRef={c => (this.player = c)}
-          />
+          {!removePlayer && (
+            <VideoPlayer
+              videoId={data.video_id}
+              innerRef={c => (this.player = c)}
+            />
+          )}
         </Container>
       </ScrollView>
     );

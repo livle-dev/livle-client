@@ -57,7 +57,7 @@ class _MainCard extends Component {
     return index === 0 ? (
       <FirstContent data={item} showDetail={() => this.carousel.snapToNext()} />
     ) : (
-      <SecondContent data={item} />
+      <SecondContent data={item} removePlayer={!this.state.showTopButton} />
     );
   };
 
@@ -114,7 +114,6 @@ class _MainCard extends Component {
           clickTop={() => this.carousel.snapToPrev()}
           onPress={() => {
             this.setState({ isGo: !isGo });
-
             if (isGo) {
               dispatch({
                 type: ReservationAction.DELETE_RESERVATION,
