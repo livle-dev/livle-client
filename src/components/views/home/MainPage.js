@@ -30,7 +30,13 @@ class CardLists extends Component {
         }}
         data={ticket}
         renderItem={({ item, index }) => {
-          return <_MainCard data={item} curIndex={index} />;
+          return (
+            <_MainCard
+              data={item}
+              curIndex={index}
+              cardIndex={this.props.cardIndex}
+            />
+          );
         }}
         sliderWidth={percent('width', 100)}
         itemWidth={percent('width', 88)}

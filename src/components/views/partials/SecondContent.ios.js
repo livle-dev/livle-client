@@ -47,8 +47,6 @@ class VideoPlayer extends Component {
         style={{ alignSelf: 'stretch', height: this.state.height }}
         showFullscreenButton={true}
         showinfo={false}
-        // callback
-        onReady={this.handleReady}
         {...option}
       />
     );
@@ -56,7 +54,11 @@ class VideoPlayer extends Component {
 }
 
 export default class SecondContent extends Component {
-  state = { isMounted: false };
+  state = { isMounted: false, isPlaying: false };
+
+  componentWillReceiveProps(props) {
+    if (props.removePlayer) this.setState({ isPlaying: false });
+  }
 
   render() {
     const { data } = this.props;
@@ -82,7 +84,12 @@ export default class SecondContent extends Component {
           {this.state.isMounted && (
             <VideoPlayer
               videoId={data.video_id}
+              play={this.state.isPlaying}
               innerRef={c => (this.player = c)}
+              // callback
+              onChangeState={e =>
+                this.setState({ isPlaying: e.state === 'playing' })
+              }
             />
           )}
         </Container>

@@ -48,9 +48,12 @@ class _MainCard extends Component {
   };
 
   componentWillReceiveProps(props) {
-    this.setState({
-      isGo: this._updateGoState(props.data, props.reservation),
-    });
+    if (props.curIndex !== props.cardIndex) {
+      this.carousel.snapToItem(0);
+    }
+
+    // check once more
+    this.setState({ isGo: this._updateGoState(props.data, props.reservation) });
   }
 
   _renderContent = ({ item, index }) => {

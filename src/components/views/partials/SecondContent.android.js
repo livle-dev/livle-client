@@ -56,7 +56,11 @@ class VideoPlayer extends Component {
 }
 
 export default class SecondContent extends Component {
-  state = { isMounted: false };
+  state = { isMounted: false, isPlaying: false };
+
+  componentWillReceiveProps(props) {
+    if (props.removePlayer) this.setState({ isPlaying: false });
+  }
 
   render() {
     const { data, removePlayer } = this.props;
@@ -83,7 +87,12 @@ export default class SecondContent extends Component {
             !removePlayer && (
               <VideoPlayer
                 videoId={data.video_id}
+                play={this.state.isPlaying}
                 innerRef={c => (this.player = c)}
+                // callback
+                onChangeState={e =>
+                  this.setState({ isPlaying: e.state === 'playing' })
+                }
               />
             )}
         </Container>
