@@ -97,16 +97,8 @@ class _MainCard extends Component {
           itemHeight={mainHeight.card}
           inactiveSlideScale={1}
           inactiveSlideOpacity={1}
-          onSnapToItem={index => {
-            switch (index) {
-              case 0:
-                this.setState({ showTopButton: false });
-                break;
-              case 1:
-                this.setState({ showTopButton: true });
-                break;
-            }
-          }}
+          // callback
+          onSnapToItem={index => this.setState({ showTopButton: index === 1 })}
         />
         <HoverButtons
           isGo={isGo}
@@ -141,9 +133,7 @@ class _MainCard extends Component {
 }
 
 const mapStateToProps = state => {
-  return {
-    reservation: state.reservation,
-  };
+  return { reservation: state.reservation };
 };
 
 export default connect(mapStateToProps)(_MainCard);

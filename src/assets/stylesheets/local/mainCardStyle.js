@@ -24,6 +24,12 @@ export const mainCard = StyleSheet.create({
     height: mainHeight.card,
     paddingHorizontal: mainWidth.innerPadding,
   },
+  innerScrollContainer: {
+    position: 'relative',
+    width: mainWidth.innerContainer,
+    minHeight: mainHeight.card,
+    paddingHorizontal: mainWidth.innerPadding,
+  },
   // containers
   imgContainer: {
     width: percent('width', 84),
