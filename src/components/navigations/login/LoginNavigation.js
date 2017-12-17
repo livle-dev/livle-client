@@ -2,6 +2,8 @@
 import React, { Component } from 'react';
 import { StackNavigator, addNavigationHelpers } from 'react-navigation';
 import { Platform } from 'react-native';
+// String
+import { consts } from '../../../assets/strings/Constant';
 // Views
 import LoginConnector from './LoginConnector';
 import SignupPage from '../../views/login/SignupPage';
@@ -23,7 +25,11 @@ export const LoginScreen = StackNavigator(
 );
 
 const LoginNavigation = () => {
-  const prefix = `livle://${Platform.OS === 'android' ? 'livle/' : ''}`;
+  const prefix = Platform.select({
+    ios: consts.urlPrefix,
+    android: consts.urlPrefix + 'livle/',
+  });
+
   return <LoginScreen uriPrefix={prefix} />;
 };
 

@@ -21,6 +21,10 @@ export default class ChangePasswordPage extends Component {
   _handleConfirmPassword = text =>
     this.setState({ confirmPassword: text === this.state.password });
 
+  componentDidMount() {
+    const { token } = this.props.navigation.state;
+  }
+
   render() {
     const { navigation } = this.props;
     return (
