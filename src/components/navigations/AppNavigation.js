@@ -4,7 +4,7 @@ import { StackNavigator, addNavigationHelpers } from 'react-navigation';
 import { connect } from 'react-redux';
 // Navigations
 import HomeNavigation from './home/HomeNavigation';
-import { LoginScreen } from './login/LoginNavigation';
+import LoginNavigation from './login/LoginNavigation';
 // Networks
 import { checkSession } from '../../network';
 
@@ -12,7 +12,7 @@ import { checkSession } from '../../network';
 export const AppScreen = StackNavigator(
   {
     Home: { screen: HomeNavigation },
-    Login: { screen: LoginScreen },
+    Login: { screen: LoginNavigation },
   },
   {
     initialRouteName: 'Home',
