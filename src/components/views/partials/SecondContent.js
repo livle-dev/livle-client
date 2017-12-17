@@ -6,7 +6,7 @@ import {
   ScrollView,
   Image,
   TouchableOpacity,
-  PlatformOSType,
+  Platform,
 } from 'react-native';
 import YouTube from 'react-native-youtube';
 import PropTypes from 'prop-types';
@@ -21,7 +21,7 @@ import {
 } from '../../../assets/stylesheets/local/mainCardStyle';
 import { styles, navbar } from '../../../assets/stylesheets/global/Style';
 
-const Container = ({ children }) => {
+const Container = ({ children, ...option }) => {
   return (
     <View
       style={[
@@ -29,6 +29,7 @@ const Container = ({ children }) => {
         styles.fullWidth,
         styles.horizontalCenter,
       ]}
+      {...option}
     >
       {children}
     </View>
@@ -42,26 +43,46 @@ class VideoPlayer extends Component {
 
   render() {
     const { videoId, innerRef, ...option } = this.props;
+    console.log(videoId);
 
-    return (
-      <YouTube
-        apiKey={api_key.youtube}
-        videoId={videoId}
-        ref={innerRef}
-        controls={PlatformOSType === 'ios' ? 1 : 2}
-        play={true}
-        showFullscreenButton={true}
-        // style
-        style={{ alignSelf: 'stretch', height: this.state.height }}
-        // callback
-        onReady={this.handleReady}
-        {...option}
-      />
-    );
+    return Platform.select({
+      ios: (
+        <YouTube
+          videoId={videoId}
+          ref={innerRef}
+          controls={1}
+          play={true}
+          // style
+          style={{ alignSelf: 'stretch', height: this.state.height }}
+          showFullscreenButton={true}
+          showinfo={false}
+          // callback
+          onReady={this.handleReady}
+          {...option}
+        />
+      ),
+      android: (
+        <YouTube
+          apiKey={api_key.youtube}
+          videoId={videoId}
+          ref={innerRef}
+          controls={2}
+          play={true}
+          // style
+          style={{ alignSelf: 'stretch', height: this.state.height }}
+          showFullscreenButton={true}
+          // callback
+          onReady={this.handleReady}
+          {...option}
+        />
+      ),
+    });
   }
 }
 
 export default class SecondContent extends Component {
+  state = { isMounted: false };
+
   render() {
     const { data, removePlayer } = this.props;
 
@@ -74,16 +95,17 @@ export default class SecondContent extends Component {
           </Text>
           <ArtistProfile artists={data.artists} />
         </Container>
-        <Container>
+        <Container onLayout={() => this.setState({ isMounted: true })}>
           <Text style={[mainCard.textDefault, styles.textCenter]}>
             관련 영상
           </Text>
-          {!removePlayer && (
-            <VideoPlayer
-              videoId={data.video_id}
-              innerRef={c => (this.player = c)}
-            />
-          )}
+          {this.state.isMounted &&
+            !removePlayer && (
+              <VideoPlayer
+                videoId={data.video_id}
+                innerRef={c => (this.player = c)}
+              />
+            )}
         </Container>
       </ScrollView>
     );
