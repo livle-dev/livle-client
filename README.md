@@ -3,20 +3,44 @@
 #### Using Packages
 
 * npm
-* react-native, react
+* react-native & react
 * prop-types
+* axios
 * react-navigation
 * redux & react-redux
 * react-native-snap-carousel
 * react-native-localization
+* react-native-keyboard-aware-scroll-view
+* react-native-youtube
 * faker
 
 #### After Clone Project
 
-1. npm install
-2. react-native link
-3. react-native run-ios || react-native run-android (after start andoird
-   emulator)
+> global (if you didn't setting react-native before)
+
+```
+~ $ brew install node
+~ $ brew install watchman
+~ $ npm i -g react-native-cli rnpm
+```
+
+> local
+
+```
+~ $ cd livle-client
+~ $ npm i
+~ $ react-native link
+~ $ rnpm link
+```
+
+> run project
+
+```
+# iOS (Only works on Mac OS)
+~ $ react-native run-ios
+# ANDROID (After start Emulator or connect developer mode android phone)
+~ $ react-native run-android
+```
 
 #### Custom Directories
 
@@ -70,6 +94,20 @@
 ```
 
 #### TIP
+
+* Partial 파일명 규칙
+
+```
+언더바(\_)가 있으면 반복적으로 사용, 없으면 한번만 호출하여 사용
+```
+
+* Modal, MessageBar Component
+
+```
+global하면서 {position: 'absolute'} 이어야 하는 component인
+Modal과 MessageBar는 App.js 파일에 선언되어
+Redux를 이용해 해당 컴포넌트를 조작한다.
+```
 
 * React Native 는 Image 크기를 자동으로 처리해주는 기능이 없다 ..
 

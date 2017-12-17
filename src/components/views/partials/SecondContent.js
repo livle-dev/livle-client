@@ -43,7 +43,6 @@ class VideoPlayer extends Component {
 
   render() {
     const { videoId, innerRef, ...option } = this.props;
-    console.log(videoId);
 
     return Platform.select({
       ios: (
