@@ -116,7 +116,7 @@ class SettingPage extends Component {
             backgroundColor={color_string.green_dark_dark}
             text={setting_string.logout}
             onPress={() =>
-              navigation.dispatch({
+              this.props.dispatch({
                 type: ModalAction.SHOW_MODAL,
                 data: {
                   type: 'select',
@@ -131,7 +131,7 @@ class SettingPage extends Component {
             backgroundColor={color_string.green_dark_dark}
             text={setting_string.withdraw}
             onPress={() =>
-              navigation.dispatch({
+              this.props.dispatch({
                 type: ModalAction.SHOW_MODAL,
                 data: {
                   type: 'input',

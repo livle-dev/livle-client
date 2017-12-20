@@ -14,17 +14,9 @@ import { NAV_ICONS } from '../../../assets/images/Icon';
 class TopNavbar extends Component {
   state = {
     navState: [
-      {
-        navigate: () => this.props.navigation.dispatch({ type: HomeAction.GO }),
-      },
-      {
-        navigate: () =>
-          this.props.navigation.dispatch({ type: HomeAction.MAIN }),
-      },
-      {
-        navigate: () =>
-          this.props.navigation.dispatch({ type: HomeAction.SETTING }),
-      },
+      { navigate: () => this.props.toGo() },
+      { navigate: () => this.props.toMain() },
+      { navigate: () => this.props.toSetting() },
     ],
   };
 
@@ -84,4 +76,12 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(TopNavbar);
+const mapDispatchToProps = dispatch => {
+  return {
+    toGo: () => dispatch({ type: HomeAction.GO }),
+    toMain: () => dispatch({ type: HomeAction.MAIN }),
+    toSetting: () => dispatch({ type: HomeAction.SETTING }),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(TopNavbar);

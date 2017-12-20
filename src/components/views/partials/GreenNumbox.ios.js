@@ -1,6 +1,6 @@
 // Libraries
 import React, { Component } from 'react';
-import { View, TouchableOpacity, TextInput } from 'react-native';
+import { View, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 // Actions
 import { ReservationAction } from '../../../reducers/Actions';
@@ -13,11 +13,10 @@ function SingleNumbox({ inputRef, ...option }) {
   return (
     <TextInput
       style={[
-        styles.textNumbox,
+        styles.numBox,
         font_style.regular,
         font_size.fs_input_num,
         color.white,
-        { backgroundColor: color_string.green_light },
       ]}
       keyboardType="numeric"
       autoCapitalize="none"

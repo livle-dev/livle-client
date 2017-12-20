@@ -60,21 +60,24 @@ export const styles = StyleSheet.create({
     borderBottomWidth: 2,
     borderBottomColor: color_string.green_light,
   },
-  textNumbox: {
-    ...Platform.select({
-      ios: {
-        width: 50,
-        height: 50,
-      },
-      android: {
-        width: 54,
-        height: 54,
-      },
-    }),
+  numBox: {
+    width: 50,
+    height: 50,
+    backgroundColor: color_string.green_light,
     textAlign: 'center',
     paddingVertical: 0,
     borderRadius: 3,
     marginHorizontal: 6,
+  },
+  numContainer: {
+    alignSelf: 'stretch',
+    height: 58,
+
+    textAlign: 'center',
+    paddingVertical: 0,
+    borderRadius: 3,
+    marginHorizontal: 6,
+    marginBottom: 32,
   },
   textDefault: {
     ...StyleSheet.flatten([color.white, font_size.fs_3, font_style.semi_bold]),

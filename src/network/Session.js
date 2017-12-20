@@ -75,11 +75,12 @@ function getFacebookData(token, dispatch) {
       });
     })
     .catch(err => {
+      const { message } = err.response.data.error;
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
           type: 'notice',
-          text: err.response.data,
+          text: message,
         },
       });
     });
