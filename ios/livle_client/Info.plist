@@ -25,7 +25,7 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb1943135029035715</string>
+				<string>fb2433277643563492</string>
 			</array>
 		</dict>
 	</array>
@@ -45,7 +45,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UIAppFonts</key>
 	<array/>
 	<key>UILaunchStoryboardName</key>
@@ -61,7 +61,7 @@
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 	<key>FacebookAppID</key>
-	<string>1943135029035715</string>
+	<string>2433277643563492</string>
 	<key>FacebookDisplayName</key>
 	<string>Test</string>
 	<key>LSApplicationQueriesSchemes</key>
