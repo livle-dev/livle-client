@@ -32,22 +32,56 @@ const Container = ({ children, ...option }) => {
 class VideoPlayer extends Component {
   state = {
     height: (mainWidth.innerContainer - mainWidth.innerPadding) * (9 / 16),
+    isPlayed: false,
+    playTime: 0.0,
+  };
+
+  StandalonePlayer = () => {
+    YouTubeStandaloneAndroid.playVideo({
+      apiKey: api_key.youtube,
+      videoId: this.props.videoId,
+      autoplay: true,
+      startTime: this.state.playTime,
+    })
+      .then(() => {
+        // TODO: update playTime
+        // this.youtubePlayer.seekTo();
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   render() {
-    const { videoId, innerRef, ...option } = this.props;
+    const { videoId, ...option } = this.props;
+    const { height } = this.state;
 
     return (
       <YouTube
         apiKey={api_key.youtube}
         videoId={videoId}
-        ref={innerRef}
+        ref={c => (this.youtubePlayer = c)}
         controls={2}
+        play={false}
         // style
-        style={{ alignSelf: 'stretch', height: this.state.height }}
+        style={{ alignSelf: 'stretch', height: height }}
         showFullscreenButton={true}
         // callback
         onReady={this.handleReady}
+        onChangeState={e => {
+          if (e.state === 'playing') {
+            if (this.state.isPlayed) {
+              // after run standalone
+              setTimeout(() => {
+                this.setState({ isPlayed: false });
+              }, 600);
+            } else {
+              // before run standalone
+              this.setState({ isPlayed: true });
+              this.StandalonePlayer();
+            }
+          }
+        }}
         {...option}
       />
     );
@@ -55,7 +89,7 @@ class VideoPlayer extends Component {
 }
 
 export default class SecondContent extends Component {
-  state = { isMounted: false, isPlaying: false };
+  state = { isMounted: false };
 
   render() {
     const { data, removePlayer } = this.props;
@@ -79,16 +113,7 @@ export default class SecondContent extends Component {
             관련 영상
           </Text>
           {this.state.isMounted &&
-            !removePlayer && (
-              <VideoPlayer
-                videoId={data.video_id}
-                innerRef={c => (this.player = c)}
-                // callback
-                onChangeState={e =>
-                  this.setState({ isPlaying: e.state === 'playing' })
-                }
-              />
-            )}
+            !removePlayer && <VideoPlayer videoId={data.video_id} />}
         </Container>
       </ScrollView>
     );

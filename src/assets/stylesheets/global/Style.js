@@ -72,7 +72,6 @@ export const styles = StyleSheet.create({
   numContainer: {
     alignSelf: 'stretch',
     height: 58,
-
     textAlign: 'center',
     paddingVertical: 0,
     borderRadius: 3,
