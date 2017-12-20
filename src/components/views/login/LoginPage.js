@@ -18,7 +18,7 @@ import { font_size, font_style } from '../../../assets/fonts/Font';
 // Actions
 import { AppAction } from '../../../reducers/Actions';
 // Network
-import { login } from '../../../network';
+import { login, facebookLogin } from '../../../network';
 // Views
 import _GreenInput from '../partials/_GreenInput';
 import _SquareButton from '../partials/_SquareButton';
@@ -79,7 +79,7 @@ export default class LoginPage extends Component {
               <_SquareButton
                 backgroundColor={color_string.blue_facebook}
                 text={login_string.facebook}
-                onPress={() => navigation.dispatch({ type: AppAction.LOGIN })}
+                onPress={() => facebookLogin(navigation.dispatch)}
               />
             </View>
           </View>

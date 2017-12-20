@@ -1,3 +1,9 @@
 import axios from 'axios';
-axios.defaults.baseURL = 'https://api.livle.kr/dev';
-export default axios;
+
+export default axios.create({
+  baseURL: 'https://api.livle.kr/dev',
+});
+
+export const facebook = axios.create({
+  baseURL: 'https://graph.facebook.com',
+});
