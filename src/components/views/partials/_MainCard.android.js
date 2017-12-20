@@ -1,7 +1,8 @@
 // Libraries
 import React, { Component } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View } from 'react-native';
 import PropTypes from 'prop-types';
+import Carousel from 'react-native-snap-carousel';
 import { connect } from 'react-redux';
 // Actions
 import { ReservationAction, ModalAction } from '../../../reducers/Actions';
@@ -44,83 +45,91 @@ class _MainCard extends Component {
   state = {
     isGo: this._updateGoState(this.props.data, this.props.reservation),
     showTopButton: false,
-    scrollTarget: 0,
   };
 
   componentWillReceiveProps(props) {
     if (props.curIndex !== props.cardIndex) {
-      // snap to item
+      this.carousel.snapToItem(0);
     }
 
     // check once more
     this.setState({ isGo: this._updateGoState(props.data, props.reservation) });
   }
 
-  snapToItem = index => {
-    this.mainCard.scrollTo({
-      y: index * mainHeight.card,
-      animated: true,
-    });
-  };
-
-  handleScroll = e => {
-    const yPosition = e.nativeEvent.contentOffset.y;
-    const pagingPoint = mainHeight.card;
-
-    if (pagingPoint * 0.04 < yPosition && yPosition < pagingPoint * 0.92) {
-      this.snapToItem(1);
-    } else if (yPosition < pagingPoint * 0.98) {
-      this.snapToItem(0);
-    }
+  _renderContent = ({ item, index }) => {
+    return index === 0 ? (
+      <FirstContent data={item} showDetail={() => this.carousel.snapToNext()} />
+    ) : (
+      <SecondContent data={item} removePlayer={!this.state.showTopButton} />
+    );
   };
 
   render() {
     const { data, dispatch } = this.props;
     const { isGo, showTopButton } = this.state;
+    // Pager를 위해 데이터를 나눔
+    const ticket_info = [
+      {
+        id: data.id,
+        title: data.title,
+        place: data.place,
+        image: data.image,
+        start_at: data.start_at,
+        end_at: data.end_at,
+        vacancies: data.vacancies,
+        artists: data.artists,
+      },
+      {
+        artists: data.artists,
+        music_id: data.music_id,
+        video_id: data.video_id,
+        article: data.article,
+      },
+    ];
 
     return (
       <View>
-        <ScrollView
+        <Carousel
           ref={c => {
-            this.mainCard = c;
+            this.carousel = c;
           }}
-          onScroll={this.handleScroll}
-        >
-          <FirstContent
-            data={data}
-            showDetail={() => {
-              this.snapToItem(1);
-            }}
-          />
-          <SecondContent data={data} removePlayer={!this.state.showTopButton} />
-          <HoverButtons
-            isGo={isGo}
-            showTopButton={showTopButton}
-            clickTop={() => {}}
-            onPress={() => {
-              this.setState({ isGo: !isGo });
-              if (isGo) {
-                dispatch({
-                  type: ReservationAction.DELETE_RESERVATION,
-                  id: data.id,
-                });
-              } else {
-                dispatch({
-                  type: ReservationAction.ADD_RESERVATION,
-                  data: data,
-                });
-                dispatch({
-                  type: ModalAction.SHOW_MODAL,
-                  data: {
-                    type: 'check',
-                    text: main_string.concertBooked,
-                    showLogo: true,
-                  },
-                });
-              }
-            }}
-          />
-        </ScrollView>
+          data={ticket_info}
+          renderItem={this._renderContent}
+          vertical={true}
+          sliderHeight={mainHeight.card}
+          itemHeight={mainHeight.card}
+          inactiveSlideScale={1}
+          inactiveSlideOpacity={1}
+          // callback
+          onSnapToItem={index => this.setState({ showTopButton: index === 1 })}
+        />
+        <HoverButtons
+          isGo={isGo}
+          showTopButton={showTopButton}
+          clickTop={() => this.carousel.snapToPrev()}
+          onPress={() => {
+            this.setState({ isGo: !isGo });
+            if (isGo) {
+              dispatch({
+                type: ReservationAction.DELETE_RESERVATION,
+                id: data.id,
+              });
+            } else {
+              dispatch({
+                type: ReservationAction.ADD_RESERVATION,
+                data: data,
+              });
+              dispatch({
+                type: ModalAction.SHOW_MODAL,
+                data: {
+                  type: 'check',
+                  text: main_string.concertBooked,
+                  showLogo: true,
+                },
+              });
+            }
+          }}
+        />
       </View>
     );
   }
