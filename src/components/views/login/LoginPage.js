@@ -34,7 +34,7 @@ export default class LoginPage extends Component {
   _handlePassword = text => this.setState({ password: text });
 
   render() {
-    const { navigation } = this.props;
+    const { navigation, dispatch } = this.props;
 
     return (
       <View style={styles.blackBackground}>
@@ -70,7 +70,7 @@ export default class LoginPage extends Component {
                 text={login_string.logIn}
                 onPress={() => {
                   const { email, password } = this.state;
-                  login(email, password)(navigation.dispatch);
+                  login(email, password)(dispatch);
                 }}
                 index={1}
               />
@@ -79,7 +79,7 @@ export default class LoginPage extends Component {
               <_SquareButton
                 backgroundColor={color_string.blue_facebook}
                 text={login_string.facebook}
-                onPress={() => facebookLogin(navigation.dispatch)}
+                onPress={() => facebookLogin(dispatch)}
               />
             </View>
           </View>

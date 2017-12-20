@@ -104,10 +104,10 @@ export const login = (email, password) => dispatch => {
     .post(`/user/session`, { email: email, password: password })
     .then(response => {
       const { data } = response;
-
       _getToken().then(res => {
-        if (!res) _setToken(accessToken, PROVIDER.FACEBOOK);
+        if (!res) _setToken(data.token, PROVIDER.LIVLE);
       });
+
       dispatch({
         type: AppAction.LOGIN,
         data: {
