@@ -1,6 +1,6 @@
 // Libraries
 import React, { Component } from 'react';
-import { View } from 'react-native';
+import { View, ScrollView } from 'react-native';
 import PropTypes from 'prop-types';
 import Carousel from 'react-native-snap-carousel';
 import { connect } from 'react-redux';
@@ -89,24 +89,38 @@ class _MainCard extends Component {
 
     return (
       <View>
-        <Carousel
-          ref={c => {
-            this.carousel = c;
-          }}
-          data={ticket_info}
-          renderItem={this._renderContent}
-          vertical={true}
-          sliderHeight={mainHeight.card}
-          itemHeight={mainHeight.card}
-          inactiveSlideScale={1}
-          inactiveSlideOpacity={1}
-          // callback
-          onSnapToItem={index => this.setState({ showTopButton: index === 1 })}
-        />
+        {showTopButton ? (
+          <ScrollView>
+            <SecondContent
+              data={data}
+              removePlayer={!this.state.showTopButton}
+            />
+          </ScrollView>
+        ) : (
+          <Carousel
+            ref={c => {
+              this.carousel = c;
+            }}
+            data={ticket_info}
+            renderItem={this._renderContent}
+            vertical={true}
+            sliderHeight={mainHeight.card}
+            itemHeight={mainHeight.card}
+            inactiveSlideScale={1}
+            inactiveSlideOpacity={1}
+            // callback
+            onSnapToItem={index =>
+              this.setState({ showTopButton: index === 1 })
+            }
+          />
+        )}
         <HoverButtons
           isGo={isGo}
           showTopButton={showTopButton}
-          clickTop={() => this.carousel.snapToPrev()}
+          clickTop={() => {
+            this.setState({ showTopButton: false });
+            // this.carousel.snapToPrev();
+          }}
           onPress={() => {
             this.setState({ isGo: !isGo });
             if (isGo) {
