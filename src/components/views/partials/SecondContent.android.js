@@ -1,7 +1,7 @@
 // Libraries
 import React, { Component } from 'react';
 import { View, Text, ScrollView, Image, TouchableOpacity } from 'react-native';
-import YouTube from 'react-native-youtube';
+import YouTube, { YouTubeStandaloneAndroid } from 'react-native-youtube';
 import PropTypes from 'prop-types';
 // Views
 import ArtistProfile from './ArtistProfile';
@@ -43,7 +43,6 @@ class VideoPlayer extends Component {
         videoId={videoId}
         ref={innerRef}
         controls={2}
-        play={true}
         // style
         style={{ alignSelf: 'stretch', height: this.state.height }}
         showFullscreenButton={true}
@@ -57,10 +56,6 @@ class VideoPlayer extends Component {
 
 export default class SecondContent extends Component {
   state = { isMounted: false, isPlaying: false };
-
-  componentWillReceiveProps(props) {
-    if (props.removePlayer) this.setState({ isPlaying: false });
-  }
 
   render() {
     const { data, removePlayer } = this.props;
@@ -87,7 +82,6 @@ export default class SecondContent extends Component {
             !removePlayer && (
               <VideoPlayer
                 videoId={data.video_id}
-                play={this.state.isPlaying}
                 innerRef={c => (this.player = c)}
                 // callback
                 onChangeState={e =>

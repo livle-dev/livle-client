@@ -42,7 +42,6 @@ class VideoPlayer extends Component {
         videoId={videoId}
         ref={innerRef}
         controls={1}
-        play={true}
         // style
         style={{ alignSelf: 'stretch', height: this.state.height }}
         showFullscreenButton={true}
@@ -84,8 +83,8 @@ export default class SecondContent extends Component {
           {this.state.isMounted && (
             <VideoPlayer
               videoId={data.video_id}
-              play={this.state.isPlaying}
               innerRef={c => (this.player = c)}
+              play={this.state.isPlaying}
               // callback
               onChangeState={e =>
                 this.setState({ isPlaying: e.state === 'playing' })
