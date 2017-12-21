@@ -63,7 +63,6 @@ export const styles = StyleSheet.create({
   numBox: {
     width: 50,
     height: 50,
-    backgroundColor: color_string.green_light,
     textAlign: 'center',
     paddingVertical: 0,
     borderRadius: 3,
