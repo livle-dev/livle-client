@@ -1,6 +1,6 @@
 // Libraries
 import React, { Component } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import Carousel from 'react-native-snap-carousel';
 import { connect } from 'react-redux';
@@ -18,6 +18,7 @@ import {
   mainHeight,
 } from '../../../assets/stylesheets/local/mainCardStyle';
 import { percent } from '../../../assets/stylesheets/global/Scale';
+// Icons
 import Icon from '../../../assets/images/Icon';
 
 const HoverButtons = ({ isGo, showTopButton, clickTop, ...option }) => {
@@ -38,36 +39,52 @@ const HoverButtons = ({ isGo, showTopButton, clickTop, ...option }) => {
   );
 };
 
+const SnapCard = ({ data, ...option }) => {};
+
 class _MainCard extends Component {
+  // utils
   _updateGoState = (data, reservation) =>
     reservation.goList.find(book => book.id === data.id) !== undefined;
 
-  state = {
-    isGo: this._updateGoState(this.props.data, this.props.reservation),
-    showTopButton: false,
-  };
-
-  componentWillReceiveProps(props) {
-    if (props.curIndex !== props.cardIndex) {
-      this.carousel.snapToItem(0);
+  _snapToTop() {
+    if (Platform.OS === 'ios') {
+      this.carousel.snapToPrev();
+    } else {
+      this.setState({ showTopButton: false });
     }
-
-    // check once more
-    this.setState({ isGo: this._updateGoState(props.data, props.reservation) });
   }
+  // end
 
-  _renderContent = ({ item, index }) => {
-    return index === 0 ? (
-      <FirstContent data={item} showDetail={() => this.carousel.snapToNext()} />
-    ) : (
-      <SecondContent data={item} removePlayer={!this.state.showTopButton} />
-    );
-  };
+  // views
+  _carousel = ticket_info => (
+    <Carousel
+      ref={c => {
+        this.carousel = c;
+      }}
+      data={ticket_info}
+      renderItem={({ item, index }) => {
+        return index === 0 ? (
+          <FirstContent
+            data={item}
+            showDetail={() => this.carousel.snapToNext()}
+          />
+        ) : (
+          <SecondContent data={item} removePlayer={!this.state.showTopButton} />
+        );
+      }}
+      vertical={true}
+      sliderHeight={mainHeight.card}
+      itemHeight={mainHeight.card}
+      inactiveSlideScale={1}
+      inactiveSlideOpacity={1}
+      // callback
+      onSnapToItem={index => this.setState({ showTopButton: index === 1 })}
+    />
+  );
 
-  render() {
-    const { data, dispatch } = this.props;
-    const { isGo, showTopButton } = this.state;
+  _snapCard = () => {
     // Pager를 위해 데이터를 나눔
+    const { data } = this.props;
     const ticket_info = [
       {
         id: data.id,
@@ -87,40 +104,40 @@ class _MainCard extends Component {
       },
     ];
 
+    return Platform.select({
+      ios: this._carousel(ticket_info),
+      android: this.state.showTopButton ? (
+        <ScrollView>
+          <SecondContent data={data} removePlayer={!this.state.showTopButton} />
+        </ScrollView>
+      ) : (
+        this._carousel(ticket_info)
+      ),
+    });
+  };
+  // end
+
+  state = {
+    isGo: this._updateGoState(this.props.data, this.props.reservation),
+    showTopButton: false,
+  };
+
+  componentWillReceiveProps(props) {
+    if (props.curIndex !== props.cardIndex) this._snapToTop();
+    this.setState({ isGo: this._updateGoState(props.data, props.reservation) });
+  }
+
+  render() {
+    const { data, dispatch } = this.props;
+    const { isGo, showTopButton } = this.state;
+
     return (
       <View>
-        {showTopButton ? (
-          <ScrollView>
-            <SecondContent
-              data={data}
-              removePlayer={!this.state.showTopButton}
-            />
-          </ScrollView>
-        ) : (
-          <Carousel
-            ref={c => {
-              this.carousel = c;
-            }}
-            data={ticket_info}
-            renderItem={this._renderContent}
-            vertical={true}
-            sliderHeight={mainHeight.card}
-            itemHeight={mainHeight.card}
-            inactiveSlideScale={1}
-            inactiveSlideOpacity={1}
-            // callback
-            onSnapToItem={index =>
-              this.setState({ showTopButton: index === 1 })
-            }
-          />
-        )}
+        {this._snapCard()}
         <HoverButtons
           isGo={isGo}
           showTopButton={showTopButton}
-          clickTop={() => {
-            this.setState({ showTopButton: false });
-            // this.carousel.snapToPrev();
-          }}
+          clickTop={() => this._snapToTop()}
           onPress={() => {
             this.setState({ isGo: !isGo });
             if (isGo) {
