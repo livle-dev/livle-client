@@ -9,6 +9,8 @@ import LoginNavigation from './login/LoginNavigation';
 // Networks
 import { checkSession } from '../../network';
 
+const UNMOUNT = 'UNMOUNT';
+
 // Config
 export const AppScreen = StackNavigator(
   {
@@ -25,18 +27,19 @@ export const AppScreen = StackNavigator(
 class AppNavigation extends Component {
   constructor(props) {
     super(props);
-    this.state = { isLoggedIn: undefined };
+    this.state = { isLoggedIn: UNMOUNT };
   }
 
   componentWillMount() {
-    checkSession(this.props.dispatch).then(res =>
-      this.setState({ isLoggedIn: res })
-    );
+    checkSession(this.props.dispatch).then(res => {
+      this.setState({ isLoggedIn: res });
+    });
   }
 
   render() {
     const { dispatch, navState } = this.props;
-    const checkLoggedIn = this.state.isLoggedIn !== undefined;
+    const checkLoggedIn = this.state.isLoggedIn !== UNMOUNT;
+    console.log(checkLoggedIn);
 
     return checkLoggedIn ? (
       <AppScreen
