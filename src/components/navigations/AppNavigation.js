@@ -30,11 +30,18 @@ const mapStateToProps = state => {
 class AppNavigation extends Component {
   constructor(props) {
     super(props);
-    checkSession(props.dispatch);
+    this.state = { isLoggedIn: undefined };
+  }
+
+  componentWillMount() {
+    checkSession(this.props.dispatch).then(res => {
+      this.setState({ isLoggedIn: res });
+    });
   }
 
   render() {
     const { dispatch, navState } = this.props;
+    console.log(this.state.isLoggedIn);
 
     return (
       <AppScreen

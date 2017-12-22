@@ -50,12 +50,15 @@ function getLivleData(dispatch) {
           is_subsrcibing: data.is_subsrcibing,
         },
       });
+      return true;
     })
     .catch(err => {
       /**
        * 401: 헤더에 토큰이 없음
        * 403: 헤더에 토큰이 있지만 유효하지 않음
        */
+
+      return false;
     });
 }
 
@@ -73,6 +76,7 @@ function getFacebookData(token, dispatch) {
         type: MessageBarAction.SHOW_MESSAGE_BAR,
         data: '로그인 되었습니다',
       });
+      return true;
     })
     .catch(err => {
       const { message } = err.response.data.error;
@@ -83,18 +87,19 @@ function getFacebookData(token, dispatch) {
           text: message,
         },
       });
+      return false;
     });
 }
 /* END */
 
 export const checkSession = dispatch => {
-  _getToken().then(res => {
+  return _getToken().then(res => {
     if (res) {
       switch (res.provider) {
         case PROVIDER.LIVLE:
-          getLivleData(dispatch);
+          return getLivleData(dispatch);
         case PROVIDER.FACEBOOK:
-          getFacebookData(res.token, dispatch);
+          return getFacebookData(res.token, dispatch);
       }
     }
   });
