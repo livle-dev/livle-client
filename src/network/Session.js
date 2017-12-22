@@ -45,7 +45,7 @@ function getLivleData(dispatch) {
         provider: PROVIDER.LIVLE,
         data: {
           email: data.email,
-          // nickname: data.nickname,
+          nickname: 'LIVLE 닉네임 가져오기',
           expire_at: data.expire_at,
           is_subsrcibing: data.is_subsrcibing,
         },
@@ -118,7 +118,7 @@ export const login = (email, password) => dispatch => {
         type: AppAction.LOGIN,
         data: {
           email: data.email,
-          // nickname: data.nickname,
+          nickname: 'LIVLE 닉네임 가져오기',
           expire_at: data.expire_at,
           is_subsrcibing: data.is_subsrcibing,
         },
@@ -182,6 +182,8 @@ export const signUp = (email, password, nickname) => dispatch => {
     .post('/user', { email: email, password: password })
     .then(response => {
       const { data } = response;
+      _setToken(data.token, PROVIDER.LIVLE);
+
       dispatch({
         type: AppAction.LOGIN,
         data: { email: data.email, nickname: nickname },

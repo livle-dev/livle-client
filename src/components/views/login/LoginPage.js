@@ -39,8 +39,7 @@ export default class LoginPage extends Component {
     return (
       <View style={styles.blackBackground}>
         <KeyboardAvoidingView
-          style={[container.fullContainer, styles.alignCenter]}
-        >
+          style={[container.fullContainer, styles.alignCenter]}>
           <Icon
             src="logo_livle"
             width={width.logo}
@@ -85,8 +84,7 @@ export default class LoginPage extends Component {
           </View>
           <TouchableOpacity
             style={loginStyle.textButton}
-            onPress={() => navigation.navigate('ConfirmEmail')}
-          >
+            onPress={() => navigation.navigate('ConfirmEmail')}>
             <Text style={loginStyle.defaultText}>
               {login_string.findPassword}
             </Text>

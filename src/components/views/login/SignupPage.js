@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { View, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import { connect } from 'react-redux';
 // Views
 import TopTitle from '../partials/TopTitle';
 import _GreenInput from '../partials/_GreenInput';
@@ -17,7 +18,7 @@ import { color_string } from '../../../assets/stylesheets/global/Color';
 
 const MIN_PASSWORD_LENGTH = 8;
 
-export default class SignupPage extends Component {
+class SignupPage extends Component {
   state = {
     email: '',
     password: '',
@@ -109,15 +110,14 @@ export default class SignupPage extends Component {
                     this.state.email,
                     this.state.password,
                     this.state.nickname
-                  )(navigation.dispatch);
+                  )(this.props.dispatch);
               }}
             />
           </View>
 
           <TouchableOpacity
             style={loginStyle.textButton}
-            onPress={() => navigation.goBack()}
-          >
+            onPress={() => navigation.goBack()}>
             <Text style={loginStyle.defaultText}>
               {login_string.alreadyHaveId}
               <Text style={loginStyle.boldText}>{login_string.logIn}</Text>
@@ -128,3 +128,5 @@ export default class SignupPage extends Component {
     );
   }
 }
+
+export default connect()(SignupPage);

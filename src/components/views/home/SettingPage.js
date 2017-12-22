@@ -44,7 +44,7 @@ class SettingPage extends Component {
           contents={[
             {
               title: login_string.nickname,
-              value: '나는누구일까요~~~', // TODO: 진짜 닉네임으로 변경
+              value: userInfo && userInfo.nickname, // TODO: 진짜 닉네임으로 변경
             },
             {
               title: login_string.email,

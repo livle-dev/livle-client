@@ -13,7 +13,6 @@ export function auth(state = initialState, action) {
        **/
       return {
         isLoggedIn: true,
-        provider: action.provider,
         data: action.data,
       };
     case AppAction.LOGOUT:
