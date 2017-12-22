@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { StackNavigator, addNavigationHelpers } from 'react-navigation';
 import { connect } from 'react-redux';
+import { View, Text } from 'react-native';
 // Navigations
 import HomeNavigation from './home/HomeNavigation';
 import LoginNavigation from './login/LoginNavigation';
@@ -21,12 +22,6 @@ export const AppScreen = StackNavigator(
   }
 );
 
-const mapStateToProps = state => {
-  return {
-    navState: state.appReducer,
-  };
-};
-
 class AppNavigation extends Component {
   constructor(props) {
     super(props);
@@ -34,24 +29,32 @@ class AppNavigation extends Component {
   }
 
   componentWillMount() {
-    checkSession(this.props.dispatch).then(res => {
-      this.setState({ isLoggedIn: res });
-    });
+    checkSession(this.props.dispatch).then(res =>
+      this.setState({ isLoggedIn: res })
+    );
   }
 
   render() {
     const { dispatch, navState } = this.props;
-    console.log(this.state.isLoggedIn);
+    const checkLoggedIn = this.state.isLoggedIn !== undefined;
 
-    return (
+    return checkLoggedIn ? (
       <AppScreen
         navigation={addNavigationHelpers({
           dispatch: dispatch,
           state: navState,
         })}
       />
+    ) : (
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+        <Text>로딩중...</Text>
+      </View>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return { navState: state.appReducer };
+};
 
 export default connect(mapStateToProps)(AppNavigation);
