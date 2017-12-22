@@ -86,7 +86,7 @@ export function navNavbar(state = initialNavbarState, action) {
   }
 }
 
-const initialMainState = { cardIndex: 0, calendarIndex: 0, isFirstItem: true };
+const initialMainState = { cardIndex: 0, calendarIndex: 0 };
 export function navMainCard(state = initialMainState, action) {
   switch (action.type) {
     case MainAction.UPDATE_INDEX:

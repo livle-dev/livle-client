@@ -5,8 +5,7 @@ import MainPage from '../../views/home/MainPage';
 
 const mapStateToProps = state => {
   return {
-    cardIndex: state.navMainCard.cardIndex,
-    calendarIndex: state.navMainCard.calendarIndex,
+    storeInfo: state.navMainCard,
     reservation: state.reservation,
   };
 };

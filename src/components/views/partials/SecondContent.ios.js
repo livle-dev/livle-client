@@ -22,8 +22,7 @@ const Container = ({ children, ...option }) => {
         styles.fullWidth,
         styles.horizontalCenter,
       ]}
-      {...option}
-    >
+      {...option}>
       {children}
     </View>
   );
@@ -67,8 +66,7 @@ export default class SecondContent extends Component {
         style={mainCard.innerContainer}
         onLayout={e => {
           if (!this.state.isMounted) this.setState({ isMounted: true });
-        }}
-      >
+        }}>
         <View style={navbar.navbarAreaFit} />
         <Container>
           <Text style={[mainCard.textDefault, styles.textCenter]}>

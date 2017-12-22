@@ -16,12 +16,12 @@ import { ticket } from '../../../test/TestData';
 
 class CardLists extends Component {
   componentWillReceiveProps(props) {
-    const { cardIndex } = props;
-    this.carousel.snapToItem(cardIndex);
+    const { storeInfo } = props;
+    this.carousel.snapToItem(storeInfo.cardIndex);
   }
 
   render() {
-    const { dispatch, dataIndex, calendarIndex } = this.props;
+    const { dispatch, dataIndex } = this.props;
 
     return (
       <Carousel
@@ -85,20 +85,19 @@ export default class MainPage extends Component {
   }
 
   render() {
-    const { cardIndex, calendarIndex, dispatch } = this.props;
+    const { storeInfo, dispatch } = this.props;
 
     return (
       <View style={styles.blackBackground}>
         <CardLists
           dispatch={dispatch}
           dataIndex={this.state.dataIndex}
-          cardIndex={cardIndex}
-          calendarIndex={calendarIndex}
+          storeInfo={storeInfo}
         />
         <Calendar
           dispatch={dispatch}
           dataIndex={this.state.dataIndex}
-          calendarIndex={calendarIndex}
+          storeInfo={storeInfo}
         />
       </View>
     );
