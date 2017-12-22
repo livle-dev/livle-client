@@ -7,8 +7,6 @@ import {
   Text,
 } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
-// Actions
-import { MainAction } from '../../../reducers/Actions';
 // Styles
 import { styles } from '../../../assets/stylesheets/global/Style';
 import Scale, { percent } from '../../../assets/stylesheets/global/Scale';
@@ -39,7 +37,7 @@ export default class Calendar extends Component {
   }
 
   render() {
-    const { dispatch, dataIndex, storeInfo } = this.props;
+    const { dataIndex, storeInfo, updateIndex } = this.props;
     return (
       <View style={calendarStyle.calendarContainer}>
         <Carousel
@@ -56,10 +54,9 @@ export default class Calendar extends Component {
                   styles.alignCenter,
                 ]}
                 activeOpacity={1}
-                onPress={() => {
-                  this.setState({ isTouched: true });
-                  this.carousel.snapToItem(index);
-                }}>
+                // callback
+                onPressIn={() => this.setState({ isTouched: true })}
+                onPress={() => this.carousel.snapToItem(index)}>
                 <Text style={calendarStyle.dateText}>{item.date}</Text>
                 <Text style={calendarStyle.dayText}>{DAY[item.day]}</Text>
               </TouchableOpacity>
@@ -69,19 +66,16 @@ export default class Calendar extends Component {
           itemWidth={Scale.CALENDAR_ITEM_WIDTH}
           inactiveSlideScale={1}
           inactiveSlideOpacity={0.3}
-          scrollEnabled={true}
           enableMomentum={true}
           // callback
-          onMomentumScrollEnd={() => this.setState({ isTouched: true })}
           onSnapToItem={index => {
             if (this.state.isTouched) {
+              this.setState({ isTouched: false });
               try {
-                dispatch({
-                  type: MainAction.UPDATE_INDEX,
-                  cardIndex: dataIndex[index].cardIndex,
-                  calendarIndex: dataIndex[index].dateIndex,
-                });
-                this.setState({ isTouched: false });
+                updateIndex(
+                  dataIndex[index].cardIndex,
+                  dataIndex[index].dateIndex
+                );
               } catch (e) {
                 console.log('has no data'); //TODO: 정보 없음을 보여줘야함
                 this.carousel.snapToItem(storeInfo.calendarIndex);

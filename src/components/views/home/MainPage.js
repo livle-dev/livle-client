@@ -5,8 +5,6 @@ import Carousel from 'react-native-snap-carousel';
 // Views
 import _MainCard from '../partials/_MainCard';
 import Calendar from '../partials/Calendar';
-// Actions
-import { MainAction } from '../../../reducers/Actions';
 // Styles
 import { mainpage } from '../../../assets/stylesheets/local/mainPageStyle';
 import { styles } from '../../../assets/stylesheets/global/Style';
@@ -21,7 +19,7 @@ class CardLists extends Component {
   }
 
   render() {
-    const { dispatch, dataIndex } = this.props;
+    const { dataIndex, updateIndex } = this.props;
 
     return (
       <Carousel
@@ -52,12 +50,9 @@ class CardLists extends Component {
               : -1;
           });
 
-          if (index !== -1)
-            dispatch({
-              type: MainAction.UPDATE_INDEX,
-              cardIndex: card_i,
-              calendarIndex: dataIndex[index].dateIndex,
-            });
+          if (index !== -1) {
+            updateIndex(card_i, dataIndex[index].dateIndex);
+          }
         }}
       />
     );
@@ -85,17 +80,17 @@ export default class MainPage extends Component {
   }
 
   render() {
-    const { storeInfo, dispatch } = this.props;
+    const { storeInfo, updateIndex } = this.props;
 
     return (
       <View style={styles.blackBackground}>
         <CardLists
-          dispatch={dispatch}
+          updateIndex={updateIndex}
           dataIndex={this.state.dataIndex}
           storeInfo={storeInfo}
         />
         <Calendar
-          dispatch={dispatch}
+          updateIndex={updateIndex}
           dataIndex={this.state.dataIndex}
           storeInfo={storeInfo}
         />

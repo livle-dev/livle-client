@@ -86,7 +86,10 @@ export function navNavbar(state = initialNavbarState, action) {
   }
 }
 
-const initialMainState = { cardIndex: 0, calendarIndex: 0 };
+const initialMainState = {
+  cardIndex: 0,
+  calendarIndex: 0,
+};
 export function navMainCard(state = initialMainState, action) {
   switch (action.type) {
     case MainAction.UPDATE_INDEX:
@@ -95,7 +98,6 @@ export function navMainCard(state = initialMainState, action) {
        * action.calendarIndex = PropTypes.number.isRequired
        **/
       return {
-        ...state,
         cardIndex: action.cardIndex,
         calendarIndex: action.calendarIndex,
       };
