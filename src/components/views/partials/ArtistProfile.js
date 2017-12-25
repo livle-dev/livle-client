@@ -9,14 +9,13 @@ export const Profile = props => {
   const { profile, name, ...option } = props;
   return (
     <View {...option}>
-      <Image style={styles.profileImg} source={profile} />
+      <Image style={styles.profileImg} source={{ uri: profile }} />
       <Text
         style={[
           styles.textDefault,
           styles.textCenter,
           { width: Scale.ARTIST_PROFILE_SIZE },
-        ]}
-      >
+        ]}>
         {name}
       </Text>
     </View>

@@ -9,8 +9,6 @@ import Calendar from '../partials/Calendar';
 import { mainpage } from '../../../assets/stylesheets/local/mainPageStyle';
 import { styles } from '../../../assets/stylesheets/global/Style';
 import Scale, { percent } from '../../../assets/stylesheets/global/Scale';
-// Test
-import { ticket } from '../../../test/TestData';
 // Network
 import { getTicket } from '../../../network';
 
@@ -68,13 +66,7 @@ export default class MainPage extends Component {
   }
 
   componentWillMount() {
-    getTicket().then(response => {
-      this.setState(response);
-    });
-  }
-
-  componentWillUpdate(props, state) {
-    console.log(state);
+    getTicket().then(response => this.setState(response));
   }
 
   render() {
@@ -95,7 +87,9 @@ export default class MainPage extends Component {
         />
       </View>
     ) : (
-      <View style={styles.blackBackground} />
+      <View style={[styles.blackBackground, styles.alignCenter]}>
+        <Text>메인페이지 로딩중...</Text>
+      </View>
     );
   }
 }
