@@ -39,7 +39,6 @@ class AppNavigation extends Component {
   render() {
     const { dispatch, navState } = this.props;
     const checkLoggedIn = this.state.isLoggedIn !== UNMOUNT;
-    console.log(checkLoggedIn);
 
     return checkLoggedIn ? (
       <AppScreen
