@@ -3,6 +3,7 @@ package com.livle_client;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.BV.LinearGradient.LinearGradientPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.inprogress.reactnativeyoutube.ReactNativeYouTube;
 import com.babisoft.ReactNativeLocalization.ReactNativeLocalizationPackage;
@@ -35,6 +36,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new LinearGradientPackage(),
             new FBSDKPackage(mCallbackManager),
             new ReactNativeYouTube(),
             new ReactNativeLocalizationPackage()

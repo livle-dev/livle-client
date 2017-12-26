@@ -9,9 +9,19 @@ export const promotionStyle = StyleSheet.create({
     paddingTop: Scale.NAVBAR_HEIGHT,
     backgroundColor: color_string.green_light,
   },
-  blackContainer: {
+  defaultContainer: {
     height: percent('height', 100),
     paddingTop: Scale.NAVBAR_HEIGHT,
-    backgroundColor: color_string.black,
   },
+  // font
+  textTitle: StyleSheet.flatten([
+    color.white,
+    font_size.fs_input_num,
+    font_style.bold,
+  ]),
+  textContent: StyleSheet.flatten([
+    color.white,
+    font_size.fs_2,
+    font_style.bold,
+  ]),
 });
