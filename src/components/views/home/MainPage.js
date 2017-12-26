@@ -81,7 +81,7 @@ export default class MainPage extends Component {
   }
 
   render() {
-    const { storeInfo, updateIndex } = this.props;
+    const { storeInfo, updateIndex, showMessageBar } = this.props;
 
     return this.state.data ? (
       <View style={styles.blackBackground}>
@@ -92,6 +92,7 @@ export default class MainPage extends Component {
           storeInfo={storeInfo}
         />
         <Calendar
+          showMessageBar={showMessageBar}
           updateIndex={updateIndex}
           dataIndex={this.state.dataIndex}
           storeInfo={storeInfo}

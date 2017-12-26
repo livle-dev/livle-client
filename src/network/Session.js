@@ -1,4 +1,4 @@
-import axios, { facebook } from './axios';
+import axios from './axios';
 import { AsyncStorage } from 'react-native';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import { AppAction, MessageBarAction, ModalAction } from '../reducers/Actions';

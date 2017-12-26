@@ -25,13 +25,6 @@ function showMessageBar(state = { show: false, message: '' }, action) {
     case MessageBarAction.SHOW_MESSAGE_BAR:
       /**
        * action.data = PropTypes.string.isRequired
-       * data = {
-       *  type: 'check', 'select', 'input', 'notice'
-       *  text: PropTypes.string.isRequired,
-       *  buttonText: PropTypes.string,
-       *  onPress: PropTypes.object,
-       *  showLogo: PropTypes.bool,
-       * }
        **/
       return { show: true, message: action.data };
     case MessageBarAction.ANIMATE_ENDED:
@@ -45,7 +38,14 @@ function showModal(state = { show: false, data: null }, action) {
   switch (action.type) {
     case ModalAction.SHOW_MODAL:
       /**
-       * action.data = PropTypes.obj.isRequired
+       * action.data = PropTypes.string.isRequired
+       * data = {
+       *  type: 'check', 'select', 'input', 'notice'
+       *  text: PropTypes.string.isRequired,
+       *  buttonText: PropTypes.string,
+       *  onPress: PropTypes.object,
+       *  showLogo: PropTypes.bool,
+       * }
        **/
       return { show: true, data: action.data };
     case ModalAction.HIDE_MODAL:

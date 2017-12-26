@@ -37,7 +37,7 @@ export default class Calendar extends Component {
   }
 
   render() {
-    const { dataIndex, storeInfo, updateIndex } = this.props;
+    const { dataIndex, storeInfo, updateIndex, showMessageBar } = this.props;
     return (
       <View style={calendarStyle.calendarContainer}>
         <Carousel
@@ -77,7 +77,7 @@ export default class Calendar extends Component {
                   dataIndex[index].dateIndex
                 );
               } catch (e) {
-                console.log('has no data'); //TODO: 정보 없음을 보여줘야함
+                showMessageBar('해당 날짜에 콘서트가 없습니다.');
                 this.carousel.snapToItem(storeInfo.calendarIndex);
               }
             }
