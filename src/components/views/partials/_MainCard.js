@@ -5,7 +5,11 @@ import PropTypes from 'prop-types';
 import Carousel from 'react-native-snap-carousel';
 import { connect } from 'react-redux';
 // Actions
-import { ReservationAction, ModalAction } from '../../../reducers/Actions';
+import {
+  ReservationAction,
+  ModalAction,
+  AppAction,
+} from '../../../reducers/Actions';
 // Networks
 import { reserveTicket, cancelTicket } from '../../../network';
 // Views
@@ -130,7 +134,7 @@ class _MainCard extends Component {
   }
 
   render() {
-    const { data, dispatch } = this.props;
+    const { auth, data, dispatch } = this.props;
     const { isGo, showTopButton } = this.state;
 
     return (
@@ -150,6 +154,7 @@ class _MainCard extends Component {
               });
             } else {
               reserveTicket(data.id)(dispatch);
+              dispatch({ type: AppAction.PROMOTION });
               dispatch({
                 type: ReservationAction.ADD_RESERVATION,
                 data: data,
@@ -163,7 +168,7 @@ class _MainCard extends Component {
 }
 
 const mapStateToProps = state => {
-  return { reservation: state.reservation };
+  return { auth: state.auth, reservation: state.reservation };
 };
 
 export default connect(mapStateToProps)(_MainCard);

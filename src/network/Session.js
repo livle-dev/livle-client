@@ -35,16 +35,11 @@ async function _removeToken() {
 
 /* GET DATA & DISPATCH FROM SERVER */
 const dispatchUserData = (provider, data) => dispatch => {
+  console.log(data);
   return dispatch({
     type: AppAction.LOGIN,
     provider: provider,
-    data: {
-      email: data.email,
-      nickname: data.nickname,
-      card_name: data.card_name,
-      last_four_digits: data.last_four_digits,
-      valid_by: data.valid_by,
-    },
+    data: data,
   });
 };
 

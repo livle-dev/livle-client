@@ -3,19 +3,20 @@ import React, { Component } from 'react';
 import { StackNavigator, addNavigationHelpers } from 'react-navigation';
 import { connect } from 'react-redux';
 import { View, Text } from 'react-native';
+// View
+import PromotionPage from '../views/home/PromotionPage';
 // Navigations
 import HomeNavigation from './home/HomeNavigation';
 import LoginNavigation from './login/LoginNavigation';
 // Networks
 import { checkSession } from '../../network';
 
-const UNMOUNT = 'UNMOUNT';
-
 // Config
 export const AppScreen = StackNavigator(
   {
     Home: { screen: HomeNavigation },
     Login: { screen: LoginNavigation },
+    Promotion: { screen: PromotionPage },
   },
   {
     initialRouteName: 'Home',
@@ -23,6 +24,8 @@ export const AppScreen = StackNavigator(
     headerMode: 'none',
   }
 );
+
+const UNMOUNT = 'UNMOUNT';
 
 class AppNavigation extends Component {
   componentWillMount() {
