@@ -76,7 +76,6 @@ export default class MainPage extends Component {
 
   componentWillReceiveProps(props) {
     if (props.auth.isLoggedIn && !this.state.data) {
-      console.log('get data');
       this.getData(props.auth.isLoggedIn);
     }
   }

@@ -34,21 +34,30 @@ async function _removeToken() {
 /* END */
 
 /* GET DATA & DISPATCH FROM SERVER */
+const dispatchUserData = (provider, data) => dispatch => {
+  return dispatch({
+    type: AppAction.LOGIN,
+    provider: provider,
+    data: {
+      email: data.email,
+      nickname: data.nickname,
+      card_name: data.card_name,
+      last_four_digits: data.last_four_digits,
+      valid_by: data.valid_by,
+    },
+  });
+};
+
 function getLivleData(dispatch) {
   // Call after _getToken
   return axios
     .get('/user')
     .then(response => {
       const { data } = response;
+      dispatchUserData(PROVIDER.LIVLE, data)(dispatch);
       dispatch({
-        type: AppAction.LOGIN,
-        provider: PROVIDER.LIVLE,
-        data: {
-          email: data.email,
-          nickname: 'LIVLE 닉네임 가져오기',
-          expire_at: data.expire_at,
-          is_subsrcibing: data.is_subsrcibing,
-        },
+        type: MessageBarAction.SHOW_MESSAGE_BAR,
+        data: '로그인 되었습니다',
       });
     })
     .catch(err => {
@@ -61,16 +70,12 @@ function getLivleData(dispatch) {
     });
 }
 
-function getFacebookData(token, dispatch) {
-  return facebook
-    .get(`/me?fields=email,name&access_token=${token}`)
+function getFacebookData(dispatch) {
+  return axios
+    .post(`/user/facebook`)
     .then(response => {
       const { data } = response;
-      dispatch({
-        type: AppAction.LOGIN,
-        provider: PROVIDER.FACEBOOK,
-        data: { email: data.email, nickname: data.name },
-      });
+      dispatchUserData(PROVIDER.FACEBOOK, data)(dispatch);
       dispatch({
         type: MessageBarAction.SHOW_MESSAGE_BAR,
         data: '로그인 되었습니다',
@@ -98,7 +103,7 @@ export const checkSession = dispatch => {
         case PROVIDER.LIVLE:
           return getLivleData(dispatch);
         case PROVIDER.FACEBOOK:
-          return getFacebookData(res.token, dispatch);
+          return getFacebookData(dispatch);
       }
     } else {
       dispatch({ type: AppAction.LOGOUT });
@@ -113,15 +118,8 @@ export const login = (email, password) => dispatch => {
       const { data } = response;
       _getToken().then(res => {
         if (!res) _setToken(data.token, PROVIDER.LIVLE);
-        dispatch({
-          type: AppAction.LOGIN,
-          data: {
-            email: data.email,
-            nickname: 'LIVLE 닉네임 가져오기',
-            expire_at: data.expire_at,
-            is_subsrcibing: data.is_subsrcibing,
-          },
-        });
+
+        dispatchUserData(PROVIDER.LIVLE, data)(dispatch);
         dispatch({
           type: MessageBarAction.SHOW_MESSAGE_BAR,
           data: '로그인 되었습니다',
@@ -153,8 +151,8 @@ export const facebookLogin = dispatch => {
 
           _getToken().then(res => {
             if (!res) _setToken(accessToken, PROVIDER.FACEBOOK);
+            getFacebookData(dispatch);
           });
-          getFacebookData(accessToken, dispatch);
         });
       }
     },
@@ -184,10 +182,7 @@ export const signUp = (email, password, nickname) => dispatch => {
       const { data } = response;
       _setToken(data.token, PROVIDER.LIVLE);
 
-      dispatch({
-        type: AppAction.LOGIN,
-        data: { email: data.email, nickname: nickname },
-      });
+      dispatchUserData(PROVIDER.LIVLE, data)(dispatch);
       dispatch({
         type: MessageBarAction.SHOW_MESSAGE_BAR,
         data: '가입 완료!',
