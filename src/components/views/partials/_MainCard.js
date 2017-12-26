@@ -6,6 +6,8 @@ import Carousel from 'react-native-snap-carousel';
 import { connect } from 'react-redux';
 // Actions
 import { ReservationAction, ModalAction } from '../../../reducers/Actions';
+// Networks
+import { reserveTicket, cancelTicket } from '../../../network';
 // Views
 import FirstContent from './FirstContent';
 import SecondContent from './SecondContent';
@@ -141,22 +143,16 @@ class _MainCard extends Component {
           onPress={() => {
             this.setState({ isGo: !isGo });
             if (isGo) {
+              cancelTicket(data.id)(dispatch);
               dispatch({
                 type: ReservationAction.DELETE_RESERVATION,
                 id: data.id,
               });
             } else {
+              reserveTicket(data.id)(dispatch);
               dispatch({
                 type: ReservationAction.ADD_RESERVATION,
                 data: data,
-              });
-              dispatch({
-                type: ModalAction.SHOW_MODAL,
-                data: {
-                  type: 'check',
-                  text: main_string.concertBooked,
-                  showLogo: true,
-                },
               });
             }
           }}

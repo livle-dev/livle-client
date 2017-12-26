@@ -7,6 +7,7 @@ import MainPage from '../../views/home/MainPage';
 
 const mapStateToProps = state => {
   return {
+    auth: state.auth,
     storeInfo: state.navMainCard,
     reservation: state.reservation,
   };

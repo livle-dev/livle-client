@@ -25,22 +25,15 @@ export const AppScreen = StackNavigator(
 );
 
 class AppNavigation extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { isLoggedIn: UNMOUNT };
-  }
-
   componentWillMount() {
-    checkSession(this.props.dispatch).then(res => {
-      this.setState({ isLoggedIn: res });
-    });
+    checkSession(this.props.dispatch);
   }
 
   render() {
-    const { dispatch, navState } = this.props;
-    const checkLoggedIn = this.state.isLoggedIn !== UNMOUNT;
+    const { dispatch, auth, navState } = this.props;
+    const isMount = auth.isLoggedIn !== UNMOUNT;
 
-    return checkLoggedIn ? (
+    return isMount ? (
       <AppScreen
         navigation={addNavigationHelpers({
           dispatch: dispatch,
@@ -56,7 +49,7 @@ class AppNavigation extends Component {
 }
 
 const mapStateToProps = state => {
-  return { navState: state.appReducer };
+  return { navState: state.appReducer, auth: state.auth };
 };
 
 export default connect(mapStateToProps)(AppNavigation);

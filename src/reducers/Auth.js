@@ -1,8 +1,11 @@
 // Actions
 import { AppAction } from './Actions';
 
+const UNMOUNT = 'UNMOUNT';
+
 const initialState = {
-  isLoggedIn: false,
+  isLoggedIn: UNMOUNT,
+  provider: null,
   data: null,
 };
 export function auth(state = initialState, action) {
@@ -13,10 +16,11 @@ export function auth(state = initialState, action) {
        **/
       return {
         isLoggedIn: true,
+        provider: action.provider,
         data: action.data,
       };
     case AppAction.LOGOUT:
-      return initialState;
+      return { isLoggedIn: false, provider: null, data: null };
     default:
       return state;
   }

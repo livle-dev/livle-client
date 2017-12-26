@@ -10,7 +10,7 @@ import { mainpage } from '../../../assets/stylesheets/local/mainPageStyle';
 import { styles } from '../../../assets/stylesheets/global/Style';
 import Scale, { percent } from '../../../assets/stylesheets/global/Scale';
 // Network
-import { getTicket } from '../../../network';
+import { getAllTicket } from '../../../network';
 
 class CardLists extends Component {
   componentWillReceiveProps(props) {
@@ -65,8 +65,20 @@ export default class MainPage extends Component {
     this.state = { data: null, dataIndex: null };
   }
 
+  getData(isLoggedIn) {
+    getAllTicket().then(response => this.setState(response));
+  }
+
   componentWillMount() {
-    getTicket().then(response => this.setState(response));
+    const { isLoggedIn } = this.props.auth;
+    this.getData();
+  }
+
+  componentWillReceiveProps(props) {
+    if (props.auth.isLoggedIn && !this.state.data) {
+      console.log('get data');
+      this.getData(props.auth.isLoggedIn);
+    }
   }
 
   render() {

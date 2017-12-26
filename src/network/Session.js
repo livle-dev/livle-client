@@ -50,7 +50,6 @@ function getLivleData(dispatch) {
           is_subsrcibing: data.is_subsrcibing,
         },
       });
-      return true;
     })
     .catch(err => {
       /**
@@ -58,7 +57,7 @@ function getLivleData(dispatch) {
        * 403: 헤더에 토큰이 있지만 유효하지 않음
        */
 
-      return false;
+      dispatch({ type: AppAction.LOGOUT });
     });
 }
 
@@ -76,7 +75,6 @@ function getFacebookData(token, dispatch) {
         type: MessageBarAction.SHOW_MESSAGE_BAR,
         data: '로그인 되었습니다',
       });
-      return true;
     })
     .catch(err => {
       const { message } = err.response.data.error;
@@ -87,7 +85,8 @@ function getFacebookData(token, dispatch) {
           text: message,
         },
       });
-      return false;
+
+      dispatch({ type: AppAction.LOGOUT });
     });
 }
 /* END */
@@ -101,6 +100,8 @@ export const checkSession = dispatch => {
         case PROVIDER.FACEBOOK:
           return getFacebookData(res.token, dispatch);
       }
+    } else {
+      dispatch({ type: AppAction.LOGOUT });
     }
   });
 };
@@ -112,20 +113,19 @@ export const login = (email, password) => dispatch => {
       const { data } = response;
       _getToken().then(res => {
         if (!res) _setToken(data.token, PROVIDER.LIVLE);
-      });
-
-      dispatch({
-        type: AppAction.LOGIN,
-        data: {
-          email: data.email,
-          nickname: 'LIVLE 닉네임 가져오기',
-          expire_at: data.expire_at,
-          is_subsrcibing: data.is_subsrcibing,
-        },
-      });
-      dispatch({
-        type: MessageBarAction.SHOW_MESSAGE_BAR,
-        data: '로그인 되었습니다',
+        dispatch({
+          type: AppAction.LOGIN,
+          data: {
+            email: data.email,
+            nickname: 'LIVLE 닉네임 가져오기',
+            expire_at: data.expire_at,
+            is_subsrcibing: data.is_subsrcibing,
+          },
+        });
+        dispatch({
+          type: MessageBarAction.SHOW_MESSAGE_BAR,
+          data: '로그인 되었습니다',
+        });
       });
     })
     .catch(err => {
