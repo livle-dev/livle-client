@@ -20,6 +20,9 @@ export const promotionStyle = StyleSheet.create({
   blinkMargin: {
     marginTop: percent('height', 9),
   },
+  ticketRowMargin: {
+    marginVertical: 8,
+  },
   // size
   button: {
     height: height.button + 20,
@@ -32,6 +35,8 @@ export const promotionStyle = StyleSheet.create({
   ticketSize: {
     width: width.ticket,
     height: width.ticket * height_width_ratio(327, 172),
+    marginBottom: percent('height', 8),
+    paddingLeft: percent('width', 17),
   },
   // container
   gradientContainer: {
@@ -46,11 +51,21 @@ export const promotionStyle = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: color_string.green_deep,
   },
+  ticketContainer: {
+    paddingLeft: percent('width', 11),
+    alignSelf: 'stretch',
+    flex: 1,
+  },
   // font
   textTitle: StyleSheet.flatten([
     color.white,
     font_size.fs_input_num,
     font_style.bold,
+  ]),
+  textTicket: StyleSheet.flatten([
+    color.white,
+    font_size.fs_4,
+    font_style.regular,
   ]),
   textContent: StyleSheet.flatten([
     color.white,

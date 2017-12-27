@@ -13,6 +13,20 @@ import { styles, container } from '../../../assets/stylesheets/global/Style';
 import { color, color_string } from '../../../assets/stylesheets/global/Color';
 import { promotionStyle } from '../../../assets/stylesheets/local/promotionPageStyle';
 
+const TicketRow = ({ text }) => {
+  return (
+    <View style={[promotionStyle.ticketRowMargin, styles.rowDirection]}>
+      <Icon
+        src="ic_check_white"
+        height={12}
+        disabled={true}
+        style={{ marginRight: 8 }}
+      />
+      <Text style={promotionStyle.textTicket}>{text}</Text>
+    </View>
+  );
+};
+
 export default class PromotionPage extends Component {
   render() {
     const { navigation } = this.props;
@@ -55,7 +69,15 @@ export default class PromotionPage extends Component {
                 source={ticket.horizontal}
                 style={[promotionStyle.ticketSize, styles.alignCenter]}
                 imageStyle={promotionStyle.background}>
-                <Text>멤버십 이벤트</Text>
+                <View
+                  style={[
+                    promotionStyle.ticketContainer,
+                    styles.verticalCenter,
+                  ]}>
+                  <TicketRow text="앱으로 간편하게 입장" />
+                  <TicketRow text="한달 2번의 라이브 콘서트" />
+                  <TicketRow text="언제든지 해지 가능" />
+                </View>
               </ImageBackground>
               <Text style={[promotionStyle.textContent, styles.textCenter]}>
                 자, 축제를 시작하세요.{'\n'}당신의 삶은{' '}
