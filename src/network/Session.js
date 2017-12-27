@@ -39,6 +39,7 @@ function _removeToken() {
 /* GET DATA & DISPATCH FROM SERVER */
 const dispatchUserData = data => dispatch => {
   const { token, ...option } = data;
+  console.log(data);
   dispatch({
     type: AppAction.LOGIN,
     data: { ...option },
@@ -82,6 +83,7 @@ const getFacebookData = facebookToken => dispatch => {
 
 export const checkSession = dispatch => {
   return _getToken().then(res => {
+    console.log(res);
     if (res) {
       return getLivleData(dispatch);
     } else {

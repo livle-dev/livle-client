@@ -4,14 +4,8 @@ import { View, ScrollView, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import Carousel from 'react-native-snap-carousel';
 import { connect } from 'react-redux';
-// Actions
-import {
-  ReservationAction,
-  ModalAction,
-  AppAction,
-} from '../../../reducers/Actions';
 // Networks
-import { reserveTicket, cancelTicket } from '../../../network';
+import { canReserveTicket, cancelTicket } from '../../../network';
 // Views
 import FirstContent from './FirstContent';
 import SecondContent from './SecondContent';
@@ -145,20 +139,12 @@ class _MainCard extends Component {
           showTopButton={showTopButton}
           clickTop={() => this._snapToTop()}
           onPress={() => {
-            this.setState({ isGo: !isGo });
             if (isGo) {
               cancelTicket(data.id)(dispatch);
-              dispatch({
-                type: ReservationAction.DELETE_RESERVATION,
-                id: data.id,
-              });
+              this.setState({ isGo: false });
             } else {
-              reserveTicket(data.id)(dispatch);
-              dispatch({ type: AppAction.PROMOTION });
-              dispatch({
-                type: ReservationAction.ADD_RESERVATION,
-                data: data,
-              });
+              if (canReserveTicket(auth, data)(dispatch))
+                this.setState({ isGo: true });
             }
           }}
         />

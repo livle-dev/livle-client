@@ -1,6 +1,7 @@
 import axios from './axios';
-import { getTime } from '../assets/functions';
-import { ModalAction } from '../reducers/Actions';
+import { getTime, isFuture } from '../assets/functions';
+import { AppAction, ModalAction } from '../reducers/Actions';
+import { main_string } from '../assets/strings';
 
 export function getAllTicket() {
   return axios
@@ -44,6 +45,7 @@ export const reserveTicket = id => dispatch => {
     .post(`/ticket/${id}/reserve`)
     .then(res => {
       const { data } = res;
+      // TODO: dispatch reserve info
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
@@ -52,17 +54,69 @@ export const reserveTicket = id => dispatch => {
           showLogo: true,
         },
       });
+      return true;
     })
     .catch(err => {
       console.log(err.response);
+      return false;
     });
+};
+
+export const canReserveTicket = (auth, data) => dispatch => {
+  const { free_trial_started_at, cancelled_at, suspended_by, valid_by } = auth;
+
+  if (valid_by) {
+    // 구독한 정보가 있음
+    if (isFuture(valid_by, data.start_at)) {
+      // 구독만료일이 공연일 이후
+      if (!suspended_by || !isFuture(suspended_by)) {
+        // 패널티가 없거나 끝남
+        return reserveTicket(data.id)(dispatch);
+      } else {
+        // 패널티 진행중
+        console.log('패널티에 걸려있어 예약할 수 없습니다.');
+      }
+    } else {
+      // 구독만료일이 공연일 이전
+      if (!cancelled_at || isFuture(cancelled_at, data.start_at)) {
+        // 구독취소를 하지 않았거나 구독취소일이 공연일 이후
+        if (!suspended_by || !isFuture(suspended_by)) {
+          // 패널티가 없거나 끝남
+          return reserveTicket(data.id)(dispatch);
+        } else {
+          // 패널티 진행중
+          console.log('패널티에 걸려있어 예약할 수 없습니다.');
+        }
+      } else {
+        // 구독취소일이 공연일 이전
+        console.log('구독을 재개하여 콘서트를 즐기세요.');
+      }
+    }
+  } else {
+    // 구독한 정보가 없음
+    if (!free_trial_started_at) {
+      // free trial을 한 적이 없음
+      dispatch({ type: AppAction.PROMOTION });
+    } else {
+      // free trial을 한 적이 있음
+      console.log('구독 후에 예약할 수 있습니다.');
+    }
+  }
+  return false;
 };
 
 export const cancelTicket = id => dispatch => {
   return axios
     .delete(`/reservation/${id}`)
     .then(res => {
-      console.log('예약이 취소되었습니다.');
+      dispatch({
+        type: ModalAction.SHOW_MODAL,
+        data: {
+          type: 'check',
+          text: main_string.cancelReservation,
+          showLogo: true,
+        },
+      });
     })
     .catch(err => {
       console.log(err.response);
