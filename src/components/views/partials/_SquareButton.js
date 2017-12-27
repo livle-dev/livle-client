@@ -26,8 +26,7 @@ const _SquareButton = ({
     ]}
     activeOpacity={disabled ? 1 : 0.4}
     onPress={!disabled ? onPress : undefined}
-    {...option}
-  >
+    {...option}>
     <Text style={[font_style.semi_bold, font_size.fs_2, color.white]}>
       {text}
     </Text>
