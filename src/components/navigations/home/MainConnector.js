@@ -25,7 +25,7 @@ const mapDispatchToProps = dispatch => {
     showMessageBar: message => {
       dispatch({
         type: MessageBarAction.SHOW_MESSAGE_BAR,
-        data: message,
+        message: message,
       });
     },
   };

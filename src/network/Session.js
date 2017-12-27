@@ -46,7 +46,7 @@ const dispatchUserData = data => dispatch => {
   });
   dispatch({
     type: MessageBarAction.SHOW_MESSAGE_BAR,
-    data: '로그인 되었습니다',
+    message: '로그인 되었습니다',
   });
 };
 
@@ -138,7 +138,7 @@ export const logout = dispatch => {
   dispatch({ type: AppAction.LOGOUT });
   dispatch({
     type: MessageBarAction.SHOW_MESSAGE_BAR,
-    data: '로그아웃 되었습니다',
+    message: '로그아웃 되었습니다',
   });
 };
 
@@ -172,7 +172,7 @@ export const confirmEmail = email => dispatch => {
     .then(response => {
       dispatch({
         type: MessageBarAction.SHOW_MESSAGE_BAR,
-        data: '메일을 보냈습니다!',
+        message: '메일을 보냈습니다!',
       });
     })
     .catch(err => {
@@ -197,7 +197,7 @@ export const withdraw = (email, password) => dispatch => {
       dispatch({ type: AppAction.LOGOUT });
       dispatch({
         type: MessageBarAction.SHOW_MESSAGE_BAR,
-        data: '계정이 삭제되었습니다',
+        message: '계정이 삭제되었습니다',
       });
     })
     .catch(err => {

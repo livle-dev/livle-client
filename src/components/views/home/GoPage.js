@@ -34,8 +34,7 @@ function NoReservation() {
     <ImageBackground
       source={ticket.empty}
       style={goStyle.background_size}
-      imageStyle={goStyle.background_ticket}
-    >
+      imageStyle={goStyle.background_ticket}>
       <View style={[container.contentContainer, styles.alignCenter]}>
         <Icon
           src={'logo_livle'}
@@ -99,8 +98,7 @@ export default class GoPage extends Component {
         innerRef={ref => (this.scroll = ref)}
         style={styles.blackBackground}
         enableAutoAutomaticScroll={false}
-        keyboardShouldPersistTaps="always"
-      >
+        keyboardShouldPersistTaps="always">
         <View style={container.fullContainer}>
           <View style={styles.horizontalCenter}>
             {hasItem ? (
@@ -150,10 +148,9 @@ export default class GoPage extends Component {
                   });
                   dispatch({
                     type: MessageBarAction.SHOW_MESSAGE_BAR,
-                    data: go_string.reservationCanceled,
+                    message: go_string.reservationCanceled,
                   });
-                }}
-              >
+                }}>
                 <Text style={goStyle.cancel_text}>
                   {go_string.cancelReservation}
                 </Text>

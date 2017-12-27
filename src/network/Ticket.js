@@ -1,6 +1,6 @@
 import axios from './axios';
 import { getTime, isFuture } from '../assets/functions';
-import { AppAction, ModalAction } from '../reducers/Actions';
+import { AppAction, ModalAction, MessageBarAction } from '../reducers/Actions';
 import { main_string } from '../assets/strings';
 
 export function getAllTicket() {
@@ -71,7 +71,13 @@ export const canReserveTicket = (auth, data) => dispatch => {
       // 구독만료일이 공연일 이후
       if (!suspended_by || !isFuture(suspended_by)) {
         // 패널티가 없거나 끝남
-        return reserveTicket(data.id)(dispatch);
+        if (data.vacancies > 0) {
+          // 예약 가능한 자리가 있음
+          return reserveTicket(data.id)(dispatch);
+        } else {
+          // 예약 가능한 자리가 없음
+          console.log('좌석이 매진되었습니다.');
+        }
       } else {
         // 패널티 진행중
         console.log('패널티에 걸려있어 예약할 수 없습니다.');
@@ -82,7 +88,13 @@ export const canReserveTicket = (auth, data) => dispatch => {
         // 구독취소를 하지 않았거나 구독취소일이 공연일 이후
         if (!suspended_by || !isFuture(suspended_by)) {
           // 패널티가 없거나 끝남
-          return reserveTicket(data.id)(dispatch);
+          if (data.vacancies > 0) {
+            // 예약 가능한 자리가 있음
+            return reserveTicket(data.id)(dispatch);
+          } else {
+            // 예약 가능한 자리가 없음
+            console.log('좌석이 매진되었습니다.');
+          }
         } else {
           // 패널티 진행중
           console.log('패널티에 걸려있어 예약할 수 없습니다.');

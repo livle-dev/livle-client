@@ -24,9 +24,9 @@ function showMessageBar(state = { show: false, message: '' }, action) {
   switch (action.type) {
     case MessageBarAction.SHOW_MESSAGE_BAR:
       /**
-       * action.data = PropTypes.string.isRequired
+       * action.message = PropTypes.string.isRequired
        **/
-      return { show: true, message: action.data };
+      return { show: true, message: action.message };
     case MessageBarAction.ANIMATE_ENDED:
       return { show: false, message: '' };
     default:
