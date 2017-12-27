@@ -34,6 +34,12 @@ export function appReducer(state = initialState, action) {
         state
       );
       break;
+    case AppAction.PROMOTION:
+      nextState = AppScreen.router.getStateForAction(
+        NavigationActions.navigate({ routeName: 'Promotion' }),
+        state
+      );
+      break;
     default:
       nextState = AppScreen.router.getStateForAction(action, state);
       break;

@@ -1,4 +1,4 @@
-import axios, { facebook } from './axios';
+import axios from './axios';
 import { AsyncStorage } from 'react-native';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import { AppAction, MessageBarAction, ModalAction } from '../reducers/Actions';
@@ -9,13 +9,8 @@ import { AppAction, MessageBarAction, ModalAction } from '../reducers/Actions';
  *  PW: 123
  */
 const TOKEN_KEY = '@LivleClient:token';
-const PROVIDER = { LIVLE: 'LIVLE', FACEBOOK: 'FACEBOOK' };
 
 /* MANAGE TOKEN */
-async function _setToken(token, provider) {
-  const item = { token: token, provider: provider };
-  await AsyncStorage.setItem(TOKEN_KEY, JSON.stringify(item));
-}
 async function _getToken() {
   const result = await AsyncStorage.getItem(TOKEN_KEY);
   const item = await JSON.parse(result);
@@ -25,8 +20,16 @@ async function _getToken() {
   }
   return item;
 }
-async function _removeToken() {
-  await AsyncStorage.removeItem(
+async function _setToken(token) {
+  const item = { token: token };
+
+  response = await _getToken();
+  if (!response) {
+    AsyncStorage.setItem(TOKEN_KEY, JSON.stringify(item));
+  }
+}
+function _removeToken() {
+  AsyncStorage.removeItem(
     TOKEN_KEY,
     err => delete axios.defaults.headers.common['Authorization']
   );
@@ -34,23 +37,25 @@ async function _removeToken() {
 /* END */
 
 /* GET DATA & DISPATCH FROM SERVER */
+const dispatchUserData = data => dispatch => {
+  const { token, ...option } = data;
+  console.log(data);
+  dispatch({
+    type: AppAction.LOGIN,
+    data: { ...option },
+  });
+  dispatch({
+    type: MessageBarAction.SHOW_MESSAGE_BAR,
+    message: '로그인 되었습니다',
+  });
+};
+
 function getLivleData(dispatch) {
-  // Call after _getToken
   return axios
     .get('/user')
     .then(response => {
       const { data } = response;
-      dispatch({
-        type: AppAction.LOGIN,
-        provider: PROVIDER.LIVLE,
-        data: {
-          email: data.email,
-          nickname: 'LIVLE 닉네임 가져오기',
-          expire_at: data.expire_at,
-          is_subsrcibing: data.is_subsrcibing,
-        },
-      });
-      return true;
+      dispatchUserData(data)(dispatch);
     })
     .catch(err => {
       /**
@@ -58,49 +63,31 @@ function getLivleData(dispatch) {
        * 403: 헤더에 토큰이 있지만 유효하지 않음
        */
 
-      return false;
+      dispatch({ type: AppAction.LOGOUT });
     });
 }
 
-function getFacebookData(token, dispatch) {
-  return facebook
-    .get(`/me?fields=email,name&access_token=${token}`)
+const getFacebookData = facebookToken => dispatch => {
+  return axios
+    .post(`/user/facebook`, { accessToken: facebookToken })
     .then(response => {
       const { data } = response;
-      dispatch({
-        type: AppAction.LOGIN,
-        provider: PROVIDER.FACEBOOK,
-        data: { email: data.email, nickname: data.name },
-      });
-      dispatch({
-        type: MessageBarAction.SHOW_MESSAGE_BAR,
-        data: '로그인 되었습니다',
-      });
-      return true;
+      _setToken(data.token);
+      dispatchUserData(data)(dispatch);
     })
     .catch(err => {
-      const { message } = err.response.data.error;
-      dispatch({
-        type: ModalAction.SHOW_MODAL,
-        data: {
-          type: 'notice',
-          text: message,
-        },
-      });
-      return false;
+      dispatch({ type: AppAction.LOGOUT });
     });
-}
+};
 /* END */
 
 export const checkSession = dispatch => {
   return _getToken().then(res => {
+    console.log(res);
     if (res) {
-      switch (res.provider) {
-        case PROVIDER.LIVLE:
-          return getLivleData(dispatch);
-        case PROVIDER.FACEBOOK:
-          return getFacebookData(res.token, dispatch);
-      }
+      return getLivleData(dispatch);
+    } else {
+      dispatch({ type: AppAction.LOGOUT });
     }
   });
 };
@@ -110,23 +97,8 @@ export const login = (email, password) => dispatch => {
     .post(`/user/session`, { email: email, password: password })
     .then(response => {
       const { data } = response;
-      _getToken().then(res => {
-        if (!res) _setToken(data.token, PROVIDER.LIVLE);
-      });
-
-      dispatch({
-        type: AppAction.LOGIN,
-        data: {
-          email: data.email,
-          nickname: 'LIVLE 닉네임 가져오기',
-          expire_at: data.expire_at,
-          is_subsrcibing: data.is_subsrcibing,
-        },
-      });
-      dispatch({
-        type: MessageBarAction.SHOW_MESSAGE_BAR,
-        data: '로그인 되었습니다',
-      });
+      _setToken(data.token);
+      dispatchUserData(data)(dispatch);
     })
     .catch(err => {
       /**
@@ -149,12 +121,8 @@ export const facebookLogin = dispatch => {
     result => {
       if (!result.isCancelled) {
         AccessToken.getCurrentAccessToken().then(data => {
-          const { accessToken, expirationTime } = data;
-
-          _getToken().then(res => {
-            if (!res) _setToken(accessToken, PROVIDER.FACEBOOK);
-          });
-          getFacebookData(accessToken, dispatch);
+          const facebookToken = data.accessToken;
+          getFacebookData(facebookToken)(dispatch);
         });
       }
     },
@@ -165,33 +133,22 @@ export const facebookLogin = dispatch => {
 };
 
 export const logout = dispatch => {
-  _removeToken()
-    .then(() => {
-      LoginManager.logOut(); // Logout Facebook
-      dispatch({ type: AppAction.LOGOUT });
-      dispatch({
-        type: MessageBarAction.SHOW_MESSAGE_BAR,
-        data: '로그아웃 되었습니다',
-      });
-    })
-    .catch();
+  _removeToken(); // Logout Locally
+  LoginManager.logOut(); // Logout Facebook
+  dispatch({ type: AppAction.LOGOUT });
+  dispatch({
+    type: MessageBarAction.SHOW_MESSAGE_BAR,
+    message: '로그아웃 되었습니다',
+  });
 };
 
 export const signUp = (email, password, nickname) => dispatch => {
   return axios
-    .post('/user', { email: email, password: password })
+    .post('/user', { email: email, password: password, nickname: nickname })
     .then(response => {
       const { data } = response;
-      _setToken(data.token, PROVIDER.LIVLE);
-
-      dispatch({
-        type: AppAction.LOGIN,
-        data: { email: data.email, nickname: nickname },
-      });
-      dispatch({
-        type: MessageBarAction.SHOW_MESSAGE_BAR,
-        data: '가입 완료!',
-      });
+      _setToken(data.token);
+      dispatchUserData(data)(dispatch);
     })
     .catch(err => {
       /**
@@ -215,7 +172,7 @@ export const confirmEmail = email => dispatch => {
     .then(response => {
       dispatch({
         type: MessageBarAction.SHOW_MESSAGE_BAR,
-        data: '메일을 보냈습니다!',
+        message: '메일을 보냈습니다!',
       });
     })
     .catch(err => {
@@ -240,7 +197,7 @@ export const withdraw = (email, password) => dispatch => {
       dispatch({ type: AppAction.LOGOUT });
       dispatch({
         type: MessageBarAction.SHOW_MESSAGE_BAR,
-        data: '계정이 삭제되었습니다',
+        message: '계정이 삭제되었습니다',
       });
     })
     .catch(err => {

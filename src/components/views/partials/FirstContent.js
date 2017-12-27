@@ -17,12 +17,11 @@ import Icon from '../../../assets/images/Icon';
 const FirstContent = ({ data, showDetail }) => {
   return (
     <View style={[mainCard.innerContainer, styles.horizontalCenter]}>
-      <Image style={mainCard.imgContainer} source={data.image} />
+      <Image style={mainCard.imgContainer} source={{ uri: data.image }} />
       <ShowInfo data={data} />
       <TouchableOpacity
         style={[mainCard.moreButton, styles.horizontalCenter]}
-        onPress={showDetail}
-      >
+        onPress={showDetail}>
         <Text style={[mainCard.textVacancies]}>
           {data.vacancies > 0
             ? `${data.vacancies}${main_string.vacancies}`

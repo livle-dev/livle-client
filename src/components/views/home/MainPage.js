@@ -9,8 +9,8 @@ import Calendar from '../partials/Calendar';
 import { mainpage } from '../../../assets/stylesheets/local/mainPageStyle';
 import { styles } from '../../../assets/stylesheets/global/Style';
 import Scale, { percent } from '../../../assets/stylesheets/global/Scale';
-// Test
-import { ticket } from '../../../test/TestData';
+// Network
+import { getAllTicket } from '../../../network';
 
 class CardLists extends Component {
   componentWillReceiveProps(props) {
@@ -19,14 +19,14 @@ class CardLists extends Component {
   }
 
   render() {
-    const { dataIndex, updateIndex } = this.props;
+    const { data, dataIndex, updateIndex } = this.props;
 
     return (
       <Carousel
         ref={c => {
           this.carousel = c;
         }}
-        data={ticket}
+        data={data}
         renderItem={({ item, index }) => {
           return (
             <_MainCard
@@ -62,38 +62,45 @@ class CardLists extends Component {
 export default class MainPage extends Component {
   constructor() {
     super();
-    const ticketSort = ticket.sort((x, y) => x.start_at - y.start_at);
-    let dataIndex = []; //cardIndex, dateIndex간 관계를 담아둔 array
-    let saveDate;
+    this.state = { data: null, dataIndex: null };
+  }
 
-    for (let i = 0; i < ticketSort.length; i++) {
-      let getDate = ticketSort[i].start_at.getDate();
-      if (!saveDate || saveDate !== getDate) {
-        saveDate = getDate;
-        dataIndex.push({ cardIndex: i, dateIndex: dataIndex.length });
-      }
+  getData(isLoggedIn) {
+    getAllTicket().then(response => this.setState(response));
+  }
+
+  componentWillMount() {
+    const { isLoggedIn } = this.props.auth;
+    this.getData();
+  }
+
+  componentWillReceiveProps(props) {
+    if (props.auth.isLoggedIn && !this.state.data) {
+      this.getData(props.auth.isLoggedIn);
     }
-
-    this.state = {
-      dataIndex: dataIndex,
-    };
   }
 
   render() {
-    const { storeInfo, updateIndex } = this.props;
+    const { storeInfo, updateIndex, showMessageBar } = this.props;
 
-    return (
+    return this.state.data ? (
       <View style={styles.blackBackground}>
         <CardLists
+          data={this.state.data}
           updateIndex={updateIndex}
           dataIndex={this.state.dataIndex}
           storeInfo={storeInfo}
         />
         <Calendar
+          showMessageBar={showMessageBar}
           updateIndex={updateIndex}
           dataIndex={this.state.dataIndex}
           storeInfo={storeInfo}
         />
+      </View>
+    ) : (
+      <View style={[styles.blackBackground, styles.alignCenter]}>
+        <Text>메인페이지 로딩중...</Text>
       </View>
     );
   }

@@ -3,19 +3,20 @@ import React, { Component } from 'react';
 import { StackNavigator, addNavigationHelpers } from 'react-navigation';
 import { connect } from 'react-redux';
 import { View, Text } from 'react-native';
+// View
+import PromotionPage from '../views/home/PromotionPage';
 // Navigations
 import HomeNavigation from './home/HomeNavigation';
 import LoginNavigation from './login/LoginNavigation';
 // Networks
 import { checkSession } from '../../network';
 
-const UNMOUNT = 'UNMOUNT';
-
 // Config
 export const AppScreen = StackNavigator(
   {
     Home: { screen: HomeNavigation },
     Login: { screen: LoginNavigation },
+    Promotion: { screen: PromotionPage },
   },
   {
     initialRouteName: 'Home',
@@ -24,24 +25,18 @@ export const AppScreen = StackNavigator(
   }
 );
 
-class AppNavigation extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { isLoggedIn: UNMOUNT };
-  }
+const UNMOUNT = 'UNMOUNT';
 
+class AppNavigation extends Component {
   componentWillMount() {
-    checkSession(this.props.dispatch).then(res => {
-      this.setState({ isLoggedIn: res });
-    });
+    checkSession(this.props.dispatch);
   }
 
   render() {
-    const { dispatch, navState } = this.props;
-    const checkLoggedIn = this.state.isLoggedIn !== UNMOUNT;
-    console.log(checkLoggedIn);
+    const { dispatch, auth, navState } = this.props;
+    const isMount = auth.isLoggedIn !== UNMOUNT;
 
-    return checkLoggedIn ? (
+    return isMount ? (
       <AppScreen
         navigation={addNavigationHelpers({
           dispatch: dispatch,
@@ -57,7 +52,7 @@ class AppNavigation extends Component {
 }
 
 const mapStateToProps = state => {
-  return { navState: state.appReducer };
+  return { navState: state.appReducer, auth: state.auth };
 };
 
 export default connect(mapStateToProps)(AppNavigation);

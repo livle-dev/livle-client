@@ -96,8 +96,6 @@ export const styles = StyleSheet.create({
   },
   // backgrounds
   blackBackground: {
-    position: 'relative',
-    bottom: 0,
     flex: 1,
     backgroundColor: color_string.black,
   },

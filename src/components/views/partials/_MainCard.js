@@ -4,8 +4,8 @@ import { View, ScrollView, Platform } from 'react-native';
 import PropTypes from 'prop-types';
 import Carousel from 'react-native-snap-carousel';
 import { connect } from 'react-redux';
-// Actions
-import { ReservationAction, ModalAction } from '../../../reducers/Actions';
+// Networks
+import { canReserveTicket, cancelTicket } from '../../../network';
 // Views
 import FirstContent from './FirstContent';
 import SecondContent from './SecondContent';
@@ -128,7 +128,7 @@ class _MainCard extends Component {
   }
 
   render() {
-    const { data, dispatch } = this.props;
+    const { auth, data, dispatch } = this.props;
     const { isGo, showTopButton } = this.state;
 
     return (
@@ -139,25 +139,12 @@ class _MainCard extends Component {
           showTopButton={showTopButton}
           clickTop={() => this._snapToTop()}
           onPress={() => {
-            this.setState({ isGo: !isGo });
             if (isGo) {
-              dispatch({
-                type: ReservationAction.DELETE_RESERVATION,
-                id: data.id,
-              });
+              cancelTicket(data.id)(dispatch);
+              this.setState({ isGo: false });
             } else {
-              dispatch({
-                type: ReservationAction.ADD_RESERVATION,
-                data: data,
-              });
-              dispatch({
-                type: ModalAction.SHOW_MODAL,
-                data: {
-                  type: 'check',
-                  text: main_string.concertBooked,
-                  showLogo: true,
-                },
-              });
+              if (canReserveTicket(auth, data)(dispatch))
+                this.setState({ isGo: true });
             }
           }}
         />
@@ -167,7 +154,7 @@ class _MainCard extends Component {
 }
 
 const mapStateToProps = state => {
-  return { reservation: state.reservation };
+  return { auth: state.auth, reservation: state.reservation };
 };
 
 export default connect(mapStateToProps)(_MainCard);

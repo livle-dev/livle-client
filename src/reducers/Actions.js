@@ -2,6 +2,7 @@
 export const AppAction = {
   LOGIN: 'LOGIN',
   LOGOUT: 'LOGOUT',
+  PROMOTION: 'PROMOTION',
 };
 export const HomeAction = {
   GO: 'NAV_GO',
