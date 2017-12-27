@@ -43,8 +43,10 @@ const SnapCard = ({ data, ...option }) => {};
 
 class _MainCard extends Component {
   // utils
-  _updateGoState = (data, reservation) =>
-    reservation.goList.find(book => book.id === data.id) !== undefined;
+  _updateGoState(data) {
+    const { reservation } = this.props;
+    return reservation.find(item => item.ticket_id === data.id) !== undefined;
+  }
 
   _snapToTop() {
     if (Platform.OS === 'ios') {
@@ -118,13 +120,13 @@ class _MainCard extends Component {
   // end
 
   state = {
-    isGo: this._updateGoState(this.props.data, this.props.reservation),
+    isGo: this._updateGoState(this.props.data),
     showTopButton: false,
   };
 
   componentWillReceiveProps(props) {
     if (props.curIndex !== props.cardIndex) this._snapToTop();
-    this.setState({ isGo: this._updateGoState(props.data, props.reservation) });
+    this.setState({ isGo: this._updateGoState(props.data) });
   }
 
   render() {
@@ -154,7 +156,11 @@ class _MainCard extends Component {
 }
 
 const mapStateToProps = state => {
-  return { auth: state.auth, reservation: state.reservation };
+  return {
+    auth: state.auth,
+    ticket: state.ticket.ticket,
+    reservation: state.ticket.reservation,
+  };
 };
 
 export default connect(mapStateToProps)(_MainCard);

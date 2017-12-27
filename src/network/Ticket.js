@@ -1,9 +1,14 @@
 import axios from './axios';
 import { getTime, isFuture } from '../assets/functions';
-import { AppAction, ModalAction, MessageBarAction } from '../reducers/Actions';
+import {
+  AppAction,
+  TicketAction,
+  ModalAction,
+  MessageBarAction,
+} from '../reducers/Actions';
 import { main_string } from '../assets/strings';
 
-export function getAllTicket() {
+export const getAllTicket = dispatch => {
   return axios
     .get(`/ticket`)
     .then(res => {
@@ -22,14 +27,17 @@ export function getAllTicket() {
           dataIndex.push({ cardIndex: index, dateIndex: dataIndex.length });
         }
       });
-
-      return {
+      dispatch({
+        type: TicketAction.UPDATE_TICKET,
         data: data,
         dataIndex: dataIndex,
-      };
+      });
+
+      return Promise.resolve(dispatch);
     })
+    .then(dispatch => getReserveTicket(dispatch))
     .catch(err => console.log(err.response));
-}
+};
 
 export const getSingleTicket = id => dispatch => {
   return axios
@@ -37,28 +45,6 @@ export const getSingleTicket = id => dispatch => {
     .then(res => res.data)
     .catch(err => {
       // console.log(err.response);
-    });
-};
-
-export const reserveTicket = id => dispatch => {
-  return axios
-    .post(`/ticket/${id}/reserve`)
-    .then(res => {
-      const { data } = res;
-      // TODO: dispatch reserve info
-      dispatch({
-        type: ModalAction.SHOW_MODAL,
-        data: {
-          type: 'check',
-          text: main_string.concertBooked,
-          showLogo: true,
-        },
-      });
-      return true;
-    })
-    .catch(err => {
-      console.log(err.response);
-      return false;
     });
 };
 
@@ -117,10 +103,55 @@ export const canReserveTicket = (auth, data) => dispatch => {
   return false;
 };
 
+export const getReserveTicket = dispatch => {
+  return axios
+    .get(`/reservation`)
+    .then(res => {
+      const { data } = res;
+      dispatch({
+        type: TicketAction.UPDATE_RESERVATION,
+        data: data,
+      });
+      console.log(data);
+    })
+    .catch(err => {
+      console.log(err.response);
+    });
+};
+
+export const reserveTicket = id => dispatch => {
+  return axios
+    .post(`/ticket/${id}/reserve`)
+    .then(res => {
+      const { data } = res;
+      dispatch({
+        type: TicketAction.ADD_RESERVATION,
+        data: data,
+      });
+      dispatch({
+        type: ModalAction.SHOW_MODAL,
+        data: {
+          type: 'check',
+          text: main_string.concertBooked,
+          showLogo: true,
+        },
+      });
+      return true;
+    })
+    .catch(err => {
+      console.log(err.response);
+      return false;
+    });
+};
+
 export const cancelTicket = id => dispatch => {
   return axios
     .delete(`/reservation/${id}`)
     .then(res => {
+      dispatch({
+        type: TicketAction.CANCEL_RESERVATION,
+        id: id,
+      });
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {

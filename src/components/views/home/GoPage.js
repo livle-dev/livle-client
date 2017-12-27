@@ -19,7 +19,9 @@ import {
 import { goStyle } from '../../../assets/stylesheets/local/goPageStyle';
 import { color, color_string } from '../../../assets/stylesheets/global/Color';
 // Actions
-import { ReservationAction, MessageBarAction } from '../../../reducers/Actions';
+import { TicketAction, MessageBarAction } from '../../../reducers/Actions';
+// Network
+import { cancelTicket } from '../../../network';
 // Views
 import ShowReservation from '../partials/ShowReservation';
 import _SquareButton from '../partials/_SquareButton';
@@ -56,10 +58,7 @@ function NoReservation() {
 export default class GoPage extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      curIndex: 0,
-      isKeyboardShow: false,
-    };
+    this.state = { curIndex: 0, isKeyboardShow: false };
 
     // KEYBOARD
     this.keyboardShowListener = Keyboard.addListener(
@@ -77,7 +76,7 @@ export default class GoPage extends Component {
 
   componentWillUpdate(props, state) {
     const { curIndex } = state;
-    const itemLength = props.reservation.goList.length;
+    const itemLength = props.reservation.length;
     if (itemLength > 0 && curIndex >= itemLength)
       this.setState({ curIndex: curIndex - 1 });
   }
@@ -89,9 +88,8 @@ export default class GoPage extends Component {
 
   render() {
     const { curIndex, isKeyboardShow } = this.state;
-    const { dispatch } = this.props;
-    const { goList } = this.props.reservation;
-    const hasItem = goList.length > 0;
+    const { reservation, dispatch } = this.props;
+    const hasItem = reservation.length > 0;
 
     return (
       <KeyboardAwareScrollView
@@ -103,10 +101,8 @@ export default class GoPage extends Component {
           <View style={styles.horizontalCenter}>
             {hasItem ? (
               <Carousel
-                ref={c => {
-                  this.carousel = c;
-                }}
-                data={goList}
+                ref={c => (this.carousel = c)}
+                data={reservation}
                 renderItem={({ item }) => <ShowReservation item={item} />}
                 sliderWidth={width.full}
                 itemWidth={width.full}
@@ -119,44 +115,33 @@ export default class GoPage extends Component {
             )}
           </View>
 
-          {hasItem && isKeyboardShow ? (
-            <View style={goStyle.bottomContainer}>
-              <_SquareButton
-                backgroundColor={
-                  goList[curIndex].code.length >= 4
-                    ? color_string.green_light
-                    : color_string.gray_light
-                }
-                text={go_string.confirmEntry}
-                disabled={goList[curIndex].code.length < 4}
-                onPress={() =>
-                  dispatch({
-                    type: ReservationAction.CONFIRM_ENTRY,
-                    id: goList[curIndex].id,
-                  })
-                }
-              />
-            </View>
-          ) : (
+          {hasItem &&
+            isKeyboardShow && (
+              <View style={goStyle.bottomContainer}>
+                <_SquareButton
+                  backgroundColor={
+                    [curIndex].code.length >= 4
+                      ? color_string.green_light
+                      : color_string.gray_light
+                  }
+                  text={go_string.confirmEntry}
+                  disabled={reservation[curIndex].code.length < 4}
+                  onPress={() => {}}
+                />
+              </View>
+            )}
+          {hasItem &&
             !isKeyboardShow && (
               <TouchableOpacity
                 style={[styles.flex_1, styles.alignCenter]}
                 onPress={() => {
-                  dispatch({
-                    type: ReservationAction.DELETE_RESERVATION,
-                    id: goList[curIndex].id,
-                  });
-                  dispatch({
-                    type: MessageBarAction.SHOW_MESSAGE_BAR,
-                    message: go_string.reservationCanceled,
-                  });
+                  cancelTicket(reservation[curIndex].id)(dispatch);
                 }}>
                 <Text style={goStyle.cancel_text}>
                   {go_string.cancelReservation}
                 </Text>
               </TouchableOpacity>
-            )
-          )}
+            )}
         </View>
       </KeyboardAwareScrollView>
     );

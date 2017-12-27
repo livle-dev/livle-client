@@ -37,15 +37,16 @@ function GoCheckEnter({ isConfirmed, dataId }) {
 }
 
 export default ({ item }) => {
-  const { data, isConfirmed } = item;
+  const { ticket_data, code } = item;
+  const isConfirmed = item.checked_at !== null;
+
   return (
     <ImageBackground
       source={ticket.filled}
       style={goStyle.background_size}
-      imageStyle={goStyle.background_ticket}
-    >
+      imageStyle={goStyle.background_ticket}>
       <View style={container.contentContainer}>
-        <ShowInfo data={data} />
+        <ShowInfo data={ticket_data} />
         <View style={[goStyle.confirm_container, styles.alignCenter]}>
           <GoCheckEnter dataId={data.id} isConfirmed={isConfirmed} />
         </View>

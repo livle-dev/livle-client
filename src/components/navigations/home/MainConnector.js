@@ -7,9 +7,8 @@ import MainPage from '../../views/home/MainPage';
 
 const mapStateToProps = state => {
   return {
-    auth: state.auth,
+    ticket: state.ticket.ticket,
     storeInfo: state.navMainCard,
-    reservation: state.reservation,
   };
 };
 

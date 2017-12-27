@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { View, TextInput } from 'react-native';
 import { connect } from 'react-redux';
 // Actions
-import { ReservationAction } from '../../../reducers/Actions';
+import { TicketAction } from '../../../reducers/Actions';
 // Styles
 import { styles } from '../../../assets/stylesheets/global/Style';
 import { color, color_string } from '../../../assets/stylesheets/global/Color';
@@ -42,7 +42,7 @@ class GreenNumbox extends Component {
     this.refs[state.textIndex].focus();
 
     dispatch({
-      type: ReservationAction.ENTRY_NUMBER,
+      type: TicketAction.UPDATE_CODE,
       id: dataId,
       code: state.entryCode,
     });
