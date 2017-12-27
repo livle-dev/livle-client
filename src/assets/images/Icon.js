@@ -30,6 +30,11 @@ const icon_info = {
     originWidth: 38,
     originHeight: 64,
   },
+  ic_check_white: {
+    source: require('./ic_check_white.png'),
+    originWidth: 19,
+    originHeight: 16,
+  },
   ic_check: {
     source: require('./ic_check.png'),
     originWidth: 128,
@@ -70,6 +75,11 @@ const icon_info = {
     originWidth: 90,
     originHeight: 132,
   },
+  ic_ticket_blink: {
+    source: require('./ic_ticket_blink.png'),
+    originWidth: 137,
+    originHeight: 66,
+  },
   ic_top: {
     source: require('./ic_top.png'),
     originWidth: 201,
@@ -96,8 +106,7 @@ const Icon = ({
     <TouchableOpacity
       activeOpacity={disabled ? 1 : 0.4}
       onPress={!disabled ? onPress : undefined}
-      {...options}
-    >
+      {...options}>
       <Image
         source={data.source}
         style={[
