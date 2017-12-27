@@ -5,7 +5,6 @@ const UNMOUNT = 'UNMOUNT';
 
 const initialState = {
   isLoggedIn: UNMOUNT,
-  provider: null,
   data: null,
 };
 export function auth(state = initialState, action) {
@@ -16,11 +15,10 @@ export function auth(state = initialState, action) {
        **/
       return {
         isLoggedIn: true,
-        provider: action.provider,
         data: action.data,
       };
     case AppAction.LOGOUT:
-      return { isLoggedIn: false, provider: null, data: null };
+      return { isLoggedIn: false, data: null };
     default:
       return state;
   }

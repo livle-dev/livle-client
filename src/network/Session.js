@@ -9,13 +9,8 @@ import { AppAction, MessageBarAction, ModalAction } from '../reducers/Actions';
  *  PW: 123
  */
 const TOKEN_KEY = '@LivleClient:token';
-const PROVIDER = { LIVLE: 'LIVLE', FACEBOOK: 'FACEBOOK' };
 
 /* MANAGE TOKEN */
-async function _setToken(token, provider) {
-  const item = { token: token, provider: provider };
-  await AsyncStorage.setItem(TOKEN_KEY, JSON.stringify(item));
-}
 async function _getToken() {
   const result = await AsyncStorage.getItem(TOKEN_KEY);
   const item = await JSON.parse(result);
@@ -25,8 +20,16 @@ async function _getToken() {
   }
   return item;
 }
-async function _removeToken() {
-  await AsyncStorage.removeItem(
+async function _setToken(token) {
+  const item = { token: token };
+
+  response = await _getToken();
+  if (!response) {
+    AsyncStorage.setItem(TOKEN_KEY, JSON.stringify(item));
+  }
+}
+function _removeToken() {
+  AsyncStorage.removeItem(
     TOKEN_KEY,
     err => delete axios.defaults.headers.common['Authorization']
   );
@@ -34,25 +37,24 @@ async function _removeToken() {
 /* END */
 
 /* GET DATA & DISPATCH FROM SERVER */
-const dispatchUserData = (provider, data) => dispatch => {
-  return dispatch({
+const dispatchUserData = data => dispatch => {
+  const { token, ...option } = data;
+  dispatch({
     type: AppAction.LOGIN,
-    provider: provider,
-    data: data,
+    data: { ...option },
+  });
+  dispatch({
+    type: MessageBarAction.SHOW_MESSAGE_BAR,
+    data: '로그인 되었습니다',
   });
 };
 
 function getLivleData(dispatch) {
-  // Call after _getToken
   return axios
     .get('/user')
     .then(response => {
       const { data } = response;
-      dispatchUserData(PROVIDER.LIVLE, data)(dispatch);
-      dispatch({
-        type: MessageBarAction.SHOW_MESSAGE_BAR,
-        data: '로그인 되었습니다',
-      });
+      dispatchUserData(data)(dispatch);
     })
     .catch(err => {
       /**
@@ -64,41 +66,24 @@ function getLivleData(dispatch) {
     });
 }
 
-function getFacebookData(dispatch) {
+const getFacebookData = facebookToken => dispatch => {
   return axios
-    .post(`/user/facebook`)
+    .post(`/user/facebook`, { accessToken: facebookToken })
     .then(response => {
       const { data } = response;
-      dispatchUserData(PROVIDER.FACEBOOK, data)(dispatch);
-      dispatch({
-        type: MessageBarAction.SHOW_MESSAGE_BAR,
-        data: '로그인 되었습니다',
-      });
+      _setToken(data.token);
+      dispatchUserData(data)(dispatch);
     })
     .catch(err => {
-      const { message } = err.response.data.error;
-      dispatch({
-        type: ModalAction.SHOW_MODAL,
-        data: {
-          type: 'notice',
-          text: message,
-        },
-      });
-
       dispatch({ type: AppAction.LOGOUT });
     });
-}
+};
 /* END */
 
 export const checkSession = dispatch => {
   return _getToken().then(res => {
     if (res) {
-      switch (res.provider) {
-        case PROVIDER.LIVLE:
-          return getLivleData(dispatch);
-        case PROVIDER.FACEBOOK:
-          return getFacebookData(dispatch);
-      }
+      return getLivleData(dispatch);
     } else {
       dispatch({ type: AppAction.LOGOUT });
     }
@@ -110,15 +95,8 @@ export const login = (email, password) => dispatch => {
     .post(`/user/session`, { email: email, password: password })
     .then(response => {
       const { data } = response;
-      _getToken().then(res => {
-        if (!res) _setToken(data.token, PROVIDER.LIVLE);
-
-        dispatchUserData(PROVIDER.LIVLE, data)(dispatch);
-        dispatch({
-          type: MessageBarAction.SHOW_MESSAGE_BAR,
-          data: '로그인 되었습니다',
-        });
-      });
+      _setToken(data.token);
+      dispatchUserData(data)(dispatch);
     })
     .catch(err => {
       /**
@@ -141,12 +119,8 @@ export const facebookLogin = dispatch => {
     result => {
       if (!result.isCancelled) {
         AccessToken.getCurrentAccessToken().then(data => {
-          const { accessToken, expirationTime } = data;
-
-          _getToken().then(res => {
-            if (!res) _setToken(accessToken, PROVIDER.FACEBOOK);
-            getFacebookData(dispatch);
-          });
+          const facebookToken = data.accessToken;
+          getFacebookData(facebookToken)(dispatch);
         });
       }
     },
@@ -157,30 +131,22 @@ export const facebookLogin = dispatch => {
 };
 
 export const logout = dispatch => {
-  _removeToken()
-    .then(() => {
-      LoginManager.logOut(); // Logout Facebook
-      dispatch({ type: AppAction.LOGOUT });
-      dispatch({
-        type: MessageBarAction.SHOW_MESSAGE_BAR,
-        data: '로그아웃 되었습니다',
-      });
-    })
-    .catch();
+  _removeToken(); // Logout Locally
+  LoginManager.logOut(); // Logout Facebook
+  dispatch({ type: AppAction.LOGOUT });
+  dispatch({
+    type: MessageBarAction.SHOW_MESSAGE_BAR,
+    data: '로그아웃 되었습니다',
+  });
 };
 
 export const signUp = (email, password, nickname) => dispatch => {
   return axios
-    .post('/user', { email: email, password: password })
+    .post('/user', { email: email, password: password, nickname: nickname })
     .then(response => {
       const { data } = response;
-      _setToken(data.token, PROVIDER.LIVLE);
-
-      dispatchUserData(PROVIDER.LIVLE, data)(dispatch);
-      dispatch({
-        type: MessageBarAction.SHOW_MESSAGE_BAR,
-        data: '가입 완료!',
-      });
+      _setToken(data.token);
+      dispatchUserData(data)(dispatch);
     })
     .catch(err => {
       /**
