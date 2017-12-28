@@ -1,5 +1,5 @@
 import axios from './axios';
-import { getTime, isFuture } from '../assets/functions';
+import { getTime, getDday, isFuture } from '../assets/functions';
 import {
   AppAction,
   TicketAction,
@@ -22,11 +22,19 @@ export const getAllTicket = dispatch => {
       let saveDate;
       data.map((item, index) => {
         const getDate = getTime(item.start_at).date;
+        const data_index = dataIndex.length - 1;
         if (!saveDate || saveDate !== getDate) {
           saveDate = getDate;
-          dataIndex.push({ cardIndex: index, dateIndex: dataIndex.length });
+          dataIndex.push({
+            calendar_index: getDday(item.start_at),
+            card_start: index,
+            card_end: index,
+          });
+        } else {
+          dataIndex[data_index].card_end = index;
         }
       });
+      console.log(dataIndex);
       dispatch({
         type: TicketAction.UPDATE_TICKET,
         data: data,

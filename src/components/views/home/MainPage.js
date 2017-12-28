@@ -39,18 +39,12 @@ class CardLists extends Component {
         lockScrollWhileSnapping={true}
         inactiveSlideScale={0.98}
         // callback
-        onSnapToItem={card_i => {
-          const index = dataIndex.findIndex((data, current) => {
+        onSnapToItem={card_index => {
+          dataIndex.map(item => {
             // card가 해당하는 calendar index를 반환
-            return dataIndex[current + 1]
-              ? data.cardIndex <= card_i &&
-                  card_i < dataIndex[current + 1].cardIndex
-              : -1;
+            if (item.card_start <= card_index && card_index <= item.card_end)
+              updateIndex(card_index, item.calendar_index);
           });
-
-          if (index !== -1) {
-            updateIndex(card_i, dataIndex[index].dateIndex);
-          }
         }}
       />
     );

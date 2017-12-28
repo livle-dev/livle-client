@@ -10,6 +10,12 @@ export function getTime(data) {
   };
 }
 
+export function getDday(data) {
+  const today = moment().startOf('date');
+  const d_day = moment(data).startOf('date');
+  return d_day.diff(today, 'days');
+}
+
 export function isFuture(timeTo, timeFrom) {
   const startAt = moment(timeFrom && timeFrom);
   const endAt = moment(timeTo);

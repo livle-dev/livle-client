@@ -70,13 +70,15 @@ export default class Calendar extends Component {
           // callback
           onSnapToItem={index => {
             if (this.state.isTouched) {
+              let isUpdate = false;
               this.setState({ isTouched: false });
-              try {
-                updateIndex(
-                  dataIndex[index].cardIndex,
-                  dataIndex[index].dateIndex
-                );
-              } catch (e) {
+              dataIndex.map(item => {
+                if (item.calendar_index === index) {
+                  isUpdate = true;
+                  updateIndex(item.card_start, index);
+                }
+              });
+              if (!isUpdate) {
                 showMessageBar('해당 날짜에 콘서트가 없습니다.');
                 this.carousel.snapToItem(storeInfo.calendarIndex);
               }
