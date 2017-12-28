@@ -11,21 +11,22 @@ import { getAllTicket } from './Ticket';
  */
 const TOKEN_KEY = '@LivleClient:token';
 
+function setHeader(item) {
+  if (item) axios.defaults.headers.common['Authorization'] = item.token;
+}
 /* MANAGE TOKEN */
 async function _getToken() {
   const result = await AsyncStorage.getItem(TOKEN_KEY);
   const item = await JSON.parse(result);
-  if (item) {
-    // set header
-    axios.defaults.headers.common['Authorization'] = item.token;
-  }
+  setHeader(item);
   return item;
 }
 async function _setToken(token) {
   const item = { token: token };
-
-  response = await _getToken();
+  const response = await _getToken();
   if (!response) {
+    console.log('[AsyncStorage]: Has no token');
+    setHeader(item);
     AsyncStorage.setItem(TOKEN_KEY, JSON.stringify(item));
   }
 }
@@ -44,6 +45,7 @@ const dispatchUserData = data => dispatch => {
     type: AppAction.LOGIN,
     data: { ...option },
   });
+  getAllTicket(dispatch);
   dispatch({
     type: MessageBarAction.SHOW_MESSAGE_BAR,
     message: '로그인 되었습니다',
@@ -56,7 +58,6 @@ function getLivleData(dispatch) {
     .then(response => {
       const { data } = response;
       dispatchUserData(data)(dispatch);
-      getAllTicket(dispatch);
     })
     .catch(err => {
       dispatch({ type: AppAction.LOGOUT });

@@ -41,7 +41,6 @@ class CardLists extends Component {
         // callback
         onSnapToItem={card_index => {
           dataIndex.map(item => {
-            // card가 해당하는 calendar index를 반환
             if (item.card_start <= card_index && card_index <= item.card_end)
               updateIndex(card_index, item.calendar_index);
           });
@@ -54,7 +53,6 @@ class CardLists extends Component {
 export default class MainPage extends Component {
   render() {
     const { ticket, storeInfo, updateIndex, showMessageBar } = this.props;
-
     return ticket.data.length > 0 ? (
       <View style={styles.blackBackground}>
         <CardLists
@@ -72,7 +70,7 @@ export default class MainPage extends Component {
       </View>
     ) : (
       <View style={[styles.blackBackground, styles.alignCenter]}>
-        <Text>메인페이지 로딩중...</Text>
+        <Text style={styles.textDefault}>메인페이지 로딩중...</Text>
       </View>
     );
   }
