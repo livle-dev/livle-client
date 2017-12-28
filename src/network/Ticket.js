@@ -53,15 +53,6 @@ export const getAllTicket = dispatch => {
     .catch(err => console.log(err.response));
 };
 
-export const getSingleTicket = id => dispatch => {
-  return axios
-    .get(`/ticket/${id}/stats`)
-    .then(res => res.data)
-    .catch(err => {
-      // console.log(err.response);
-    });
-};
-
 export const canReserveTicket = (auth, data) => dispatch => {
   const { free_trial_started_at, cancelled_at, suspended_by, valid_by } = auth;
 

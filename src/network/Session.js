@@ -25,7 +25,6 @@ async function _setToken(token) {
   const item = { token: token };
   const response = await _getToken();
   if (!response) {
-    console.log('[AsyncStorage]: Has no token');
     setHeader(item);
     AsyncStorage.setItem(TOKEN_KEY, JSON.stringify(item));
   }

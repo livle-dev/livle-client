@@ -44,13 +44,13 @@ const Numbox = ({
 
 export default class SubscribePage extends Component {
   state = {
-    card: ['', '', '', ''],
+    cardNumber: ['', '', '', ''],
     password: '',
     cvc: '',
-    valid: ['', ''],
+    expiry: ['', ''],
     inputIndex: {
-      card: 0,
-      valid: 0,
+      cardNumber: 0,
+      expiry: 0,
     },
   };
 
@@ -61,15 +61,17 @@ export default class SubscribePage extends Component {
   };
 
   _handleCard = text => {
-    const { card, inputIndex } = this.state;
-    let updateCard = card;
-    updateCard[inputIndex.card] = text;
-    this.setState({ card: updateCard });
+    const { cardNumber, inputIndex } = this.state;
+    let updateCard = cardNumber;
+    updateCard[inputIndex.cardNumber] = text;
+    this.setState({ cardNumber: updateCard });
 
     if (text.length === 0) {
-      if (0 < inputIndex.card) this.inputCard[inputIndex.card - 1].focus();
+      if (0 < inputIndex.cardNumber)
+        this.inputCard[inputIndex.cardNumber - 1].focus();
     } else if (text.length === 4) {
-      if (inputIndex.card < 3) this.inputCard[inputIndex.card + 1].focus();
+      if (inputIndex.cardNumber < 3)
+        this.inputCard[inputIndex.cardNumber + 1].focus();
       else this.inputPassword.focus();
     }
   };
@@ -79,17 +81,19 @@ export default class SubscribePage extends Component {
   };
   _handleCVC = text => {
     this.setState({ cvc: text });
-    if (text.length === 3) this.inputValid[0].focus();
+    if (text.length === 3) this.inputExpiry[0].focus();
   };
-  _handleValid = text => {
-    const { valid, inputIndex } = this.state;
-    let updateValid = valid;
-    updateValid[inputIndex.valid] = text;
+  _handleExpiry = text => {
+    const { expiry, inputIndex } = this.state;
+    let updateExpiry = expiry;
+    updateExpiry[inputIndex.expiry] = text;
 
     if (text.length === 0) {
-      if (0 < inputIndex.valid) this.inputValid[inputIndex.valid - 1].focus();
+      if (0 < inputIndex.expiry)
+        this.inputExpiry[inputIndex.expiry - 1].focus();
     } else if (text.length === 2) {
-      if (inputIndex.valid < 1) this.inputValid[inputIndex.valid + 1].focus();
+      if (inputIndex.expiry < 1)
+        this.inputExpiry[inputIndex.expiry + 1].focus();
     }
   };
 
@@ -97,7 +101,7 @@ export default class SubscribePage extends Component {
     const { navigation } = this.props;
     // refs
     this.inputCard = [];
-    this.inputValid = [];
+    this.inputExpiry = [];
 
     return (
       <View style={styles.flex_1}>
@@ -151,28 +155,28 @@ export default class SubscribePage extends Component {
                 placeholder="****"
                 onChangeText={this._handleCard}
                 maxLength={4}
-                onFocus={() => this._updateIndex('card', 0)}
+                onFocus={() => this._updateIndex('cardNumber', 0)}
               />
               <Numbox
                 inputRef={c => (this.inputCard[1] = c)}
                 placeholder="****"
                 onChangeText={this._handleCard}
                 maxLength={4}
-                onFocus={() => this._updateIndex('card', 1)}
+                onFocus={() => this._updateIndex('cardNumber', 1)}
               />
               <Numbox
                 inputRef={c => (this.inputCard[2] = c)}
                 placeholder="****"
                 onChangeText={this._handleCard}
                 maxLength={4}
-                onFocus={() => this._updateIndex('card', 2)}
+                onFocus={() => this._updateIndex('cardNumber', 2)}
               />
               <Numbox
                 inputRef={c => (this.inputCard[3] = c)}
                 placeholder="****"
                 onChangeText={this._handleCard}
                 maxLength={4}
-                onFocus={() => this._updateIndex('card', 3)}
+                onFocus={() => this._updateIndex('cardNumber', 3)}
               />
             </View>
             {/* END */}
@@ -223,19 +227,19 @@ export default class SubscribePage extends Component {
                 유효기간
               </Text>
               <Numbox
-                inputRef={c => (this.inputValid[0] = c)}
+                inputRef={c => (this.inputExpiry[0] = c)}
                 placeholder="월"
-                onChangeText={this._handleValid}
+                onChangeText={this._handleExpiry}
                 maxLength={3}
-                onFocus={() => this._updateIndex('valid', 0)}
+                onFocus={() => this._updateIndex('expiry', 0)}
               />
               <Text style={settingStyle.contentValueText}>{` / `}</Text>
               <Numbox
-                inputRef={c => (this.inputValid[1] = c)}
+                inputRef={c => (this.inputExpiry[1] = c)}
                 placeholder="년"
-                onChangeText={this._handleValid}
+                onChangeText={this._handleExpiry}
                 maxLength={3}
-                onFocus={() => this._updateIndex('valid', 1)}
+                onFocus={() => this._updateIndex('expiry', 1)}
               />
             </View>
             {/* END */}

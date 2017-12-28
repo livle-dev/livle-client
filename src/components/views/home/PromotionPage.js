@@ -15,7 +15,12 @@ import { promotionStyle } from '../../../assets/stylesheets/local/promotionPageS
 
 const TicketRow = ({ text }) => {
   return (
-    <View style={[promotionStyle.ticketRowMargin, styles.rowDirection]}>
+    <View
+      style={[
+        promotionStyle.ticketRowMargin,
+        styles.rowDirection,
+        styles.horizontalCenter,
+      ]}>
       <Icon
         src="ic_check_white"
         height={12}
