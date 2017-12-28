@@ -3,6 +3,7 @@ import { getTime, getDday, isFuture } from '../assets/functions';
 import {
   AppAction,
   TicketAction,
+  MainAction,
   ModalAction,
   MessageBarAction,
 } from '../reducers/Actions';
@@ -18,7 +19,7 @@ export const getAllTicket = dispatch => {
       return sortData;
     })
     .then(data => {
-      let dataIndex = []; //cardIndex, dateIndex간 관계를 담아둔 array
+      let dataIndex = []; //card_index, calendar_index의 관계
       let saveDate;
       data.map((item, index) => {
         const getDate = getTime(item.start_at).date;
@@ -34,11 +35,16 @@ export const getAllTicket = dispatch => {
           dataIndex[data_index].card_end = index;
         }
       });
-      console.log(dataIndex);
+
       dispatch({
         type: TicketAction.UPDATE_TICKET,
         data: data,
         dataIndex: dataIndex,
+      });
+      dispatch({
+        type: MainAction.UPDATE_INDEX,
+        cardIndex: dataIndex[0].card_start,
+        calendarIndex: dataIndex[0].calendar_index,
       });
 
       return Promise.resolve(dispatch);
@@ -120,7 +126,6 @@ export const getReserveTicket = dispatch => {
         type: TicketAction.UPDATE_RESERVATION,
         data: data,
       });
-      console.log(data);
     })
     .catch(err => {
       console.log(err.response);
