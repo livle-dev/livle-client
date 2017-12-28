@@ -33,6 +33,11 @@ export const settingStyle = StyleSheet.create({
     font_size.fs_2,
     font_style.regular,
   ]),
+  numInputcontainer: {
+    width: percent('width', 18),
+    borderBottomWidth: 2,
+    borderBottomColor: color_string.green_light,
+  },
 });
 
 export const noticeStyle = StyleSheet.create({

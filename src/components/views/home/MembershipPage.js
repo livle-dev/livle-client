@@ -1,18 +1,14 @@
 // Libraries
 import React, { Component } from 'react';
-import {
-  View,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  Platform,
-} from 'react-native';
+import { View, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 // Views
 import StackPage from '../partials/StackPage';
 import _SettingCard from '../partials/_SettingCard';
 import _SquareButton from '../partials/_SquareButton';
+// Actions
+import { AppAction } from '../../../reducers/Actions';
 // Strings
 import { membership_string } from '../../../assets/strings';
 // Styles
@@ -26,7 +22,6 @@ const MembershipPage = ({ navigation }) => {
   return (
     <StackPage title={title} navigation={navigation}>
       <ScrollView style={styles.blackBackground}>
-        {Platform.OS === 'ios' && <View style={{ height: 20 }} />}
         <_SettingCard
           type="string"
           title={membership_string.membershipInfo}
@@ -63,9 +58,7 @@ const MembershipPage = ({ navigation }) => {
           <_SquareButton
             backgroundColor={color_string.green_dark_dark}
             text="카드 변경하기"
-            onPress={() => {
-              // TODO: 카드 변경하는 액션 추가
-            }}
+            onPress={() => navigation.dispatch({ type: AppAction.SUBSCRIBE })}
           />
           <_SquareButton
             backgroundColor={color_string.green_dark_dark}

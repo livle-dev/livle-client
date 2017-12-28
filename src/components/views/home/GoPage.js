@@ -95,8 +95,7 @@ export default class GoPage extends Component {
       <KeyboardAwareScrollView
         innerRef={ref => (this.scroll = ref)}
         style={styles.blackBackground}
-        enableAutoAutomaticScroll={false}
-        keyboardShouldPersistTaps="always">
+        enableAutoAutomaticScroll={false}>
         <View style={container.fullContainer}>
           <View style={styles.horizontalCenter}>
             {hasItem ? (

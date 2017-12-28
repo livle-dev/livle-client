@@ -149,11 +149,11 @@ export const reserveTicket = id => dispatch => {
           showLogo: true,
         },
       });
-      return true;
+      return Promise.resolve(true);
     })
     .catch(err => {
       console.log(err.response);
-      return false;
+      return Promise.resolve(false);
     });
 };
 

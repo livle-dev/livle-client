@@ -22,8 +22,7 @@ const CardContent = ({ type, index, content }) => {
             container.textContainer,
             styles.rowDirection,
             { marginTop: index > 0 ? 24 : 0 },
-          ]}
-        >
+          ]}>
           <Text style={[settingStyle.contentTitleText, styles.flex_1]}>
             {title}
           </Text>
@@ -37,8 +36,7 @@ const CardContent = ({ type, index, content }) => {
             container.textContainer,
             styles.rowDirection,
             { marginTop: index > 0 ? 24 : 0 },
-          ]}
-        >
+          ]}>
           <Text style={[settingStyle.contentTitleText, styles.flex_1]}>
             {title}
           </Text>
@@ -58,8 +56,7 @@ const CardContent = ({ type, index, content }) => {
               title: title,
               body: body,
             });
-          }}
-        >
+          }}>
           <Text style={[settingStyle.contentTitleText, styles.flex_1]}>
             {title}
           </Text>
@@ -79,8 +76,7 @@ const CardContent = ({ type, index, content }) => {
               title: title,
               body: body,
             });
-          }}
-        >
+          }}>
           <Text style={[settingStyle.contentTitleText, styles.flex_1]}>
             {title}
           </Text>
@@ -103,7 +99,7 @@ CardContent.propTypes = {
   index: PropTypes.number,
 };
 
-const _SettingCard = ({ title, type, contents }) => {
+const _SettingCard = ({ title, type, contents, children }) => {
   return (
     <View style={styles.fullWidth}>
       <View style={[settingStyle.titleContainer, styles.verticalCenter]}>
@@ -117,6 +113,7 @@ const _SettingCard = ({ title, type, contents }) => {
             <CardContent type={type} index={i} key={i} content={content} />
           );
         })}
+        {children}
       </View>
     </View>
   );

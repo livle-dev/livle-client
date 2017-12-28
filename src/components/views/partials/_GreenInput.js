@@ -4,8 +4,7 @@ import { View, TextInput, Text } from 'react-native';
 import PropTypes from 'prop-types';
 // Styles
 import { styles, container } from '../../../assets/stylesheets/global/Style';
-import { color, color_string } from '../../../assets/stylesheets/global/Color';
-import { font_style, font_size } from '../../../assets/fonts/Font';
+import { color_string } from '../../../assets/stylesheets/global/Color';
 
 const _GreenInput = props => {
   const { placeholder, onChangeText, errorMessage, ...ect } = props;
@@ -13,12 +12,7 @@ const _GreenInput = props => {
   return (
     <View style={[styles.horizontalRight, container.textInputContainer]}>
       <TextInput
-        style={[
-          styles.textInput,
-          font_style.regular,
-          font_size.fs_2,
-          color.white,
-        ]}
+        style={styles.textInput}
         underlineColorAndroid="transparent"
         placeholder={placeholder}
         placeholderTextColor={color_string.green_light_clear}

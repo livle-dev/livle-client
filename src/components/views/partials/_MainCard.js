@@ -42,7 +42,7 @@ const HoverButtons = ({ isGo, showTopButton, clickTop, ...option }) => {
 const SnapCard = ({ data, ...option }) => {};
 
 class _MainCard extends Component {
-  // utils
+  /* UTILS */
   _updateGoState(data) {
     const { reservation } = this.props;
     return reservation.find(item => item.ticket_id === data.id) !== undefined;
@@ -55,9 +55,9 @@ class _MainCard extends Component {
       this.setState({ showTopButton: false });
     }
   }
-  // end
+  /* END */
 
-  // views
+  /* VIEWS */
   _carousel = ticket_info => (
     <Carousel
       ref={c => {
@@ -117,7 +117,7 @@ class _MainCard extends Component {
       ),
     });
   };
-  // end
+  /* END */
 
   state = {
     isGo: this._updateGoState(this.props.data),
