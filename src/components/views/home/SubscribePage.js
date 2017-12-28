@@ -1,6 +1,6 @@
 // Libraries
 import React, { Component } from 'react';
-import { Text, View, TextInput } from 'react-native';
+import { Text, View, TextInput, findNodeHandle } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 // Views
 import TopTitle from '../partials/TopTitle';
@@ -8,6 +8,10 @@ import _SettingCard from '../partials/_SettingCard';
 import _SquareButton from '../partials/_SquareButton';
 // Strings
 import { membership_string } from '../../../assets/strings';
+// Network
+import { subscribe, cancelSubscribe } from '../../../network';
+// Actions
+import { ModalAction } from '../../../reducers/Actions';
 // Styles
 import {
   styles,
@@ -60,6 +64,19 @@ export default class SubscribePage extends Component {
     this.setState({ inputIndex: updateIndex });
   };
 
+  _scrollToInput = target => this.scroll.props.scrollToFocusedInput(target);
+
+  _checkInputs() {
+    const checkCardNumber =
+      this.state.cardNumber.find(item => item.length < 4) === undefined;
+    const checkPassword = this.state.password.length === 2;
+    const checkCVC = this.state.cvc.length === 3;
+    const checkExpiry =
+      this.state.expiry.find(item => item.length < 2) === undefined;
+    return checkCardNumber && checkPassword && checkCVC && checkExpiry;
+  }
+
+  /* HANDLE INPUT */
   _handleCard = text => {
     const { cardNumber, inputIndex } = this.state;
     let updateCard = cardNumber;
@@ -96,6 +113,7 @@ export default class SubscribePage extends Component {
         this.inputExpiry[inputIndex.expiry + 1].focus();
     }
   };
+  /* END */
 
   render() {
     const { navigation } = this.props;
@@ -108,7 +126,8 @@ export default class SubscribePage extends Component {
         <TopTitle title="멤버십 등록" onPress={() => navigation.goBack()} />
         <KeyboardAwareScrollView
           innerRef={ref => (this.scroll = ref)}
-          style={styles.blackBackground}>
+          style={styles.blackBackground}
+          keyboardShouldPersistTaps="never">
           <View style={navbar.navbarAreaFit} />
           <_SettingCard
             type="string"
@@ -155,28 +174,40 @@ export default class SubscribePage extends Component {
                 placeholder="****"
                 onChangeText={this._handleCard}
                 maxLength={4}
-                onFocus={() => this._updateIndex('cardNumber', 0)}
+                onFocus={e => {
+                  this._updateIndex('cardNumber', 0);
+                  this._scrollToInput(findNodeHandle(e.target));
+                }}
               />
               <Numbox
                 inputRef={c => (this.inputCard[1] = c)}
                 placeholder="****"
                 onChangeText={this._handleCard}
                 maxLength={4}
-                onFocus={() => this._updateIndex('cardNumber', 1)}
+                onFocus={e => {
+                  this._updateIndex('cardNumber', 1);
+                  this._scrollToInput(findNodeHandle(e.target));
+                }}
               />
               <Numbox
                 inputRef={c => (this.inputCard[2] = c)}
                 placeholder="****"
                 onChangeText={this._handleCard}
                 maxLength={4}
-                onFocus={() => this._updateIndex('cardNumber', 2)}
+                onFocus={e => {
+                  this._updateIndex('cardNumber', 2);
+                  this._scrollToInput(findNodeHandle(e.target));
+                }}
               />
               <Numbox
                 inputRef={c => (this.inputCard[3] = c)}
                 placeholder="****"
                 onChangeText={this._handleCard}
                 maxLength={4}
-                onFocus={() => this._updateIndex('cardNumber', 3)}
+                onFocus={e => {
+                  this._updateIndex('cardNumber', 3);
+                  this._scrollToInput(findNodeHandle(e.target));
+                }}
               />
             </View>
             {/* END */}
@@ -195,6 +226,7 @@ export default class SubscribePage extends Component {
                 placeholder="**"
                 onChangeText={this._handlePassword}
                 maxLength={2}
+                onFocus={e => this._scrollToInput(findNodeHandle(e.target))}
               />
             </View>
             {/* END */}
@@ -213,6 +245,7 @@ export default class SubscribePage extends Component {
                 placeholder="***"
                 onChangeText={this._handleCVC}
                 maxLength={3}
+                onFocus={e => this._scrollToInput(findNodeHandle(e.target))}
               />
             </View>
             {/* END */}
@@ -231,7 +264,10 @@ export default class SubscribePage extends Component {
                 placeholder="월"
                 onChangeText={this._handleExpiry}
                 maxLength={3}
-                onFocus={() => this._updateIndex('expiry', 0)}
+                onFocus={e => {
+                  this._updateIndex('expiry', 0);
+                  this._scrollToInput(findNodeHandle(e.target));
+                }}
               />
               <Text style={settingStyle.contentValueText}>{` / `}</Text>
               <Numbox
@@ -239,7 +275,10 @@ export default class SubscribePage extends Component {
                 placeholder="년"
                 onChangeText={this._handleExpiry}
                 maxLength={3}
-                onFocus={() => this._updateIndex('expiry', 1)}
+                onFocus={e => {
+                  this._updateIndex('expiry', 1);
+                  this._scrollToInput(findNodeHandle(e.target));
+                }}
               />
             </View>
             {/* END */}
@@ -248,7 +287,18 @@ export default class SubscribePage extends Component {
             <_SquareButton
               backgroundColor={color_string.green_dark_dark}
               text="멤버십 등록하기"
-              onPress={() => console.log(this.state)}
+              onPress={() => {
+                // subscribe(this.state.cardNumber, this.state.password, this.state.cvc, this.state.expiry)(navigation.dispatch)
+                if (this._checkInputs()) console.log(this.state);
+                else
+                  navigation.dispatch({
+                    type: ModalAction.SHOW_MODAL,
+                    data: {
+                      type: 'check',
+                      text: '모든 결제정보를 입력해주세요',
+                    },
+                  });
+              }}
             />
           </View>
         </KeyboardAwareScrollView>

@@ -1,16 +1,39 @@
 import axios from './axios';
-import {} from '../reducers/Actions';
+import { AuthAction } from '../reducers/Actions';
 
 export const subscribe = (cardNumber, password, birth, expiry) => dispatch => {
+  const sortCardNumber = `${cardNumber[0]}-${cardNumber[1]}-${cardNumber[2]}-${
+    cardNumber[3]
+  }`;
+  const sortExpiry = `20${expiry[1]}-${expiry[0]}`;
   return axios
     .post(`/subscription`, {
-      cardNumber: cardNumber,
+      cardNumber: sortCardNumber,
       password: password,
       birth: birth,
-      expiry: expiry,
+      expiry: sortExpiry,
     })
-    .then(res => {
-      console.log(res.data);
+    .then(response => {
+      const { token, ...option } = response.data;
+      dispatch({
+        type: AuthAction.UPDATE_USER_DATA,
+        data: { ...option },
+      });
+    })
+    .catch(err => {
+      console.log(err.response);
+    });
+};
+
+export const cancelSubscribe = dispatch => {
+  return axios
+    .delete(`/subscription`)
+    .then(response => {
+      const { token, ...option } = response.data;
+      dispatch({
+        type: AuthAction.UPDATE_USER_DATA,
+        data: { ...option },
+      });
     })
     .catch(err => {
       console.log(err.response);
