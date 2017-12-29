@@ -73,7 +73,7 @@ export function ticket(state = initialState, action) {
        **/
       const updateCode = updateReservation.find(data => data.id === action.id);
       updateCode.code = action.code;
-      return { ...state, reservation: updateCode };
+      return { ...state, reservation: updateReservation };
     }
     default:
       return state;
