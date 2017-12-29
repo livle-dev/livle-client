@@ -148,7 +148,15 @@ export const reserveTicket = id => dispatch => {
       return Promise.resolve(true);
     })
     .catch(err => {
-      console.log(err.response);
+      dispatch({
+        type: ModalAction.SHOW_MODAL,
+        data: {
+          type: 'check',
+          text: '에러가 발생했습니다',
+          showLogo: true,
+        },
+      });
+      console.log(err.response.data);
       return Promise.resolve(false);
     });
 };

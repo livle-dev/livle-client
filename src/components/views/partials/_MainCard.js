@@ -43,11 +43,6 @@ const SnapCard = ({ data, ...option }) => {};
 
 class _MainCard extends Component {
   /* UTILS */
-  _updateGoState(data) {
-    const { reservation } = this.props;
-    return reservation.find(item => item.ticket_id === data.id) !== undefined;
-  }
-
   _snapToTop() {
     if (Platform.OS === 'ios') {
       this.carousel.snapToPrev();
@@ -119,36 +114,28 @@ class _MainCard extends Component {
   };
   /* END */
 
-  state = {
-    isGo: this._updateGoState(this.props.data),
-    showTopButton: false,
-  };
+  state = { showTopButton: false };
 
   componentWillReceiveProps(props) {
     if (props.curIndex !== props.cardIndex) this._snapToTop();
-    this.setState({ isGo: this._updateGoState(props.data) });
   }
 
   render() {
     const { auth, data, dispatch } = this.props;
     const { isGo, showTopButton } = this.state;
 
+    const hasReservation = data.reservation_id !== null;
+
     return (
       <View>
         {this._snapCard()}
         <HoverButtons
-          isGo={isGo}
+          isGo={hasReservation}
           showTopButton={showTopButton}
           clickTop={() => this._snapToTop()}
           onPress={() => {
-            if (isGo) {
-              cancelTicket(data.id)(dispatch);
-              this.setState({ isGo: false });
-            } else {
-              console.log(data);
-              if (canReserveTicket(auth, data)(dispatch))
-                this.setState({ isGo: true });
-            }
+            if (hasReservation) cancelTicket(data.reservation_id)(dispatch);
+            else canReserveTicket(auth, data)(dispatch);
           }}
         />
       </View>
