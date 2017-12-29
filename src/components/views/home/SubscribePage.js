@@ -9,7 +9,9 @@ import _SquareButton from '../partials/_SquareButton';
 // Strings
 import { membership_string } from '../../../assets/strings';
 // Network
-import { subscribe, cancelSubscribe } from '../../../network';
+import { subscribe } from '../../../network';
+// Functions
+import { getTime } from '../../../assets/functions';
 // Actions
 import { ModalAction } from '../../../reducers/Actions';
 // Styles
@@ -50,7 +52,7 @@ export default class SubscribePage extends Component {
   state = {
     cardNumber: ['', '', '', ''],
     password: '',
-    cvc: '',
+    birth: '',
     expiry: ['', ''],
     inputIndex: {
       cardNumber: 0,
@@ -70,10 +72,10 @@ export default class SubscribePage extends Component {
     const checkCardNumber =
       this.state.cardNumber.find(item => item.length < 4) === undefined;
     const checkPassword = this.state.password.length === 2;
-    const checkCVC = this.state.cvc.length === 3;
+    const checkBirth = this.state.birth.length === 6;
     const checkExpiry =
       this.state.expiry.find(item => item.length < 2) === undefined;
-    return checkCardNumber && checkPassword && checkCVC && checkExpiry;
+    return checkCardNumber && checkPassword && checkBirth && checkExpiry;
   }
 
   /* HANDLE INPUT */
@@ -89,16 +91,16 @@ export default class SubscribePage extends Component {
     } else if (text.length === 4) {
       if (inputIndex.cardNumber < 3)
         this.inputCard[inputIndex.cardNumber + 1].focus();
-      else this.inputPassword.focus();
+      else this.inputBirth.focus();
     }
+  };
+  _handleBirth = text => {
+    this.setState({ birth: text });
+    if (text.length === 6) this.inputPassword.focus();
   };
   _handlePassword = text => {
     this.setState({ password: text });
-    if (text.length === 2) this.inputCVC.focus();
-  };
-  _handleCVC = text => {
-    this.setState({ cvc: text });
-    if (text.length === 3) this.inputExpiry[0].focus();
+    if (text.length === 2) this.inputExpiry[0].focus();
   };
   _handleExpiry = text => {
     const { expiry, inputIndex } = this.state;
@@ -139,7 +141,7 @@ export default class SubscribePage extends Component {
               },
               {
                 title: membership_string.renewal,
-                value: '2018.01.21',
+                value: getTime(31, 'days').timestamp.format('YYYY년 MM월 DD일'),
               },
             ]}
           />
@@ -204,10 +206,30 @@ export default class SubscribePage extends Component {
                 placeholder="****"
                 onChangeText={this._handleCard}
                 maxLength={4}
+                secureTextEntry={true}
                 onFocus={e => {
                   this._updateIndex('cardNumber', 3);
                   this._scrollToInput(findNodeHandle(e.target));
                 }}
+              />
+            </View>
+            {/* END */}
+            {/* Birth */}
+            <View
+              style={[
+                container.textContainer,
+                styles.rowDirection,
+                { marginTop: 24 },
+              ]}>
+              <Text style={[settingStyle.contentTitleText, styles.flex_1]}>
+                생년월일 (6자리)
+              </Text>
+              <Numbox
+                inputRef={c => (this.inputBirth = c)}
+                placeholder="990615"
+                onChangeText={this._handleBirth}
+                maxLength={6}
+                onFocus={e => this._scrollToInput(findNodeHandle(e.target))}
               />
             </View>
             {/* END */}
@@ -226,25 +248,6 @@ export default class SubscribePage extends Component {
                 placeholder="**"
                 onChangeText={this._handlePassword}
                 maxLength={2}
-                onFocus={e => this._scrollToInput(findNodeHandle(e.target))}
-              />
-            </View>
-            {/* END */}
-            {/* CVC */}
-            <View
-              style={[
-                container.textContainer,
-                styles.rowDirection,
-                { marginTop: 24 },
-              ]}>
-              <Text style={[settingStyle.contentTitleText, styles.flex_1]}>
-                CVC
-              </Text>
-              <Numbox
-                inputRef={c => (this.inputCVC = c)}
-                placeholder="***"
-                onChangeText={this._handleCVC}
-                maxLength={3}
                 onFocus={e => this._scrollToInput(findNodeHandle(e.target))}
               />
             </View>
@@ -288,8 +291,15 @@ export default class SubscribePage extends Component {
               backgroundColor={color_string.green_dark_dark}
               text="멤버십 등록하기"
               onPress={() => {
-                // subscribe(this.state.cardNumber, this.state.password, this.state.cvc, this.state.expiry)(navigation.dispatch)
-                if (this._checkInputs()) console.log(this.state);
+                if (this._checkInputs())
+                  subscribe(
+                    this.state.cardNumber,
+                    this.state.birth,
+                    this.state.password,
+                    this.state.expiry
+                  )(navigation.dispatch).then(() => {
+                    navigation.goBack();
+                  });
                 else
                   navigation.dispatch({
                     type: ModalAction.SHOW_MODAL,
