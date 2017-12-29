@@ -95,7 +95,8 @@ export default class GoPage extends Component {
       <KeyboardAwareScrollView
         innerRef={ref => (this.scroll = ref)}
         style={styles.blackBackground}
-        enableAutoAutomaticScroll={false}>
+        enableAutoAutomaticScroll={false}
+        keyboardShouldPersistTaps="always">
         <View style={container.fullContainer}>
           <View style={styles.horizontalCenter}>
             {hasItem ? (
@@ -119,13 +120,15 @@ export default class GoPage extends Component {
               <View style={goStyle.bottomContainer}>
                 <_SquareButton
                   backgroundColor={
-                    [curIndex].code.length >= 4
+                    reservation[curIndex].code.length >= 4
                       ? color_string.green_light
                       : color_string.gray_light
                   }
                   text={go_string.confirmEntry}
                   disabled={reservation[curIndex].code.length < 4}
-                  onPress={() => {}}
+                  onPress={() => {
+                    console.log('press');
+                  }}
                 />
               </View>
             )}

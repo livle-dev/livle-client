@@ -48,7 +48,7 @@ export default ({ item }) => {
       <View style={container.contentContainer}>
         <ShowInfo data={ticket_data} />
         <View style={[goStyle.confirm_container, styles.alignCenter]}>
-          <GoCheckEnter dataId={data.id} isConfirmed={isConfirmed} />
+          <GoCheckEnter dataId={item.id} isConfirmed={isConfirmed} />
         </View>
       </View>
     </ImageBackground>

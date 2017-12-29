@@ -116,8 +116,8 @@ export const canReserveTicket = (auth, data) => dispatch => {
 export const getReserveTicket = dispatch => {
   return axios
     .get(`/reservation`)
-    .then(res => {
-      const { data } = res;
+    .then(response => {
+      const { data } = response;
       dispatch({
         type: TicketAction.UPDATE_RESERVATION,
         data: data,
@@ -131,8 +131,8 @@ export const getReserveTicket = dispatch => {
 export const reserveTicket = id => dispatch => {
   return axios
     .post(`/ticket/${id}/reserve`)
-    .then(res => {
-      const { data } = res;
+    .then(response => {
+      const { data } = response;
       dispatch({
         type: TicketAction.ADD_RESERVATION,
         data: data,
@@ -156,7 +156,7 @@ export const reserveTicket = id => dispatch => {
 export const cancelTicket = id => dispatch => {
   return axios
     .delete(`/reservation/${id}`)
-    .then(res => {
+    .then(response => {
       dispatch({
         type: TicketAction.CANCEL_RESERVATION,
         id: id,
@@ -178,8 +178,8 @@ export const cancelTicket = id => dispatch => {
 export const checkIn = (id, code) => dispatch => {
   return axios
     .post(`/reservation/${id}/check`, { code: code })
-    .then(res => {
-      console.log(res.data);
+    .then(response => {
+      console.log(response.data);
     })
     .catch(err => {
       console.log(err.response);
