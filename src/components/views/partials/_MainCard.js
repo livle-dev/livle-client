@@ -95,7 +95,7 @@ class _MainCard extends Component {
         image: data.image,
         start_at: data.start_at,
         end_at: data.end_at,
-        vacancies: data.vacancies,
+        capacity: data.capacity,
         artists: data.artists,
       },
       {
@@ -145,6 +145,7 @@ class _MainCard extends Component {
               cancelTicket(data.id)(dispatch);
               this.setState({ isGo: false });
             } else {
+              console.log(data);
               if (canReserveTicket(auth, data)(dispatch))
                 this.setState({ isGo: true });
             }

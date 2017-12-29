@@ -137,7 +137,7 @@ export default class SubscribePage extends Component {
             contents={[
               {
                 title: membership_string.plan,
-                value: 'UNLIMITED',
+                value: 'BASIC',
               },
               {
                 title: membership_string.renewal,

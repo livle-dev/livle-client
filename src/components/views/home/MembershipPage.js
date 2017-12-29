@@ -34,7 +34,7 @@ const MembershipPage = ({ navigation }) => {
     const { free_trial_started_at, valid_by } = body;
     if (getDday(valid_by) - getDday(free_trial_started_at) === 8)
       return 'FREE TRIAL';
-    else return 'UNLIMITED';
+    else return 'BASIC';
   }
 
   return (
@@ -77,7 +77,17 @@ const MembershipPage = ({ navigation }) => {
             <_SquareButton
               backgroundColor={color_string.green_dark_dark}
               text="멤버십 해지하기"
-              onPress={() => cancelSubscribe(navigation.dispatch)}
+              onPress={() =>
+                this.props.dispatch({
+                  type: ModalAction.SHOW_MODAL,
+                  data: {
+                    type: 'select',
+                    text: '정말 멤버십을 해지하시겠어요?',
+                    buttonText: '해지하기',
+                    onPress: () => cancelSubscribe(navigation.dispatch),
+                  },
+                })
+              }
             />
           ) : (
             <_SquareButton

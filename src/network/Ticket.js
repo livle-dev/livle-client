@@ -54,7 +54,12 @@ export const getAllTicket = dispatch => {
 };
 
 export const canReserveTicket = (auth, data) => dispatch => {
-  const { free_trial_started_at, cancelled_at, suspended_by, valid_by } = auth;
+  const {
+    free_trial_started_at,
+    cancelled_at,
+    suspended_by,
+    valid_by,
+  } = auth.data;
 
   if (valid_by) {
     // 구독한 정보가 있음
@@ -62,7 +67,7 @@ export const canReserveTicket = (auth, data) => dispatch => {
       // 구독만료일이 공연일 이후
       if (!suspended_by || !isFuture(suspended_by)) {
         // 패널티가 없거나 끝남
-        if (data.vacancies > 0) {
+        if (data.capacity > 0) {
           // 예약 가능한 자리가 있음
           return reserveTicket(data.id)(dispatch);
         } else {
@@ -79,7 +84,7 @@ export const canReserveTicket = (auth, data) => dispatch => {
         // 구독취소를 하지 않았거나 구독취소일이 공연일 이후
         if (!suspended_by || !isFuture(suspended_by)) {
           // 패널티가 없거나 끝남
-          if (data.vacancies > 0) {
+          if (data.capacity > 0) {
             // 예약 가능한 자리가 있음
             return reserveTicket(data.id)(dispatch);
           } else {
