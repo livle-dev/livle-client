@@ -92,6 +92,7 @@ export default class GoPage extends Component {
               sliderWidth={width.full}
               itemWidth={width.full}
               inactiveSlideScale={1}
+              keyboardShouldPersistTaps="handled"
             />
           ) : (
             <NoReservation />

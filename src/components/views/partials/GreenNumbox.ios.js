@@ -1,7 +1,6 @@
 // Libraries
 import React, { Component } from 'react';
 import { View, TextInput } from 'react-native';
-import { connect } from 'react-redux';
 // Actions
 import { TicketAction } from '../../../reducers/Actions';
 // Styles
@@ -30,23 +29,22 @@ function SingleNumbox({ inputRef, ...option }) {
   );
 }
 
-class GreenNumbox extends Component {
+export default class GreenNumbox extends Component {
   state = {
     entryCode: '',
     textIndex: 0,
     value: ['', '', '', ''],
   };
 
-  componentWillUpdate(props, state) {
-    const { dataId, dispatch } = props;
-    this.refs[state.textIndex].focus();
+  _updateStatus = (code, index) => {
+    this.refs[index].focus();
+    this.props.handleCode(code);
+  };
 
-    dispatch({
-      type: TicketAction.UPDATE_CODE,
-      id: dataId,
-      code: state.entryCode,
-    });
-  }
+  _checkFocus = boxIndex => {
+    const { textIndex } = this.state;
+    if (textIndex !== boxIndex) this.refs[textIndex].focus();
+  };
 
   _updateData = text => {
     // Filter: 입력중 || 글자 삭제[-1]
@@ -64,16 +62,12 @@ class GreenNumbox extends Component {
       updateValue[textIndex] = '';
     }
 
+    this._updateStatus(code || entryCode, index || textIndex);
     this.setState({
       entryCode: code || entryCode,
       textIndex: index || textIndex,
       value: updateValue,
     });
-  };
-
-  _checkFocus = boxIndex => {
-    const { textIndex } = this.state;
-    if (textIndex !== boxIndex) this.refs[textIndex].focus();
   };
 
   _handleBackspace = e => {
@@ -84,10 +78,12 @@ class GreenNumbox extends Component {
 
     if (entryCode.length < 4 && key === 'Backspace') {
       const index = 0 < textIndex ? textIndex - 1 : textIndex;
+      const updateCode = entryCode.slice(0, -1);
       updateValue[index] = '';
 
+      this._updateStatus(updateCode, index);
       this.setState({
-        entryCode: entryCode.slice(0, -1),
+        entryCode: updateCode,
         textIndex: index,
         value: updateValue,
       });
@@ -95,7 +91,7 @@ class GreenNumbox extends Component {
   };
 
   render() {
-    const { dataId, dispatch, ...option } = this.props;
+    const { ...option } = this.props;
     this.refs = [];
 
     return (
@@ -136,5 +132,3 @@ class GreenNumbox extends Component {
     );
   }
 }
-
-export default connect()(GreenNumbox);
