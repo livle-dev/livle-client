@@ -3,5 +3,6 @@ export const api_key = {
 };
 
 export const consts = {
+  asyncToken: '@LivleClient:token',
   urlPrefix: 'livle://',
 };

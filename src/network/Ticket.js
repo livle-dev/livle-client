@@ -54,63 +54,61 @@ export const getAllTicket = dispatch => {
 };
 
 export const canReserveTicket = (auth, data) => dispatch => {
-  const {
-    free_trial_started_at,
-    cancelled_at,
-    suspended_by,
-    valid_by,
-  } = auth.data;
+  const isVaildNow = isFuture(auth.data.valid_by, data.start_at);
+  const isCancelled = auth.data.cancelled_at;
+  const isSuspendEnd =
+    !auth.data.suspended_by || !isFuture(auth.data.suspended_by);
+  const isCapable = data.capacity > 0;
+  const didFreeTrial = auth.data.free_trial_started_at;
 
-  if (valid_by) {
-    // 구독한 정보가 있음
-    if (isFuture(valid_by, data.start_at)) {
-      // 구독만료일이 공연일 이후
-      if (!suspended_by || !isFuture(suspended_by)) {
-        // 패널티가 없거나 끝남
-        if (data.capacity > 0) {
-          // 예약 가능한 자리가 있음
-          return reserveTicket(data.id)(dispatch);
-        } else {
-          // 예약 가능한 자리가 없음
-          console.log('좌석이 매진되었습니다.');
-        }
-      } else {
-        // 패널티 진행중
-        console.log('패널티에 걸려있어 예약할 수 없습니다.');
-      }
-    } else {
-      // 구독만료일이 공연일 이전
-      if (!cancelled_at || isFuture(cancelled_at, data.start_at)) {
-        // 구독취소를 하지 않았거나 구독취소일이 공연일 이후
-        if (!suspended_by || !isFuture(suspended_by)) {
-          // 패널티가 없거나 끝남
-          if (data.capacity > 0) {
-            // 예약 가능한 자리가 있음
-            return reserveTicket(data.id)(dispatch);
-          } else {
-            // 예약 가능한 자리가 없음
-            console.log('좌석이 매진되었습니다.');
-          }
-        } else {
-          // 패널티 진행중
-          console.log('패널티에 걸려있어 예약할 수 없습니다.');
-        }
-      } else {
-        // 구독취소일이 공연일 이전
-        console.log('구독을 재개하여 콘서트를 즐기세요.');
-      }
-    }
-  } else {
-    // 구독한 정보가 없음
-    if (!free_trial_started_at) {
-      // free trial을 한 적이 없음
-      dispatch({ type: AppAction.PROMOTION });
-    } else {
-      // free trial을 한 적이 있음
-      console.log('구독 후에 예약할 수 있습니다.');
-    }
+  let error;
+
+  if (auth.data.valid_by)
+    if (isVaildNow)
+      if (isSuspendEnd)
+        if (isCapable) return reserveTicket(data.id)(dispatch);
+        else error = 'full_capacity';
+      else error = 'suspended';
+    else if (!isCancelled)
+      if (isSuspendEnd)
+        if (isCapable) return reserveTicket(data.id)(dispatch);
+        else error = 'full_capacity';
+      else error = 'suspended';
+    else error = 'reSubscribe';
+  else if (!didFreeTrial) error = 'startSubscribe';
+  else error = 'reSubscribe';
+
+  switch (error) {
+    case 'full_capacity':
+      return dispatch({
+        type: ModalAction.SHOW_MODAL,
+        data: { type: 'check', text: '좌석이 매진되었습니다.' },
+      });
+    case 'suspended':
+      return dispatch({
+        type: ModalAction.SHOW_MODAL,
+        data: {
+          type: 'check',
+          text: `노쇼에 대한 패널티로
+        ${getTime(auth.data.suspended_by).timestamp.format(
+          'MM월 DD일 hh시 mm분'
+        )}까지 이용이 불가합니다.`,
+        },
+      });
+    case 'startSubscribe':
+      return dispatch({ type: AppAction.PROMOTION });
+    case 'reSubscribe':
+      return dispatch({
+        type: ModalAction.SHOW_MODAL,
+        data: {
+          type: 'select',
+          text: `멤버십을 다시 등록하여
+          수많은 콘서트들을 즐겨보세요!`,
+          buttonText: '구독하기',
+          onPress: () => dispatch({ type: AppAction.SUBSCRIBE }),
+        },
+      });
   }
-  return false;
 };
 
 export const getReserveTicket = dispatch => {

@@ -2,6 +2,7 @@ import axios from './axios';
 import { AsyncStorage } from 'react-native';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import { AppAction, MessageBarAction, ModalAction } from '../reducers/Actions';
+import { consts } from '../assets/strings';
 import { getAllTicket } from './Ticket';
 
 /**
@@ -9,14 +10,12 @@ import { getAllTicket } from './Ticket';
  *  EMAIL: contacts@livle.kr
  *  PW: 라이블12
  */
-const TOKEN_KEY = '@LivleClient:token';
-
 function setHeader(item) {
   if (item) axios.defaults.headers.common['Authorization'] = item.token;
 }
 /* MANAGE TOKEN */
 async function _getToken() {
-  const result = await AsyncStorage.getItem(TOKEN_KEY);
+  const result = await AsyncStorage.getItem(consts.asyncToken);
   const item = await JSON.parse(result);
   setHeader(item);
   return item;
@@ -26,12 +25,12 @@ async function _setToken(token) {
   const response = await _getToken();
   if (!response) {
     setHeader(item);
-    AsyncStorage.setItem(TOKEN_KEY, JSON.stringify(item));
+    AsyncStorage.setItem(consts.asyncToken, JSON.stringify(item));
   }
 }
 function _removeToken() {
   AsyncStorage.removeItem(
-    TOKEN_KEY,
+    consts.asyncToken,
     err => delete axios.defaults.headers.common['Authorization']
   );
 }
