@@ -140,15 +140,11 @@ export const signUp = (email, password, nickname) => dispatch => {
       const { data } = response;
       _setToken(data.token);
       dispatchUserData(data)(dispatch);
+      return Promise.resolve();
     })
     .catch(err => {
-      dispatch({
-        type: ModalAction.SHOW_MODAL,
-        data: {
-          type: 'notice',
-          text: err.response.data,
-        },
-      });
+      const { status } = err.response;
+      Promise.reject(status);
     });
 };
 

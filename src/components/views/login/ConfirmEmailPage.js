@@ -57,7 +57,7 @@ export default class ChangePasswordPage extends Component {
               {this.state.email}
             </Text>
             <Text style={[styles.textDefault, styles.textCenter]}>
-              입력하신 이메일으로{'\n'}인증코드가 전송되었습니다.
+              {login_string.sendConfirmEmail}
             </Text>
           </View>
         )}

@@ -26,34 +26,37 @@ class SignupPage extends Component {
     confirmPassword: false,
     nickname: '',
     error: {
-      email: '',
-      pwd: '',
-      confirmPwd: '',
-      nickname: '',
+      email: null,
+      pwd: null,
+      confirmPwd: null,
+      nickname: null,
     },
   };
 
-  _checkError = (type, data) => {
+  _checkError = (type, data, info = null) => {
     const updateError = this.state.error;
     switch (type) {
       case 'email':
-        let check_email_exist = data.length !== 0;
-        updateError.email = !check_email_exist ? '이메일을 입력해주세요' : '';
+        const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,6}$/i;
+        let check_email_exist = data.match(regExp) !== null;
+        updateError.email = !check_email_exist ? login_string.enterEmail : info;
         break;
       case 'password':
         let check_password_length = data.length < MIN_PASSWORD_LENGTH;
         updateError.pwd = check_password_length
-          ? '비밀번호를 8자리 이상 입력해주세요'
-          : '';
+          ? info || login_string.enterPassword
+          : null;
         break;
       case 'confirmPassword':
-        updateError.confirmPwd = !data ? '비밀번호가 일치하지 않습니다' : '';
+        updateError.confirmPwd = !data
+          ? info || login_string.enterConfirmPassword
+          : null;
         break;
       case 'nickname':
         let check_nickname_exist = data.length !== 0;
         updateError.nickname = !check_nickname_exist
-          ? '닉네임을 입력해주세요'
-          : '';
+          ? info || login_string.enterNickname
+          : null;
         break;
     }
     this.setState({ [type]: data, error: updateError });
@@ -68,6 +71,8 @@ class SignupPage extends Component {
   render() {
     const { navigation } = this.props;
     const { password, confirmPassword, error } = this.state;
+    const isConfirmed =
+      !error.email && !error.pwd && confirmPassword && !error.nickname;
 
     return (
       <View style={styles.blackBackground}>
@@ -106,15 +111,36 @@ class SignupPage extends Component {
 
             <View style={[container.wrapContainer, styles.rowDirection]}>
               <_SquareButton
-                backgroundColor={color_string.green_aqua}
+                backgroundColor={
+                  isConfirmed
+                    ? color_string.green_aqua
+                    : color_string.gray_light
+                }
                 text={login_string.signUp}
+                disabled={!isConfirmed}
                 onPress={() => {
-                  if (confirmPassword)
+                  if (isConfirmed)
                     signUp(
                       this.state.email,
                       this.state.password,
                       this.state.nickname
-                    )(this.props.dispatch);
+                    )(this.props.dispatch).catch(status => {
+                      switch (status) {
+                        case 403:
+                          this._checkError(
+                            'email',
+                            this.state.email,
+                            login_string.existEmail
+                          );
+                          break;
+                        case 405:
+                          this._checkError(
+                            'email',
+                            this.state.email,
+                            login_string.wrongEmail
+                          );
+                      }
+                    });
                 }}
               />
             </View>

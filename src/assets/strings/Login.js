@@ -12,8 +12,16 @@ export const login_string = new LocalizedStrings({
     confirmPassword: 'Confirm Password',
     changePassword: 'Change Password',
     confirmEmail: 'Confirm E-mail',
+    sendConfirmEmail: `The verification code was
+    sent to your email.`,
     nickname: 'Nickname',
     alreadyHaveId: 'Already have an ID? ',
+    enterEmail: 'please enter your email',
+    enterPassword: 'please enter at least 8 digits',
+    enterConfirmPassword: 'password does not match',
+    enterNickname: 'please enter your nickname',
+    existEmail: 'email already exists',
+    wrongEmail: 'wrong email address',
   },
   ko: {
     signUp: '회원가입',
@@ -26,7 +34,15 @@ export const login_string = new LocalizedStrings({
     confirmPassword: '비밀번호 확인',
     changePassword: '비밀번호 변경',
     confirmEmail: '이메일 인증하기',
+    sendConfirmEmail: `입력하신 이메일로
+    인증코드가 전송되었습니다.`,
     nickname: '닉네임',
     alreadyHaveId: '이미 아이디가 있으신가요? ',
+    enterEmail: '이메일을 입력해주세요',
+    enterPassword: '비밀번호를 8자리 이상 입력해주세요',
+    enterConfirmPassword: '비밀번호가 일치하지 않습니다',
+    enterNickname: '닉네임을 입력해주세요',
+    existEmail: '이미 존재하는 이메일입니다',
+    wrongEmail: '잘못된 이메일 형식입니다',
   },
 });
