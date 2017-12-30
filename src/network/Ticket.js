@@ -12,8 +12,8 @@ import { main_string } from '../assets/strings';
 export const getAllTicket = dispatch => {
   return axios
     .get(`/ticket`)
-    .then(res => {
-      const sortData = res.data.sort(
+    .then(response => {
+      const sortData = response.data.sort(
         (x, y) => getTime(x.start_at).timestamp - getTime(y.start_at).timestamp
       );
       return sortData;
@@ -37,7 +37,7 @@ export const getAllTicket = dispatch => {
       });
 
       dispatch({
-        type: TicketAction.UPDATE_TICKET,
+        type: TicketAction.SET_TICKET,
         data: data,
         dataIndex: dataIndex,
       });
@@ -117,10 +117,9 @@ export const getReserveTicket = dispatch => {
   return axios
     .get(`/reservation`)
     .then(response => {
-      const { data } = response;
       dispatch({
-        type: TicketAction.UPDATE_RESERVATION,
-        data: data,
+        type: TicketAction.SET_RESERVATION,
+        data: response.data,
       });
     })
     .catch(err => {
@@ -132,10 +131,9 @@ export const reserveTicket = id => dispatch => {
   return axios
     .post(`/ticket/${id}/reserve`)
     .then(response => {
-      const { data } = response;
       dispatch({
         type: TicketAction.ADD_RESERVATION,
-        data: data,
+        data: response.data,
       });
       dispatch({
         type: ModalAction.SHOW_MODAL,
@@ -183,13 +181,32 @@ export const cancelTicket = id => dispatch => {
     });
 };
 
-export const checkIn = (id, code) => dispatch => {
+export const checkCode = (id, code) => dispatch => {
   return axios
     .post(`/reservation/${id}/check`, { code: code })
     .then(response => {
-      console.log(response.data);
+      dispatch({
+        type: TicketAction.UPDATE_RESERVATION,
+        data: response.data,
+      });
+      dispatch({
+        type: MessageBarAction.SHOW_MESSAGE_BAR,
+        message: '입장이 확인되었습니다',
+      });
     })
     .catch(err => {
-      console.log(err.response);
+      const { response } = err;
+      switch (response.status) {
+        case 403:
+          dispatch({
+            type: ModalAction.SHOW_MODAL,
+            data: {
+              type: 'check',
+              text: '잘못된 코드입니다',
+              showLogo: true,
+            },
+          });
+          break;
+      }
     });
 };

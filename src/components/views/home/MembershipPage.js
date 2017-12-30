@@ -22,7 +22,6 @@ import { color_string } from '../../../assets/stylesheets/global/Color';
 
 const MembershipPage = ({ navigation }) => {
   const { title, body } = navigation.state.params;
-  console.log(body);
 
   function isSubscribe() {
     const { valid_by, cancelled_at } = body;

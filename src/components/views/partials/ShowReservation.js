@@ -17,7 +17,7 @@ import {
   navbar,
 } from '../../../assets/stylesheets/global/Style';
 // Network
-import { cancelTicket } from '../../../network';
+import { cancelTicket, checkCode } from '../../../network';
 // Views
 import _SquareButton from './_SquareButton';
 import GreenNumbox from './GreenNumbox';
@@ -83,9 +83,7 @@ export default class ShowReservation extends Component {
               }
               text={go_string.confirmEntry}
               disabled={this.state.code.length < 4}
-              onPress={() => {
-                console.log('press');
-              }}
+              onPress={() => checkCode(this.state.code)(dispatch)}
             />
           </View>
         ) : (

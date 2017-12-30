@@ -6,41 +6,42 @@ const initialState = {
   reservation: [],
 };
 export function ticket(state = initialState, action) {
-  const updateTicket = state.ticket;
-  const updateReservation = state.reservation;
-  const updateData = action.data;
-
   switch (action.type) {
-    case TicketAction.UPDATE_TICKET:
+    case TicketAction.SET_TICKET: {
       /**
        * action.data = PropTypes.array.isRequired
        * action.dataIndex = PropTypes.array.isRequired
        **/
+      const updateData = action.data;
       updateData.forEach(item => {
         item.reservation_id = null;
       });
-
       return {
         ...state,
         ticket: { data: updateData, dataIndex: action.dataIndex },
       };
-    case TicketAction.UPDATE_RESERVATION:
+    }
+    case TicketAction.SET_RESERVATION: {
       /**
        * action.data = PropTypes.object.isRequired
        **/
+      const updateTicket = state.ticket;
+      const updateData = action.data;
       updateData.forEach(item => {
         let ticket = updateTicket.data.find(
           ticket => ticket.id === item.ticket_id
         );
-
         ticket.reservation_id = item.id;
         addTicketData(item, ticket);
       });
       return { ticket: updateTicket, reservation: updateData };
-    case TicketAction.ADD_RESERVATION:
+    }
+    case TicketAction.ADD_RESERVATION: {
       /**
        * action.data = PropTypes.object.isRequired
        **/
+      const updateTicket = state.ticket;
+      const updateData = action.data;
       let ticket = updateTicket.data.find(
         ticket => ticket.id === updateData.ticket_id
       );
@@ -53,11 +54,13 @@ export function ticket(state = initialState, action) {
         ticket: updateTicket,
         reservation: [...state.reservation, updateData],
       };
+    }
     case TicketAction.CANCEL_RESERVATION: {
       /**
        * action.id = PropTypes.number.isRequired
        **/
-      const prunedList = updateReservation.filter(
+      const updateTicket = state.ticket;
+      const prunedList = state.reservation.filter(
         item => item.id !== action.id
       );
       updateTicket.data.forEach(item => {
@@ -65,6 +68,17 @@ export function ticket(state = initialState, action) {
       });
 
       return { ticket: updateTicket, reservation: prunedList };
+    }
+    case TicketAction.UPDATE_RESERVATION: {
+      /**
+       * action.data = PropTypes.object.isRequired
+       **/
+      const updateReservation = state.reservation;
+      let reservation = updateReservation.find(
+        item => item.id === action.data.id
+      );
+      reservation.checked_at = action.data.checked_at;
+      return { ...state, reservation: updateReservation };
     }
     default:
       return state;
