@@ -1,14 +1,25 @@
 // Libraries
 import React, { Component } from 'react';
-import { View, Text, Image, ImageBackground, Platform } from 'react-native';
+import {
+  View,
+  Text,
+  Image,
+  ImageBackground,
+  Platform,
+  TouchableOpacity,
+} from 'react-native';
 // Styles
 import { goStyle } from '../../../assets/stylesheets/local/goPageStyle';
+import { color_string } from '../../../assets/stylesheets/global/Color';
 import {
   styles,
   container,
   navbar,
 } from '../../../assets/stylesheets/global/Style';
+// Network
+import { cancelTicket } from '../../../network';
 // Views
+import _SquareButton from './_SquareButton';
 import GreenNumbox from './GreenNumbox';
 import ShowInfo from './ShowInfo';
 // Strings
@@ -36,21 +47,45 @@ function GoCheckEnter({ isConfirmed, dataId }) {
   );
 }
 
-export default ({ item }) => {
-  const { ticket_data, code } = item;
+export default ({ item, isKeyboardShow, dispatch }) => {
+  const { ticket_data } = item;
   const isConfirmed = item.checked_at !== null;
 
   return (
-    <ImageBackground
-      source={ticket.filled}
-      style={goStyle.background_size}
-      imageStyle={goStyle.background_ticket}>
-      <View style={container.contentContainer}>
-        <ShowInfo data={ticket_data} />
-        <View style={[goStyle.confirm_container, styles.alignCenter]}>
-          <GoCheckEnter dataId={item.id} isConfirmed={isConfirmed} />
+    <View style={[styles.flex_1, styles.horizontalCenter]}>
+      <ImageBackground
+        source={ticket.filled}
+        style={goStyle.background_size}
+        imageStyle={goStyle.background_ticket}>
+        <View style={container.contentContainer}>
+          <ShowInfo data={ticket_data} />
+          <View style={[goStyle.confirm_container, styles.alignCenter]}>
+            <GoCheckEnter dataId={item.id} isConfirmed={isConfirmed} />
+          </View>
         </View>
-      </View>
-    </ImageBackground>
+      </ImageBackground>
+      {isKeyboardShow ? (
+        <View style={goStyle.bottomContainer}>
+          <_SquareButton
+            backgroundColor={
+              item.code.length >= 4
+                ? color_string.green_light
+                : color_string.gray_light
+            }
+            text={go_string.confirmEntry}
+            disabled={item.code.length < 4}
+            onPress={() => {
+              console.log('press');
+            }}
+          />
+        </View>
+      ) : (
+        <TouchableOpacity
+          style={[styles.flex_1, styles.alignCenter]}
+          onPress={() => cancelTicket(item.id)(dispatch)}>
+          <Text style={goStyle.cancel_text}>{go_string.cancelReservation}</Text>
+        </TouchableOpacity>
+      )}
+    </View>
   );
 };
