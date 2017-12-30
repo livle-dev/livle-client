@@ -26,7 +26,7 @@ const MembershipPage = ({ navigation }) => {
 
   function getPlan() {
     const { free_trial_started_at, valid_by, cancelled_at } = body;
-    if (getDday(valid_by) - getDday(free_trial_started_at) === 8)
+    if (getDday(valid_by) - getDday(free_trial_started_at) === 7)
       return 'FREE TRIAL';
     else return 'BASIC';
   }

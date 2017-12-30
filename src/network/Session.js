@@ -78,8 +78,8 @@ const getFacebookData = facebookToken => dispatch => {
 /* END */
 
 export const checkSession = dispatch => {
-  return _getToken().then(res => {
-    if (res) {
+  return _getToken().then(response => {
+    if (response) {
       return getLivleData(dispatch);
     } else {
       dispatch({ type: AppAction.LOGOUT });

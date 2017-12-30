@@ -17,7 +17,7 @@ import { calendarStyle } from '../../../assets/stylesheets/local/mainCalanderSty
 const DAY = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
 const getWeek = dataIndex => {
   let week = [];
-  for (let i = 0; i < 7; i++) {
+  for (let i = 0; i < 8; i++) {
     week.push({
       date: getTime(i, 'days').date,
       day: getTime(i, 'days').day,
