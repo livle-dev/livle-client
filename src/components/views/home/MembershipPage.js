@@ -22,6 +22,7 @@ import { color_string } from '../../../assets/stylesheets/global/Color';
 
 const MembershipPage = ({ navigation }) => {
   const { title, body } = navigation.state.params;
+  const isSubscribing = body.valid_by && !body.cancelled_at;
 
   function getPlan() {
     const { free_trial_started_at, valid_by, cancelled_at } = body;
@@ -44,12 +45,12 @@ const MembershipPage = ({ navigation }) => {
             {
               title: !body.cancelled_at ? membership_string.renewal : '종료일',
               value:
-                getTime(body.valid_by).timestamp.format('YYYY년 MM월 DD일') ||
-                '',
+                body.valid_by &&
+                getTime(body.valid_by).timestamp.format('YYYY년 MM월 DD일'),
             },
           ]}
         />
-        {!body.cancelled_at && (
+        {isSubscribing && (
           <_SettingCard
             type="string"
             title={membership_string.payment}
@@ -66,7 +67,7 @@ const MembershipPage = ({ navigation }) => {
           />
         )}
         <View style={container.textContainer}>
-          {!body.cancelled_at ? (
+          {isSubscribing ? (
             <_SquareButton
               backgroundColor={color_string.green_dark_dark}
               text="멤버십 해지하기"
