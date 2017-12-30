@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 // Views
+import BackgroundVideo from '../partials/BackgroundVideo';
 import TopTitle from '../partials/TopTitle';
 import _GreenInput from '../partials/_GreenInput';
 import _SquareButton from '../partials/_SquareButton';
@@ -29,9 +30,11 @@ export default class ChangePasswordPage extends Component {
     const { navigation } = this.props;
     return (
       <View style={[styles.blackBackground, styles.alignCenter]}>
+        <BackgroundVideo />
         <TopTitle
           title={login_string.changePassword}
           onPress={() => navigation.goBack()}
+          isTransparent={true}
         />
         <_GreenInput
           placeholder={login_string.newPassword}

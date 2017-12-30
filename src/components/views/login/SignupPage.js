@@ -4,6 +4,7 @@ import { View, ScrollView, Text, TouchableOpacity } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { connect } from 'react-redux';
 // Views
+import BackgroundVideo from '../partials/BackgroundVideo';
 import TopTitle from '../partials/TopTitle';
 import _GreenInput from '../partials/_GreenInput';
 import _SquareButton from '../partials/_SquareButton';
@@ -69,62 +70,66 @@ class SignupPage extends Component {
     const { password, confirmPassword, error } = this.state;
 
     return (
-      <KeyboardAwareScrollView style={styles.blackBackground}>
-        <TopTitle
-          title={login_string.signUp}
-          onPress={() => navigation.goBack()}
-        />
-        <View style={[container.fullContainer, styles.alignCenter]}>
-          <_GreenInput
-            placeholder={login_string.email}
-            keyboardType="email-address"
-            autoFocus={true}
-            onChangeText={this._handleEmail}
-            errorMessage={error.email}
+      <View style={styles.blackBackground}>
+        <BackgroundVideo />
+        <KeyboardAwareScrollView style={container.fullContainer}>
+          <TopTitle
+            title={login_string.signUp}
+            onPress={() => navigation.goBack()}
+            isTransparent={true}
           />
-          <_GreenInput
-            placeholder={login_string.newPassword}
-            secureTextEntry={true}
-            onChangeText={this._handlePassword}
-            errorMessage={error.pwd}
-          />
-          <_GreenInput
-            placeholder={login_string.confirmPassword}
-            secureTextEntry={true}
-            onChangeText={this._handleConfirmPassword}
-            errorMessage={error.confirmPwd}
-          />
-          <_GreenInput
-            placeholder={login_string.nickname}
-            onChangeText={this._handleNickname}
-            errorMessage={error.nickname}
-          />
-
-          <View style={[container.wrapContainer, styles.rowDirection]}>
-            <_SquareButton
-              backgroundColor={color_string.green_aqua}
-              text={login_string.signUp}
-              onPress={() => {
-                if (confirmPassword)
-                  signUp(
-                    this.state.email,
-                    this.state.password,
-                    this.state.nickname
-                  )(this.props.dispatch);
-              }}
+          <View style={[container.fullContainer, styles.alignCenter]}>
+            <_GreenInput
+              placeholder={login_string.email}
+              keyboardType="email-address"
+              autoFocus={true}
+              onChangeText={this._handleEmail}
+              errorMessage={error.email}
             />
-          </View>
+            <_GreenInput
+              placeholder={login_string.newPassword}
+              secureTextEntry={true}
+              onChangeText={this._handlePassword}
+              errorMessage={error.pwd}
+            />
+            <_GreenInput
+              placeholder={login_string.confirmPassword}
+              secureTextEntry={true}
+              onChangeText={this._handleConfirmPassword}
+              errorMessage={error.confirmPwd}
+            />
+            <_GreenInput
+              placeholder={login_string.nickname}
+              onChangeText={this._handleNickname}
+              errorMessage={error.nickname}
+            />
 
-          <TouchableOpacity
-            style={loginStyle.textButton}
-            onPress={() => navigation.goBack()}>
-            <Text style={loginStyle.defaultText}>
-              {login_string.alreadyHaveId}
-              <Text style={loginStyle.boldText}>{login_string.logIn}</Text>
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </KeyboardAwareScrollView>
+            <View style={[container.wrapContainer, styles.rowDirection]}>
+              <_SquareButton
+                backgroundColor={color_string.green_aqua}
+                text={login_string.signUp}
+                onPress={() => {
+                  if (confirmPassword)
+                    signUp(
+                      this.state.email,
+                      this.state.password,
+                      this.state.nickname
+                    )(this.props.dispatch);
+                }}
+              />
+            </View>
+
+            <TouchableOpacity
+              style={loginStyle.textButton}
+              onPress={() => navigation.goBack()}>
+              <Text style={loginStyle.defaultText}>
+                {login_string.alreadyHaveId}
+                <Text style={loginStyle.boldText}>{login_string.logIn}</Text>
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </KeyboardAwareScrollView>
+      </View>
     );
   }
 }

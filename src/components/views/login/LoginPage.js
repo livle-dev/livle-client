@@ -20,6 +20,7 @@ import { AppAction } from '../../../reducers/Actions';
 // Network
 import { login, facebookLogin } from '../../../network';
 // Views
+import BackgroundVideo from '../partials/BackgroundVideo';
 import _GreenInput from '../partials/_GreenInput';
 import _SquareButton from '../partials/_SquareButton';
 // Strings
@@ -38,6 +39,7 @@ export default class LoginPage extends Component {
 
     return (
       <View style={styles.blackBackground}>
+        <BackgroundVideo />
         <KeyboardAvoidingView
           style={[container.fullContainer, styles.alignCenter]}>
           <Icon

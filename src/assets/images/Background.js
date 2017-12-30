@@ -4,4 +4,6 @@ export const ticket = {
   horizontal: require('./bg_ticket_horizontal.png'),
 };
 
+export const video = require('./bg_video.mp4');
+
 export const promotion = require('./bg_promotion.png');

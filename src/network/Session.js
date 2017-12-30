@@ -6,8 +6,8 @@ import { getAllTicket } from './Ticket';
 
 /**
  *  TEST SESSION
- *  EMAIL: abc@livle.kr
- *  PW: 123
+ *  EMAIL: contacts@livle.kr
+ *  PW: 라이블12
  */
 const TOKEN_KEY = '@LivleClient:token';
 

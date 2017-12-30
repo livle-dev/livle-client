@@ -136,9 +136,15 @@ export const styles = StyleSheet.create({
 export const container = {
   // containers
   fullContainer: {
-    position: 'relative',
     width: width.full,
     height: percent('height', 100),
+  },
+  absoluteContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
   },
   navbarContainer: {
     position: 'absolute',
