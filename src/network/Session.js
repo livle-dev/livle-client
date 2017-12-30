@@ -59,6 +59,7 @@ function getLivleData(dispatch) {
       dispatchUserData(data)(dispatch);
     })
     .catch(err => {
+      if (err.status === 403) _removeToken();
       dispatch({ type: AppAction.LOGOUT });
     });
 }
@@ -155,10 +156,7 @@ export const confirmEmail = email => dispatch => {
   return axios
     .get(`/user/password?email=${email}`)
     .then(response => {
-      dispatch({
-        type: MessageBarAction.SHOW_MESSAGE_BAR,
-        message: '메일을 보냈습니다!',
-      });
+      return Promise.resolve();
     })
     .catch(err => {
       dispatch({
@@ -168,6 +166,7 @@ export const confirmEmail = email => dispatch => {
           text: err.response.data,
         },
       });
+      return Promise.reject();
     });
 };
 
