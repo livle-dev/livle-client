@@ -45,12 +45,14 @@ export function ticket(state = initialState, action) {
         ticket => ticket.id === updateData.ticket_id
       );
       ticket.reservation_id = updateData.id;
+      addTicketData(updateData, ticket);
       updateData.checked_at = null;
       updateData.cancelled_at = null;
-      addTicketData(updateData, ticket);
 
-      updateReservation.push(updateData);
-      return { ticket: updateTicket, reservation: updateReservation };
+      return {
+        ticket: updateTicket,
+        reservation: [...state.reservation, updateData],
+      };
     case TicketAction.CANCEL_RESERVATION: {
       /**
        * action.id = PropTypes.number.isRequired
@@ -59,21 +61,10 @@ export function ticket(state = initialState, action) {
         item => item.id !== action.id
       );
       updateTicket.data.forEach(item => {
-        if (item.reservation_id === action.id) {
-          item.reservation_id = null;
-        }
+        if (item.reservation_id === action.id) item.reservation_id = null;
       });
 
       return { ticket: updateTicket, reservation: prunedList };
-    }
-    case TicketAction.UPDATE_CODE: {
-      /**
-       * action.id = PropTypes.number.isRequired
-       * action.code = PropTypes.number.isRequired
-       **/
-      const updateCode = updateReservation.find(data => data.id === action.id);
-      updateCode.code = action.code;
-      return { ...state, reservation: updateReservation };
     }
     default:
       return state;
@@ -81,7 +72,6 @@ export function ticket(state = initialState, action) {
 }
 
 const addTicketData = (reservation, ticket) => {
-  reservation.code = '';
   reservation.ticket_data = {
     title: ticket.title,
     artists: ticket.artists,
