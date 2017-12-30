@@ -2,6 +2,7 @@ import axios from './axios';
 import { AsyncStorage } from 'react-native';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import { AppAction, MessageBarAction, ModalAction } from '../reducers/Actions';
+import { getAllTicket } from './Ticket';
 
 /**
  *  TEST SESSION
@@ -10,21 +11,21 @@ import { AppAction, MessageBarAction, ModalAction } from '../reducers/Actions';
  */
 const TOKEN_KEY = '@LivleClient:token';
 
+function setHeader(item) {
+  if (item) axios.defaults.headers.common['Authorization'] = item.token;
+}
 /* MANAGE TOKEN */
 async function _getToken() {
   const result = await AsyncStorage.getItem(TOKEN_KEY);
   const item = await JSON.parse(result);
-  if (item) {
-    // set header
-    axios.defaults.headers.common['Authorization'] = item.token;
-  }
+  setHeader(item);
   return item;
 }
 async function _setToken(token) {
   const item = { token: token };
-
-  response = await _getToken();
+  const response = await _getToken();
   if (!response) {
+    setHeader(item);
     AsyncStorage.setItem(TOKEN_KEY, JSON.stringify(item));
   }
 }
@@ -39,11 +40,11 @@ function _removeToken() {
 /* GET DATA & DISPATCH FROM SERVER */
 const dispatchUserData = data => dispatch => {
   const { token, ...option } = data;
-  console.log(data);
   dispatch({
     type: AppAction.LOGIN,
     data: { ...option },
   });
+  getAllTicket(dispatch);
   dispatch({
     type: MessageBarAction.SHOW_MESSAGE_BAR,
     message: '로그인 되었습니다',
@@ -58,11 +59,6 @@ function getLivleData(dispatch) {
       dispatchUserData(data)(dispatch);
     })
     .catch(err => {
-      /**
-       * 401: 헤더에 토큰이 없음
-       * 403: 헤더에 토큰이 있지만 유효하지 않음
-       */
-
       dispatch({ type: AppAction.LOGOUT });
     });
 }
@@ -83,7 +79,6 @@ const getFacebookData = facebookToken => dispatch => {
 
 export const checkSession = dispatch => {
   return _getToken().then(res => {
-    console.log(res);
     if (res) {
       return getLivleData(dispatch);
     } else {
@@ -101,11 +96,6 @@ export const login = (email, password) => dispatch => {
       dispatchUserData(data)(dispatch);
     })
     .catch(err => {
-      /**
-       * 400: 이메일 또는 비밀번호가 없거나 잘못됨
-       * 403: 해당 아이디로 가입된 정보는 있으나 비밀번호가 틀림
-       * 404:	해당 아이디로 가입된 정보가 없음
-       */
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
@@ -151,11 +141,6 @@ export const signUp = (email, password, nickname) => dispatch => {
       dispatchUserData(data)(dispatch);
     })
     .catch(err => {
-      /**
-       * 400: 잘못된 요청 (이메일이나 비밀번호가 없음)
-       * 403: 이미 존재하는 아이디
-       * 404:	잘못된 이메일 형식
-       */
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
@@ -176,10 +161,6 @@ export const confirmEmail = email => dispatch => {
       });
     })
     .catch(err => {
-      /**
-       * 400: 이메일이 없거나 잘못된 형식
-       * 404:	해당하는 유저가 없음
-       */
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {

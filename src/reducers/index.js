@@ -6,7 +6,7 @@ import { NavbarAction, MessageBarAction, ModalAction } from './Actions';
 // Reducers
 import { auth } from './Auth';
 import { appReducer, homeReducer, navNavbar, navMainCard } from './Navigations';
-import { reservation } from './Reservation';
+import { ticket } from './Ticket';
 
 // REDUCERS
 function disableNavbar(state = { disable: false }, action) {
@@ -64,8 +64,8 @@ const Reducer = combineReducers({
   homeReducer: homeReducer,
   navNavbar: navNavbar,
   navMainCard: navMainCard,
-  // Reservation
-  reservation: reservation,
+  // Ticket
+  ticket: ticket,
   // Tool
   disableNavbar: disableNavbar,
   showMessageBar: showMessageBar,

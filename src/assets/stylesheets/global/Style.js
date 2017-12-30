@@ -51,14 +51,15 @@ export const styles = StyleSheet.create({
   },
   textInput: {
     width: width.wrapContainer,
+    marginBottom: 10,
+    borderBottomWidth: 2,
+    borderBottomColor: color_string.green_light,
     ...Platform.select({
       ios: {
         height: 36,
       },
     }),
-    marginBottom: 10,
-    borderBottomWidth: 2,
-    borderBottomColor: color_string.green_light,
+    ...StyleSheet.flatten([font_style.regular, font_size.fs_2, color.white]),
   },
   numBox: {
     width: 50,
@@ -77,23 +78,26 @@ export const styles = StyleSheet.create({
     marginHorizontal: 6,
     marginBottom: 32,
   },
-  textDefault: {
-    ...StyleSheet.flatten([color.white, font_size.fs_3, font_style.semi_bold]),
-  },
-  textError: {
-    ...StyleSheet.flatten([
-      color.green_light,
-      font_size.fs_5,
-      font_style.light,
-    ]),
-  },
-  textTitle: {
-    ...StyleSheet.flatten([
-      color.white,
-      font_size.fs_title,
-      font_style.semi_bold,
-    ]),
-  },
+  textNumInput: StyleSheet.flatten([
+    color.white,
+    font_size.fs_2,
+    font_style.regular,
+  ]),
+  textDefault: StyleSheet.flatten([
+    color.white,
+    font_size.fs_3,
+    font_style.semi_bold,
+  ]),
+  textError: StyleSheet.flatten([
+    color.green_light,
+    font_size.fs_5,
+    font_style.light,
+  ]),
+  textTitle: StyleSheet.flatten([
+    color.white,
+    font_size.fs_title,
+    font_style.semi_bold,
+  ]),
   // backgrounds
   blackBackground: {
     flex: 1,
@@ -211,10 +215,7 @@ export const navbar = {
     backgroundColor: 'transparent',
   },
   navbarAreaFit: {
-    height: Platform.select({
-      ios: Scale.NAVBAR_HEIGHT - Scale.STATUSBAR_HEIGHT,
-      android: Scale.NAVBAR_HEIGHT,
-    }),
+    height: Scale.NAVBAR_HEIGHT,
     backgroundColor: color_string.black,
   },
 };

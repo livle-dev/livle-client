@@ -24,4 +24,5 @@ export const calendarStyle = StyleSheet.create({
     font_size.fs_3,
     font_style.bold,
   ]),
+  deactivate: StyleSheet.flatten(color.gray_light),
 });

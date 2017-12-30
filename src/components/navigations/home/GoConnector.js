@@ -1,12 +1,12 @@
 // Libraries
 import { connect } from 'react-redux';
-import { ReservationAction, MessageBarAction } from '../../../reducers/Actions';
+import { TicketAction } from '../../../reducers/Actions';
 // Views
 import GoPage from '../../views/home/GoPage';
 
 const mapStateToProps = state => {
   return {
-    reservation: state.reservation,
+    reservation: state.ticket.reservation,
   };
 };
 

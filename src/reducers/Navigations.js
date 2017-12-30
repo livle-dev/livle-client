@@ -40,6 +40,12 @@ export function appReducer(state = initialState, action) {
         state
       );
       break;
+    case AppAction.SUBSCRIBE:
+      nextState = AppScreen.router.getStateForAction(
+        NavigationActions.navigate({ routeName: 'Subscribe' }),
+        state
+      );
+      break;
     default:
       nextState = AppScreen.router.getStateForAction(action, state);
       break;

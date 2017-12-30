@@ -15,7 +15,12 @@ import { promotionStyle } from '../../../assets/stylesheets/local/promotionPageS
 
 const TicketRow = ({ text }) => {
   return (
-    <View style={[promotionStyle.ticketRowMargin, styles.rowDirection]}>
+    <View
+      style={[
+        promotionStyle.ticketRowMargin,
+        styles.rowDirection,
+        styles.horizontalCenter,
+      ]}>
       <Icon
         src="ic_check_white"
         height={12}
@@ -33,7 +38,7 @@ export default class PromotionPage extends Component {
     return (
       <View style={styles.flex_1}>
         <TopTitle
-          title="멤버십"
+          title="이벤트"
           onPress={() => navigation.goBack()}
           isTransparent={true}
         />
@@ -91,7 +96,7 @@ export default class PromotionPage extends Component {
                 <_SquareButton
                   backgroundColor={color_string.green_light}
                   text="첫 1주일 이후 매달 | 14,900원"
-                  onPress={() => {}}
+                  onPress={() => navigation.navigate('Subscribe')}
                 />
               </View>
             </View>

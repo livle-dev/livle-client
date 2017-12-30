@@ -1,8 +1,14 @@
+// Auth
+export const AuthAction = {
+  UPDATE_USER_DATA: 'UPDATE_USER_DATA',
+};
+
 // Navigation
 export const AppAction = {
   LOGIN: 'LOGIN',
   LOGOUT: 'LOGOUT',
   PROMOTION: 'PROMOTION',
+  SUBSCRIBE: 'SUBSCRIBE',
 };
 export const HomeAction = {
   GO: 'NAV_GO',
@@ -13,12 +19,13 @@ export const MainAction = {
   UPDATE_INDEX: 'UPDATE_INDEX',
 };
 
-// Reservation
-export const ReservationAction = {
+// Ticket
+export const TicketAction = {
+  SET_TICKET: 'SET_TICKET',
+  SET_RESERVATION: 'SET_RESERVATION',
   ADD_RESERVATION: 'ADD_RESERVATION',
-  DELETE_RESERVATION: 'DELETE_RESERVATION',
-  ENTRY_NUMBER: 'ENTRY_NUMBER',
-  CONFIRM_ENTRY: 'CONFIRM_ENTRY',
+  CANCEL_RESERVATION: 'CANCEL_RESERVATION',
+  UPDATE_RESERVATION: 'UPDATE_RESERVATION',
 };
 
 // Tool

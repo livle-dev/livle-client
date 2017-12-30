@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { View, Text } from 'react-native';
 // View
 import PromotionPage from '../views/home/PromotionPage';
+import SubscribePage from '../views/home/SubscribePage';
 // Navigations
 import HomeNavigation from './home/HomeNavigation';
 import LoginNavigation from './login/LoginNavigation';
@@ -17,6 +18,7 @@ export const AppScreen = StackNavigator(
     Home: { screen: HomeNavigation },
     Login: { screen: LoginNavigation },
     Promotion: { screen: PromotionPage },
+    Subscribe: { screen: SubscribePage },
   },
   {
     initialRouteName: 'Home',

@@ -1,69 +1,65 @@
 import axios from './axios';
-import { getTime, isFuture } from '../assets/functions';
-import { AppAction, ModalAction, MessageBarAction } from '../reducers/Actions';
+import { getTime, getDday, isFuture } from '../assets/functions';
+import {
+  AppAction,
+  TicketAction,
+  MainAction,
+  ModalAction,
+  MessageBarAction,
+} from '../reducers/Actions';
 import { main_string } from '../assets/strings';
 
-export function getAllTicket() {
+export const getAllTicket = dispatch => {
   return axios
     .get(`/ticket`)
-    .then(res => {
-      const sortData = res.data.sort(
+    .then(response => {
+      const sortData = response.data.sort(
         (x, y) => getTime(x.start_at).timestamp - getTime(y.start_at).timestamp
       );
       return sortData;
     })
     .then(data => {
-      let dataIndex = []; //cardIndex, dateIndex간 관계를 담아둔 array
+      let dataIndex = []; //card_index, calendar_index의 관계
       let saveDate;
       data.map((item, index) => {
         const getDate = getTime(item.start_at).date;
+        const data_index = dataIndex.length - 1;
         if (!saveDate || saveDate !== getDate) {
           saveDate = getDate;
-          dataIndex.push({ cardIndex: index, dateIndex: dataIndex.length });
+          dataIndex.push({
+            calendar_index: getDday(item.start_at),
+            card_start: index,
+            card_end: index,
+          });
+        } else {
+          dataIndex[data_index].card_end = index;
         }
       });
 
-      return {
+      dispatch({
+        type: TicketAction.SET_TICKET,
         data: data,
         dataIndex: dataIndex,
-      };
-    })
-    .catch(err => console.log(err.response));
-}
-
-export const getSingleTicket = id => dispatch => {
-  return axios
-    .get(`/ticket/${id}/stats`)
-    .then(res => res.data)
-    .catch(err => {
-      // console.log(err.response);
-    });
-};
-
-export const reserveTicket = id => dispatch => {
-  return axios
-    .post(`/ticket/${id}/reserve`)
-    .then(res => {
-      const { data } = res;
-      // TODO: dispatch reserve info
-      dispatch({
-        type: ModalAction.SHOW_MODAL,
-        data: {
-          type: 'check',
-          text: main_string.concertBooked,
-          showLogo: true,
-        },
       });
-      return true;
+      dispatch({
+        type: MainAction.UPDATE_INDEX,
+        cardIndex: dataIndex[0].card_start,
+        calendarIndex: dataIndex[0].calendar_index,
+      });
+
+      return Promise.resolve(dispatch);
     })
-    .catch(err => {
-      console.log(err.response);
-      return false;
-    });
+    .then(dispatch => getReserveTicket(dispatch))
+    .catch(err => console.log(err.response));
 };
 
 export const canReserveTicket = (auth, data) => dispatch => {
-  const { free_trial_started_at, cancelled_at, suspended_by, valid_by } = auth;
+  const {
+    free_trial_started_at,
+    cancelled_at,
+    suspended_by,
+    valid_by,
+  } = auth.data;
 
   if (valid_by) {
     // 구독한 정보가 있음
@@ -71,7 +67,7 @@ export const canReserveTicket = (auth, data) => dispatch => {
       // 구독만료일이 공연일 이후
       if (!suspended_by || !isFuture(suspended_by)) {
         // 패널티가 없거나 끝남
-        if (data.vacancies > 0) {
+        if (data.capacity > 0) {
           // 예약 가능한 자리가 있음
           return reserveTicket(data.id)(dispatch);
         } else {
@@ -88,7 +84,7 @@ export const canReserveTicket = (auth, data) => dispatch => {
         // 구독취소를 하지 않았거나 구독취소일이 공연일 이후
         if (!suspended_by || !isFuture(suspended_by)) {
           // 패널티가 없거나 끝남
-          if (data.vacancies > 0) {
+          if (data.capacity > 0) {
             // 예약 가능한 자리가 있음
             return reserveTicket(data.id)(dispatch);
           } else {
@@ -117,10 +113,60 @@ export const canReserveTicket = (auth, data) => dispatch => {
   return false;
 };
 
+export const getReserveTicket = dispatch => {
+  return axios
+    .get(`/reservation`)
+    .then(response => {
+      dispatch({
+        type: TicketAction.SET_RESERVATION,
+        data: response.data,
+      });
+    })
+    .catch(err => {
+      console.log(err.response);
+    });
+};
+
+export const reserveTicket = id => dispatch => {
+  return axios
+    .post(`/ticket/${id}/reserve`)
+    .then(response => {
+      dispatch({
+        type: TicketAction.ADD_RESERVATION,
+        data: response.data,
+      });
+      dispatch({
+        type: ModalAction.SHOW_MODAL,
+        data: {
+          type: 'check',
+          text: main_string.concertBooked,
+          showLogo: true,
+        },
+      });
+      return Promise.resolve(true);
+    })
+    .catch(err => {
+      dispatch({
+        type: ModalAction.SHOW_MODAL,
+        data: {
+          type: 'check',
+          text: '에러가 발생했습니다',
+          showLogo: true,
+        },
+      });
+      console.log(err.response.data);
+      return Promise.resolve(false);
+    });
+};
+
 export const cancelTicket = id => dispatch => {
   return axios
     .delete(`/reservation/${id}`)
-    .then(res => {
+    .then(response => {
+      dispatch({
+        type: TicketAction.CANCEL_RESERVATION,
+        id: id,
+      });
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
@@ -135,13 +181,32 @@ export const cancelTicket = id => dispatch => {
     });
 };
 
-export const checkIn = (id, code) => dispatch => {
+export const checkCode = (id, code) => dispatch => {
   return axios
     .post(`/reservation/${id}/check`, { code: code })
-    .then(res => {
-      console.log(res.data);
+    .then(response => {
+      dispatch({
+        type: TicketAction.UPDATE_RESERVATION,
+        data: response.data,
+      });
+      dispatch({
+        type: MessageBarAction.SHOW_MESSAGE_BAR,
+        message: '입장이 확인되었습니다',
+      });
     })
     .catch(err => {
-      console.log(err.response);
+      const { response } = err;
+      switch (response.status) {
+        case 403:
+          dispatch({
+            type: ModalAction.SHOW_MODAL,
+            data: {
+              type: 'check',
+              text: '잘못된 코드입니다',
+              showLogo: true,
+            },
+          });
+          break;
+      }
     });
 };

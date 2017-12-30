@@ -24,7 +24,6 @@ export default class StackPage extends Component {
     const { title, navigation, children } = this.props;
     return (
       <View style={styles.flex_1}>
-        <View style={navbar.navbarAreaFit} />
         <TopTitle
           title={title}
           onPress={() => {
@@ -32,6 +31,7 @@ export default class StackPage extends Component {
             navigation.goBack();
           }}
         />
+        <View style={navbar.navbarAreaFit} />
         {children}
       </View>
     );

@@ -9,8 +9,6 @@ import Calendar from '../partials/Calendar';
 import { mainpage } from '../../../assets/stylesheets/local/mainPageStyle';
 import { styles } from '../../../assets/stylesheets/global/Style';
 import Scale, { percent } from '../../../assets/stylesheets/global/Scale';
-// Network
-import { getAllTicket } from '../../../network';
 
 class CardLists extends Component {
   componentWillReceiveProps(props) {
@@ -41,18 +39,11 @@ class CardLists extends Component {
         lockScrollWhileSnapping={true}
         inactiveSlideScale={0.98}
         // callback
-        onSnapToItem={card_i => {
-          const index = dataIndex.findIndex((data, current) => {
-            // card가 해당하는 calendar index를 반환
-            return dataIndex[current + 1]
-              ? data.cardIndex <= card_i &&
-                  card_i < dataIndex[current + 1].cardIndex
-              : -1;
+        onSnapToItem={card_index => {
+          dataIndex.map(item => {
+            if (item.card_start <= card_index && card_index <= item.card_end)
+              updateIndex(card_index, item.calendar_index);
           });
-
-          if (index !== -1) {
-            updateIndex(card_i, dataIndex[index].dateIndex);
-          }
         }}
       />
     );
@@ -60,47 +51,26 @@ class CardLists extends Component {
 }
 
 export default class MainPage extends Component {
-  constructor() {
-    super();
-    this.state = { data: null, dataIndex: null };
-  }
-
-  getData(isLoggedIn) {
-    getAllTicket().then(response => this.setState(response));
-  }
-
-  componentWillMount() {
-    const { isLoggedIn } = this.props.auth;
-    this.getData();
-  }
-
-  componentWillReceiveProps(props) {
-    if (props.auth.isLoggedIn && !this.state.data) {
-      this.getData(props.auth.isLoggedIn);
-    }
-  }
-
   render() {
-    const { storeInfo, updateIndex, showMessageBar } = this.props;
-
-    return this.state.data ? (
+    const { ticket, storeInfo, updateIndex, showMessageBar } = this.props;
+    return ticket.data.length > 0 ? (
       <View style={styles.blackBackground}>
         <CardLists
-          data={this.state.data}
-          updateIndex={updateIndex}
-          dataIndex={this.state.dataIndex}
+          data={ticket.data}
+          dataIndex={ticket.dataIndex}
           storeInfo={storeInfo}
+          updateIndex={updateIndex}
         />
         <Calendar
+          dataIndex={ticket.dataIndex}
+          storeInfo={storeInfo}
           showMessageBar={showMessageBar}
           updateIndex={updateIndex}
-          dataIndex={this.state.dataIndex}
-          storeInfo={storeInfo}
         />
       </View>
     ) : (
       <View style={[styles.blackBackground, styles.alignCenter]}>
-        <Text>메인페이지 로딩중...</Text>
+        <Text style={styles.textDefault}>메인페이지 로딩중...</Text>
       </View>
     );
   }

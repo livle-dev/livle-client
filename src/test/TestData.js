@@ -22,7 +22,7 @@ const places = [
 // TICKET
 const TICKET_SIZE = 16;
 const MAX = {
-  VACANCIES: 20,
+  CAPACITY: 20,
   RUNTIME: 4,
   ARTISTS: 6,
 };
@@ -40,7 +40,7 @@ for (let i = 0; i < TICKET_SIZE; i++) {
     start_at: random_date,
     end_at: more_time,
     image: test_image,
-    vacancies: faker.random.number(MAX.VACANCIES),
+    capacity: faker.random.number(MAX.CAPACITY),
     place: places[faker.random.number(places.length - 1)],
     music_id: null,
     video_id: 'T9fKvVGBBy4',

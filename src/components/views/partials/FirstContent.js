@@ -23,8 +23,8 @@ const FirstContent = ({ data, showDetail }) => {
         style={[mainCard.moreButton, styles.horizontalCenter]}
         onPress={showDetail}>
         <Text style={[mainCard.textVacancies]}>
-          {data.vacancies > 0
-            ? `${data.vacancies}${main_string.vacancies}`
+          {data.capacity > 0
+            ? `${data.capacity}${main_string.capacity}`
             : main_string.booked}
         </Text>
         <Icon src="ic_more" width={mainWidth.icMore} onPress={showDetail} />

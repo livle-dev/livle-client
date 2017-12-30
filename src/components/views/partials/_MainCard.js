@@ -42,10 +42,7 @@ const HoverButtons = ({ isGo, showTopButton, clickTop, ...option }) => {
 const SnapCard = ({ data, ...option }) => {};
 
 class _MainCard extends Component {
-  // utils
-  _updateGoState = (data, reservation) =>
-    reservation.goList.find(book => book.id === data.id) !== undefined;
-
+  /* UTILS */
   _snapToTop() {
     if (Platform.OS === 'ios') {
       this.carousel.snapToPrev();
@@ -53,9 +50,9 @@ class _MainCard extends Component {
       this.setState({ showTopButton: false });
     }
   }
-  // end
+  /* END */
 
-  // views
+  /* VIEWS */
   _carousel = ticket_info => (
     <Carousel
       ref={c => {
@@ -93,7 +90,7 @@ class _MainCard extends Component {
         image: data.image,
         start_at: data.start_at,
         end_at: data.end_at,
-        vacancies: data.vacancies,
+        capacity: data.capacity,
         artists: data.artists,
       },
       {
@@ -115,37 +112,30 @@ class _MainCard extends Component {
       ),
     });
   };
-  // end
+  /* END */
 
-  state = {
-    isGo: this._updateGoState(this.props.data, this.props.reservation),
-    showTopButton: false,
-  };
+  state = { showTopButton: false };
 
   componentWillReceiveProps(props) {
     if (props.curIndex !== props.cardIndex) this._snapToTop();
-    this.setState({ isGo: this._updateGoState(props.data, props.reservation) });
   }
 
   render() {
     const { auth, data, dispatch } = this.props;
     const { isGo, showTopButton } = this.state;
 
+    const hasReservation = data.reservation_id !== null;
+
     return (
       <View>
         {this._snapCard()}
         <HoverButtons
-          isGo={isGo}
+          isGo={hasReservation}
           showTopButton={showTopButton}
           clickTop={() => this._snapToTop()}
           onPress={() => {
-            if (isGo) {
-              cancelTicket(data.id)(dispatch);
-              this.setState({ isGo: false });
-            } else {
-              if (canReserveTicket(auth, data)(dispatch))
-                this.setState({ isGo: true });
-            }
+            if (hasReservation) cancelTicket(data.reservation_id)(dispatch);
+            else canReserveTicket(auth, data)(dispatch);
           }}
         />
       </View>
@@ -154,7 +144,11 @@ class _MainCard extends Component {
 }
 
 const mapStateToProps = state => {
-  return { auth: state.auth, reservation: state.reservation };
+  return {
+    auth: state.auth,
+    ticket: state.ticket.ticket,
+    reservation: state.ticket.reservation,
+  };
 };
 
 export default connect(mapStateToProps)(_MainCard);
