@@ -27,6 +27,14 @@ export const subscribe = (cardNumber, birth, password, expiry) => dispatch => {
     })
     .catch(err => {
       console.log(err.response);
+      dispatch({
+        type: ModalAction.SHOW_MODAL,
+        data: {
+          type: 'check',
+          text: '결제정보 인증에 실패하였습니다',
+        },
+      });
+      return Promise.reject();
     });
 };
 
@@ -43,7 +51,7 @@ export const cancelSubscribe = dispatch => {
         type: MessageBarAction.SHOW_MESSAGE_BAR,
         message: '멤버십이 해지되었습니다',
       });
-      return Promise.resolve();
+      return Promise.resolve(true);
     })
     .catch(err => {
       console.log(err.response);
