@@ -38,11 +38,11 @@ class SignupPage extends Component {
     switch (type) {
       case 'email':
         const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,6}$/i;
-        let check_email_exist = data.match(regExp) !== null;
+        const check_email_exist = data.match(regExp) !== null;
         updateError.email = !check_email_exist ? login_string.enterEmail : info;
         break;
       case 'password':
-        let check_password_length = data.length < MIN_PASSWORD_LENGTH;
+        const check_password_length = data.length < MIN_PASSWORD_LENGTH;
         updateError.pwd = check_password_length
           ? info || login_string.enterPassword
           : null;
@@ -53,7 +53,7 @@ class SignupPage extends Component {
           : null;
         break;
       case 'nickname':
-        let check_nickname_exist = data.length !== 0;
+        const check_nickname_exist = data.length !== 0;
         updateError.nickname = !check_nickname_exist
           ? info || login_string.enterNickname
           : null;

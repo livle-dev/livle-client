@@ -165,6 +165,19 @@ export const confirmEmail = email => dispatch => {
     });
 };
 
+export const changePassword = (token, password) => dispatch => {
+  return axios
+    .post(`/user/password`, { token: token, password: password })
+    .then(() => {
+      dispatch({
+        type: MessageBarAction,
+        message: '비밀번호가 변경되었습니다',
+      });
+      return Promise.resolve();
+    })
+    .catch(err => Promise.reject(err.response.status));
+};
+
 export const withdraw = (email, password) => dispatch => {
   return axios
     .delete('/user', { email: email, password: password })

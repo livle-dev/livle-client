@@ -74,9 +74,9 @@ export const canReserveTicket = (auth, data) => dispatch => {
         if (isCapable) return reserveTicket(data.id)(dispatch);
         else error = 'full_capacity';
       else error = 'suspended';
-    else error = 'reSubscribe';
-  else if (!didFreeTrial) error = 'startSubscribe';
-  else error = 'reSubscribe';
+    else error = 're_subscribe';
+  else if (!didFreeTrial) error = 'start_subscribe';
+  else error = 're_subscribe';
 
   switch (error) {
     case 'full_capacity':
@@ -95,9 +95,9 @@ export const canReserveTicket = (auth, data) => dispatch => {
         )}까지 이용이 불가합니다.`,
         },
       });
-    case 'startSubscribe':
+    case 'start_subscribe':
       return dispatch({ type: AppAction.PROMOTION });
-    case 'reSubscribe':
+    case 're_subscribe':
       return dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
