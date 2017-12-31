@@ -49,8 +49,10 @@ export default class ChangePasswordPage extends Component {
 
   render() {
     const { navigation } = this.props;
+    const { password, confirmPassword, error } = this.state;
     const { token } = navigation.state;
     const isCofirmed = !error.pwd && confirmPassword;
+    console.log(token);
 
     return (
       <View style={[styles.blackBackground, styles.alignCenter]}>
@@ -78,9 +80,9 @@ export default class ChangePasswordPage extends Component {
               isCofirmed ? color_string.green_aqua : color_string.gray_light
             }
             text={login_string.changePassword}
-            disabled={!isConfirmed}
+            disabled={!isCofirmed}
             onPress={() => {
-              changePassword(token, this.state.password)(navigation.dispatch)
+              changePassword(token, password)(navigation.dispatch)
                 .then(() => navigation.goBack())
                 .catch(status => console.log(status));
             }}
