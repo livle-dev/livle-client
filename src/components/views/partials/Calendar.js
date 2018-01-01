@@ -28,6 +28,19 @@ const getWeek = dataIndex => {
   return week;
 };
 
+const nearestIndex = (index, data) => {
+  for (let i = 0; i < data.length; i++) {
+    const currentData = data[i].calendar_index;
+    if (index <= currentData) {
+      if (i === 0) return currentData;
+      else if (index - data[i - 1].calendar_index <= currentData - index)
+        return data[i].calendar_index;
+      else return data[i - 1].calendar_index;
+    }
+  }
+  return data[data.length - 1].calendar_index;
+};
+
 export default class Calendar extends Component {
   state = { isTouched: false };
 
@@ -86,16 +99,18 @@ export default class Calendar extends Component {
           onSnapToItem={index => {
             if (this.state.isTouched) {
               let isUpdate = false;
-              this.setState({ isTouched: false });
               dataIndex.map(item => {
                 if (item.calendar_index === index) {
                   isUpdate = true;
                   updateIndex(item.card_start, index);
                 }
               });
-              if (!isUpdate) {
+
+              if (isUpdate) {
+                this.setState({ isTouched: false });
+              } else {
                 showMessageBar('해당 날짜에 콘서트가 없습니다.');
-                this.carousel.snapToItem(storeInfo.calendarIndex);
+                this.carousel.snapToItem(nearestIndex(index, dataIndex));
               }
             }
           }}

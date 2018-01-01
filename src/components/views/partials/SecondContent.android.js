@@ -22,8 +22,7 @@ const Container = ({ children, ...option }) => {
         styles.fullWidth,
         styles.horizontalCenter,
       ]}
-      {...option}
-    >
+      {...option}>
       {children}
     </View>
   );
@@ -44,11 +43,11 @@ class VideoPlayer extends Component {
       startTime: this.state.playTime,
     })
       .then(() => {
-        // TODO: update playTime
-        // this.youtubePlayer.seekTo();
+        return Promise.resolve();
       })
       .catch(err => {
         console.log(err);
+        return Promise.reject();
       });
   };
 
@@ -99,8 +98,7 @@ export default class SecondContent extends Component {
         style={mainCard.innerScrollContainer}
         onLayout={e => {
           if (!this.state.isMounted) this.setState({ isMounted: true });
-        }}
-      >
+        }}>
         <View style={navbar.navbarAreaFit} />
         <Container>
           <Text style={[mainCard.textDefault, styles.textCenter]}>
