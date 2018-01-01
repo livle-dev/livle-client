@@ -43,12 +43,12 @@ class SettingPage extends Component {
           title={setting_string.loginInfo}
           contents={[
             {
-              title: login_string.nickname,
-              value: userInfo && userInfo.nickname,
-            },
-            {
               title: login_string.email,
               value: userInfo && userInfo.email,
+            },
+            {
+              title: login_string.nickname,
+              value: userInfo && userInfo.nickname,
             },
           ]}
         />
