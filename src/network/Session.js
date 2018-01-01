@@ -214,7 +214,7 @@ export const withdraw = (email, password) => dispatch => {
         type: ModalAction.SHOW_MODAL,
         data: {
           type: 'blink',
-          text: err.response.data,
+          text: err.response.data.message,
         },
       });
       return Promise.reject();

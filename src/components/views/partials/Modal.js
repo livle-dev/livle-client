@@ -34,7 +34,6 @@ class InputModal extends Component {
 
   render() {
     const { text, buttonText, dismiss, onPress } = this.props;
-    console.log(this.props);
     const hasPassword = this.state.password.length >= 8;
     return (
       <View style={container.modalContainer}>
@@ -150,7 +149,6 @@ class Modal extends Component {
 
   render() {
     const { show, data } = this.props.status;
-    console.log(data);
     return show ? (
       <View style={[styles.modalBackground, styles.alignCenter]}>
         <Content data={data} dismiss={this.hideModal} />
