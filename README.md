@@ -6,13 +6,14 @@
 * react-native & react
 * prop-types
 * axios
+* moment
 * react-navigation
 * redux & react-redux
 * react-native-snap-carousel
 * react-native-localization
 * react-native-keyboard-aware-scroll-view
+* react-native-video
 * react-native-youtube
-* faker
 
 #### After Clone Project
 
@@ -87,8 +88,6 @@
     |-- reducers
         |-- ...reducer files
         |-- index.js
-    |-- test
-        |-- TestData.js (faker를 이용한 테스트데이터 생성)
 |-- App.js (store 선언)
 |-- index.js (default)
 ```
@@ -98,7 +97,7 @@
 * Partial 파일명 규칙
 
 ```
-언더바(\_)가 있으면 반복적으로 사용, 없으면 한번만 호출하여 사용
+언더바(_)가 있으면 반복적으로 사용, 없으면 한번만 호출하여 사용
 ```
 
 * Modal, MessageBar Component

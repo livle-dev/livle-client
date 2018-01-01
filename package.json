@@ -9,7 +9,6 @@
   "dependencies": {
     "adm-zip": "^0.4.7",
     "axios": "^0.17.1",
-    "faker": "^4.1.0",
     "moment": "^2.20.1",
     "plist": "^2.1.0",
     "prop-types": "^15.6.0",
