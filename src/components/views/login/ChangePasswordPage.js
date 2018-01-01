@@ -50,9 +50,8 @@ export default class ChangePasswordPage extends Component {
   render() {
     const { navigation } = this.props;
     const { password, confirmPassword, error } = this.state;
-    const { token } = navigation.state;
+    const { token } = navigation.state.params;
     const isCofirmed = !error.pwd && confirmPassword;
-    console.log(token);
 
     return (
       <View style={[styles.blackBackground, styles.alignCenter]}>

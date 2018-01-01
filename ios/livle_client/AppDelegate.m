@@ -47,8 +47,8 @@
   sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
   return [[FBSDKApplicationDelegate sharedInstance] application:application
-                                                               openURL:url
-                                                     sourceApplication:sourceApplication annotation:annotation] || [RCTLinkingManager application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
+                                                        openURL:url
+                                              sourceApplication:sourceApplication annotation:annotation] || [RCTLinkingManager application:application openURL:url sourceApplication:sourceApplication annotation:annotation];
 }
 
 @end
