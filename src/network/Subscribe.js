@@ -1,11 +1,17 @@
 import axios from './axios';
-import { AuthAction, MessageBarAction, ModalAction } from '../reducers/Actions';
+import {
+  AuthAction,
+  LoadingAction,
+  MessageBarAction,
+  ModalAction,
+} from '../reducers/Actions';
 
 export const subscribe = (cardNumber, birth, password, expiry) => dispatch => {
   const assembleCard = `${cardNumber[0]}-${cardNumber[1]}-${cardNumber[2]}-${
     cardNumber[3]
   }`;
   const assembleExpiry = `20${expiry[1]}-${expiry[0]}`;
+  dispatch({ type: LoadingAction.SHOW_LOADING });
   return axios
     .post(`/subscription`, {
       cardNumber: assembleCard,
@@ -19,6 +25,7 @@ export const subscribe = (cardNumber, birth, password, expiry) => dispatch => {
         type: AuthAction.UPDATE_USER_DATA,
         data: { ...option },
       });
+      dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
         type: MessageBarAction.SHOW_MESSAGE_BAR,
         message: '멤버십 등록이 완료되었습니다',
@@ -27,6 +34,7 @@ export const subscribe = (cardNumber, birth, password, expiry) => dispatch => {
     })
     .catch(err => {
       console.log(err.response);
+      dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
@@ -39,6 +47,7 @@ export const subscribe = (cardNumber, birth, password, expiry) => dispatch => {
 };
 
 export const cancelSubscribe = dispatch => {
+  dispatch({ type: LoadingAction.SHOW_LOADING });
   return axios
     .delete(`/subscription`)
     .then(response => {
@@ -47,13 +56,15 @@ export const cancelSubscribe = dispatch => {
         type: AuthAction.UPDATE_USER_DATA,
         data: { ...option },
       });
+      dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
         type: MessageBarAction.SHOW_MESSAGE_BAR,
         message: '멤버십이 해지되었습니다',
       });
-      return Promise.resolve(true);
+      return Promise.resolve();
     })
     .catch(err => {
-      console.log(err.response);
+      dispatch({ type: LoadingAction.HIDE_LOADING });
+      return Promise.reject(err.response);
     });
 };

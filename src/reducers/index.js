@@ -2,7 +2,12 @@
 import { combineReducers, createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 // Actions
-import { NavbarAction, MessageBarAction, ModalAction } from './Actions';
+import {
+  NavbarAction,
+  LoadingAction,
+  MessageBarAction,
+  ModalAction,
+} from './Actions';
 // Reducers
 import { auth } from './Auth';
 import { appReducer, homeReducer, navNavbar, navMainCard } from './Navigations';
@@ -20,6 +25,17 @@ function disableNavbar(state = { disable: false }, action) {
   }
 }
 
+function showLoading(state = { show: false }, action) {
+  switch (action.type) {
+    case LoadingAction.SHOW_LOADING:
+      return { show: true };
+    case LoadingAction.HIDE_LOADING:
+      return { show: false };
+    default:
+      return state;
+  }
+}
+
 function showMessageBar(state = { show: false, message: '' }, action) {
   switch (action.type) {
     case MessageBarAction.SHOW_MESSAGE_BAR:
@@ -27,7 +43,7 @@ function showMessageBar(state = { show: false, message: '' }, action) {
        * action.message = PropTypes.string.isRequired
        **/
       return { show: true, message: action.message };
-    case MessageBarAction.ANIMATE_ENDED:
+    case MessageBarAction.HIDE_MESSAGE_BAR:
       return { show: false, message: '' };
     default:
       return state;
@@ -68,6 +84,7 @@ const Reducer = combineReducers({
   ticket: ticket,
   // Tool
   disableNavbar: disableNavbar,
+  showLoading: showLoading,
   showMessageBar: showMessageBar,
   showModal: showModal,
 });

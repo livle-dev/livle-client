@@ -11,6 +11,8 @@ import HomeNavigation from './home/HomeNavigation';
 import LoginNavigation from './login/LoginNavigation';
 // Networks
 import { checkSession } from '../../network';
+// Actions
+import { LoadingAction } from '../../reducers/Actions';
 
 // Config
 export const AppScreen = StackNavigator(
@@ -30,26 +32,31 @@ export const AppScreen = StackNavigator(
 const UNMOUNT = 'UNMOUNT';
 
 class AppNavigation extends Component {
-  componentWillMount() {
-    checkSession(this.props.dispatch);
+  constructor(props) {
+    super(props);
+    const { dispatch } = props;
+    this.state = { isChecked: false };
+
+    dispatch({ type: LoadingAction.SHOW_LOADING });
+    checkSession(dispatch);
+  }
+
+  componentWillReceiveProps(props) {
+    if (!this.state.isChecked && props.auth.isLoggedIn !== UNMOUNT) {
+      this.setState({ isChecked: true });
+    }
   }
 
   render() {
-    const { dispatch, auth, navState } = this.props;
-    const isMount = auth.isLoggedIn !== UNMOUNT;
-
-    return isMount ? (
+    const { dispatch, navState } = this.props;
+    return this.state.isChecked ? (
       <AppScreen
         navigation={addNavigationHelpers({
           dispatch: dispatch,
           state: navState,
         })}
       />
-    ) : (
-      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-        <Text>로딩중...</Text>
-      </View>
-    );
+    ) : null;
   }
 }
 

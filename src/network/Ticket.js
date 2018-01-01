@@ -4,6 +4,7 @@ import {
   AppAction,
   TicketAction,
   MainAction,
+  LoadingAction,
   ModalAction,
   MessageBarAction,
 } from '../reducers/Actions';
@@ -63,6 +64,7 @@ export const canReserveTicket = (auth, data) => dispatch => {
 
   let error;
 
+  dispatch({ type: LoadingAction.SHOW_LOADING });
   if (auth.data.valid_by)
     if (isVaildNow)
       if (isSuspendEnd)
@@ -77,6 +79,7 @@ export const canReserveTicket = (auth, data) => dispatch => {
     else error = 're_subscribe';
   else if (!didFreeTrial) error = 'start_subscribe';
   else error = 're_subscribe';
+  dispatch({ type: LoadingAction.HIDE_LOADING });
 
   switch (error) {
     case 'full_capacity':
@@ -141,7 +144,10 @@ export const reserveTicket = id => dispatch => {
           showLogo: true,
         },
       });
-      return Promise.resolve(true);
+      return Promise.resolve();
+    })
+    .then(() => {
+      dispatch({ type: LoadingAction.HIDE_LOADING });
     })
     .catch(err => {
       dispatch({
@@ -152,12 +158,12 @@ export const reserveTicket = id => dispatch => {
           showLogo: true,
         },
       });
-      console.log(err.response.data);
-      return Promise.resolve(false);
+      return Promise.reject(err.response.data);
     });
 };
 
 export const cancelTicket = id => dispatch => {
+  dispatch({ type: LoadingAction.SHOW_LOADING });
   return axios
     .delete(`/reservation/${id}`)
     .then(response => {
@@ -165,6 +171,7 @@ export const cancelTicket = id => dispatch => {
         type: TicketAction.CANCEL_RESERVATION,
         id: id,
       });
+      dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
@@ -173,13 +180,17 @@ export const cancelTicket = id => dispatch => {
           showLogo: true,
         },
       });
+      return Promise.resolve();
     })
     .catch(err => {
       console.log(err.response);
+      dispatch({ type: LoadingAction.HIDE_LOADING });
+      return Promise.reject();
     });
 };
 
 export const checkCode = (id, code) => dispatch => {
+  dispatch({ type: LoadingAction.SHOW_LOADING });
   return axios
     .post(`/reservation/${id}/check`, { code: code })
     .then(response => {
@@ -187,6 +198,7 @@ export const checkCode = (id, code) => dispatch => {
         type: TicketAction.UPDATE_RESERVATION,
         data: response.data,
       });
+      dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
         type: MessageBarAction.SHOW_MESSAGE_BAR,
         message: '입장이 확인되었습니다',
@@ -194,6 +206,7 @@ export const checkCode = (id, code) => dispatch => {
     })
     .catch(err => {
       const { response } = err;
+      dispatch({ type: LoadingAction.HIDE_LOADING });
       switch (response.status) {
         case 403:
           dispatch({
