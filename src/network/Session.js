@@ -1,7 +1,12 @@
 import axios from './axios';
 import { AsyncStorage } from 'react-native';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
-import { AppAction, MessageBarAction, ModalAction } from '../reducers/Actions';
+import {
+  AppAction,
+  LoadingAction,
+  MessageBarAction,
+  ModalAction,
+} from '../reducers/Actions';
 import { consts } from '../assets/strings';
 import { getAllTicket } from './Ticket';
 
@@ -88,6 +93,7 @@ export const checkSession = dispatch => {
 };
 
 export const login = (email, password) => dispatch => {
+  dispatch({ type: LoadingAction.SHOW_LOADING });
   return axios
     .post(`/user/session`, { email: email, password: password })
     .then(response => {
@@ -96,6 +102,7 @@ export const login = (email, password) => dispatch => {
       dispatchUserData(data)(dispatch);
     })
     .catch(err => {
+      dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
@@ -107,6 +114,7 @@ export const login = (email, password) => dispatch => {
 };
 
 export const facebookLogin = dispatch => {
+  dispatch({ type: LoadingAction.SHOW_LOADING });
   LoginManager.logInWithReadPermissions(['public_profile', 'email']).then(
     result => {
       if (!result.isCancelled) {
@@ -117,14 +125,15 @@ export const facebookLogin = dispatch => {
       }
     },
     err => {
+      dispatch({ type: LoadingAction.HIDE_LOADING });
       console.log(err);
     }
   );
 };
 
 export const logout = dispatch => {
-  _removeToken(); // Logout Locally
-  LoginManager.logOut(); // Logout Facebook
+  _removeToken();
+  LoginManager.logOut();
   dispatch({ type: AppAction.LOGOUT });
   dispatch({
     type: MessageBarAction.SHOW_MESSAGE_BAR,
@@ -133,6 +142,7 @@ export const logout = dispatch => {
 };
 
 export const signUp = (email, password, nickname) => dispatch => {
+  dispatch({ type: LoadingAction.SHOW_LOADING });
   return axios
     .post('/user', { email: email, password: password, nickname: nickname })
     .then(response => {
@@ -142,18 +152,20 @@ export const signUp = (email, password, nickname) => dispatch => {
       return Promise.resolve();
     })
     .catch(err => {
-      const { status } = err.response;
-      Promise.reject(status);
+      Promise.reject(err.response.status);
     });
 };
 
 export const confirmEmail = email => dispatch => {
+  dispatch({ type: LoadingAction.SHOW_LOADING });
   return axios
     .get(`/user/password?email=${email}`)
     .then(response => {
+      dispatch({ type: LoadingAction.HIDE_LOADING });
       return Promise.resolve();
     })
     .catch(err => {
+      dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
@@ -166,29 +178,38 @@ export const confirmEmail = email => dispatch => {
 };
 
 export const changePassword = (token, password) => dispatch => {
+  dispatch({ type: LoadingAction.SHOW_LOADING });
   return axios
     .post(`/user/password`, { token: token, password: password })
     .then(() => {
+      dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
         type: MessageBarAction,
         message: '비밀번호가 변경되었습니다',
       });
       return Promise.resolve();
     })
-    .catch(err => Promise.reject(err.response.status));
+    .catch(err => {
+      dispatch({ type: LoadingAction.HIDE_LOADING });
+      return Promise.reject(err.response.status);
+    });
 };
 
 export const withdraw = (email, password) => dispatch => {
+  dispatch({ type: LoadingAction.SHOW_LOADING });
   return axios
     .delete('/user', { email: email, password: password })
     .then(() => {
       dispatch({ type: AppAction.LOGOUT });
+      dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
         type: MessageBarAction.SHOW_MESSAGE_BAR,
         message: '계정이 삭제되었습니다',
       });
+      return Promise.resolve();
     })
     .catch(err => {
+      dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
@@ -196,5 +217,6 @@ export const withdraw = (email, password) => dispatch => {
           text: err.response.data,
         },
       });
+      return Promise.reject();
     });
 };

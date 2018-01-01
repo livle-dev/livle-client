@@ -68,18 +68,12 @@ export const canReserveTicket = (auth, data) => dispatch => {
   if (auth.data.valid_by)
     if (isVaildNow)
       if (isSuspendEnd)
-        if (isCapable)
-          return reserveTicket(data.id)(dispatch).then(result => {
-            if (result) dispatch({ type: LoadingAction.HIDE_LOADING });
-          });
+        if (isCapable) return reserveTicket(data.id)(dispatch);
         else error = 'full_capacity';
       else error = 'suspended';
     else if (!isCancelled)
       if (isSuspendEnd)
-        if (isCapable)
-          return reserveTicket(data.id)(dispatch).then(result => {
-            if (result) dispatch({ type: LoadingAction.HIDE_LOADING });
-          });
+        if (isCapable) return reserveTicket(data.id)(dispatch);
         else error = 'full_capacity';
       else error = 'suspended';
     else error = 're_subscribe';
@@ -150,7 +144,10 @@ export const reserveTicket = id => dispatch => {
           showLogo: true,
         },
       });
-      return Promise.resolve(true);
+      return Promise.resolve();
+    })
+    .then(() => {
+      dispatch({ type: LoadingAction.HIDE_LOADING });
     })
     .catch(err => {
       dispatch({
@@ -161,8 +158,7 @@ export const reserveTicket = id => dispatch => {
           showLogo: true,
         },
       });
-      console.log(err.response.data);
-      return Promise.resolve(false);
+      return Promise.reject(err.response.data);
     });
 };
 
@@ -184,14 +180,17 @@ export const cancelTicket = id => dispatch => {
           showLogo: true,
         },
       });
+      return Promise.resolve();
     })
     .catch(err => {
       console.log(err.response);
       dispatch({ type: LoadingAction.HIDE_LOADING });
+      return Promise.reject();
     });
 };
 
 export const checkCode = (id, code) => dispatch => {
+  dispatch({ type: LoadingAction.SHOW_LOADING });
   return axios
     .post(`/reservation/${id}/check`, { code: code })
     .then(response => {
@@ -199,6 +198,7 @@ export const checkCode = (id, code) => dispatch => {
         type: TicketAction.UPDATE_RESERVATION,
         data: response.data,
       });
+      dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
         type: MessageBarAction.SHOW_MESSAGE_BAR,
         message: '입장이 확인되었습니다',
@@ -206,6 +206,7 @@ export const checkCode = (id, code) => dispatch => {
     })
     .catch(err => {
       const { response } = err;
+      dispatch({ type: LoadingAction.HIDE_LOADING });
       switch (response.status) {
         case 403:
           dispatch({
