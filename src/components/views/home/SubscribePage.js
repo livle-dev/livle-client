@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Text, View, TextInput, findNodeHandle } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 // Views
-import TopTitle from '../partials/TopTitle';
+import StackPage from '../partials/StackPage';
 import _SettingCard from '../partials/_SettingCard';
 import _SquareButton from '../partials/_SquareButton';
 // Strings
@@ -124,8 +124,11 @@ export default class SubscribePage extends Component {
     this.inputExpiry = [];
 
     return (
-      <View style={styles.flex_1}>
-        <TopTitle title="멤버십 등록" onPress={() => navigation.goBack()} />
+      <StackPage
+        title="멤버십 등록"
+        navigation={navigation}
+        disablePadding
+        disableScroll>
         <KeyboardAwareScrollView
           innerRef={ref => (this.scroll = ref)}
           style={styles.blackBackground}
@@ -312,7 +315,7 @@ export default class SubscribePage extends Component {
             />
           </View>
         </KeyboardAwareScrollView>
-      </View>
+      </StackPage>
     );
   }
 }

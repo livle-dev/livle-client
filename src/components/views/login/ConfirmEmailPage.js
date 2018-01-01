@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 // Views
 import BackgroundVideo from '../partials/BackgroundVideo';
-import TopTitle from '../partials/TopTitle';
+import StackPage from '../partials/StackPage';
 import _GreenInput from '../partials/_GreenInput';
 import _SquareButton from '../partials/_SquareButton';
 // Actions
@@ -21,13 +21,14 @@ export default class ChangePasswordPage extends Component {
   render() {
     const { navigation } = this.props;
     return (
-      <View style={styles.blackBackground}>
+      <StackPage
+        title={login_string.confirmEmail}
+        navigation={navigation}
+        containerStyle={styles.alignCenter}
+        isTransparent
+        disablePadding
+        disableScroll>
         <BackgroundVideo />
-        <TopTitle
-          title={login_string.changePassword}
-          onPress={() => navigation.goBack()}
-          isTransparent={true}
-        />
         {!this.state.sendEmail ? (
           <View style={[container.fullContainer, styles.alignCenter]}>
             <_GreenInput
@@ -61,7 +62,7 @@ export default class ChangePasswordPage extends Component {
             </Text>
           </View>
         )}
-      </View>
+      </StackPage>
     );
   }
 }

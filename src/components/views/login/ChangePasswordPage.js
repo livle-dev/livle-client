@@ -2,8 +2,8 @@
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
 // Views
+import StackPage from '../partials/StackPage';
 import BackgroundVideo from '../partials/BackgroundVideo';
-import TopTitle from '../partials/TopTitle';
 import _GreenInput from '../partials/_GreenInput';
 import _SquareButton from '../partials/_SquareButton';
 // Network
@@ -54,13 +54,14 @@ export default class ChangePasswordPage extends Component {
     const isCofirmed = !error.pwd && confirmPassword;
 
     return (
-      <View style={[styles.blackBackground, styles.alignCenter]}>
+      <StackPage
+        title={login_string.changePassword}
+        navigation={navigation}
+        containerStyle={styles.alignCenter}
+        isTransparent
+        disablePadding
+        disableScroll>
         <BackgroundVideo />
-        <TopTitle
-          title={login_string.changePassword}
-          onPress={() => navigation.goBack()}
-          isTransparent={true}
-        />
         <_GreenInput
           placeholder={login_string.newPassword}
           secureTextEntry={true}
@@ -87,7 +88,7 @@ export default class ChangePasswordPage extends Component {
             }}
           />
         </View>
-      </View>
+      </StackPage>
     );
   }
 }

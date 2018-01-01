@@ -32,69 +32,67 @@ const MembershipPage = ({ navigation }) => {
   }
 
   return (
-    <StackPage title={title} navigation={navigation}>
-      <ScrollView style={styles.blackBackground}>
+    <StackPage title={title} navigation={navigation} disablePadding hideNavbar>
+      <_SettingCard
+        type="string"
+        title={membership_string.membershipInfo}
+        contents={[
+          {
+            title: membership_string.plan,
+            value: body.valid_by ? getPlan() : '등록 안함',
+          },
+          {
+            title: !body.cancelled_at ? membership_string.renewal : '종료일',
+            value:
+              body.valid_by &&
+              getTime(body.valid_by).timestamp.format('YYYY년 MM월 DD일'),
+          },
+        ]}
+      />
+      {isSubscribing && (
         <_SettingCard
           type="string"
-          title={membership_string.membershipInfo}
+          title={membership_string.payment}
           contents={[
             {
-              title: membership_string.plan,
-              value: body.valid_by ? getPlan() : '등록 안함',
+              title: membership_string.paymentInfo,
+              value: body.card_name,
             },
             {
-              title: !body.cancelled_at ? membership_string.renewal : '종료일',
-              value:
-                body.valid_by &&
-                getTime(body.valid_by).timestamp.format('YYYY년 MM월 DD일'),
+              title: '',
+              value: `**** **** **** ${body.last_four_digits}`,
             },
           ]}
         />
-        {isSubscribing && (
-          <_SettingCard
-            type="string"
-            title={membership_string.payment}
-            contents={[
-              {
-                title: membership_string.paymentInfo,
-                value: body.card_name,
-              },
-              {
-                title: '',
-                value: `**** **** **** ${body.last_four_digits}`,
-              },
-            ]}
+      )}
+      <View style={container.textContainer}>
+        {isSubscribing ? (
+          <_SquareButton
+            backgroundColor={color_string.green_dark_dark}
+            text="멤버십 해지하기"
+            onPress={() =>
+              navigation.dispatch({
+                type: ModalAction.SHOW_MODAL,
+                data: {
+                  type: 'select',
+                  text: '정말 멤버십을 해지하시겠어요?',
+                  buttonText: '해지하기',
+                  onPress: () =>
+                    cancelSubscribe(navigation.dispatch).then(() =>
+                      navigation.goBack()
+                    ),
+                },
+              })
+            }
+          />
+        ) : (
+          <_SquareButton
+            backgroundColor={color_string.green_dark_dark}
+            text={body.valid_by ? '멤버십 재등록하기' : '멤버십 신청하기'}
+            onPress={() => navigation.dispatch({ type: AppAction.SUBSCRIBE })}
           />
         )}
-        <View style={container.textContainer}>
-          {isSubscribing ? (
-            <_SquareButton
-              backgroundColor={color_string.green_dark_dark}
-              text="멤버십 해지하기"
-              onPress={() =>
-                navigation.dispatch({
-                  type: ModalAction.SHOW_MODAL,
-                  data: {
-                    type: 'select',
-                    text: '정말 멤버십을 해지하시겠어요?',
-                    buttonText: '해지하기',
-                    onPress: () =>
-                      cancelSubscribe(navigation.dispatch).then(() =>
-                        navigation.goBack()
-                      ),
-                  },
-                })
-              }
-            />
-          ) : (
-            <_SquareButton
-              backgroundColor={color_string.green_dark_dark}
-              text={body.valid_by ? '멤버십 재등록하기' : '멤버십 신청하기'}
-              onPress={() => navigation.dispatch({ type: AppAction.SUBSCRIBE })}
-            />
-          )}
-        </View>
-      </ScrollView>
+      </View>
     </StackPage>
   );
 };

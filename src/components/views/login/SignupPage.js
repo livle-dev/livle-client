@@ -5,7 +5,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { connect } from 'react-redux';
 // Views
 import BackgroundVideo from '../partials/BackgroundVideo';
-import TopTitle from '../partials/TopTitle';
+import StackPage from '../partials/StackPage';
 import _GreenInput from '../partials/_GreenInput';
 import _SquareButton from '../partials/_SquareButton';
 // Strings
@@ -75,14 +75,15 @@ class SignupPage extends Component {
       !error.email && !error.pwd && confirmPassword && !error.nickname;
 
     return (
-      <View style={styles.blackBackground}>
+      <StackPage
+        title={login_string.signUp}
+        navigation={navigation}
+        containerStyle={styles.alignCenter}
+        isTransparent
+        disablePadding
+        disableScroll>
         <BackgroundVideo />
         <KeyboardAwareScrollView style={container.fullContainer}>
-          <TopTitle
-            title={login_string.signUp}
-            onPress={() => navigation.goBack()}
-            isTransparent={true}
-          />
           <View style={[container.fullContainer, styles.alignCenter]}>
             <_GreenInput
               placeholder={login_string.email}
@@ -108,7 +109,6 @@ class SignupPage extends Component {
               onChangeText={this._handleNickname}
               errorMessage={error.nickname}
             />
-
             <View style={[container.wrapContainer, styles.rowDirection]}>
               <_SquareButton
                 backgroundColor={
@@ -155,7 +155,7 @@ class SignupPage extends Component {
             </TouchableOpacity>
           </View>
         </KeyboardAwareScrollView>
-      </View>
+      </StackPage>
     );
   }
 }
