@@ -63,7 +63,7 @@ const CardContent = ({ type, index, content }) => {
           <Icon src="ic_next" height={settingHeight.icNext} />
         </TouchableOpacity>
       );
-    case 'notice':
+    case 'blink':
       return (
         <TouchableOpacity
           style={[

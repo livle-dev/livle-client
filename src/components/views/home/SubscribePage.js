@@ -307,7 +307,7 @@ export default class SubscribePage extends Component {
                   navigation.dispatch({
                     type: ModalAction.SHOW_MODAL,
                     data: {
-                      type: 'check',
+                      type: 'alert',
                       text: '모든 결제정보를 입력해주세요',
                     },
                   });

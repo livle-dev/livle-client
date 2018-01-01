@@ -21,7 +21,6 @@ const StackPage = props => {
     containerStyle,
     isTransparent,
     disablePadding,
-    disableBack,
     disableScroll,
     hideNavbar,
     children,
@@ -42,18 +41,16 @@ const StackPage = props => {
         <View style={[styles.flex_1, styles.alignCenter]}>
           <Text style={styles.textTitle}>{title}</Text>
         </View>
-        {disableBack ? null : (
-          <Icon
-            src="ic_back"
-            height={24}
-            style={[container.backButtonContainer, styles.verticalCenter]}
-            onPress={() => {
-              navigation.goBack();
-              if (hideNavbar)
-                navigation.dispatch({ type: NavbarAction.ENABLE_NAVBAR });
-            }}
-          />
-        )}
+        <Icon
+          src="ic_back"
+          height={24}
+          style={[container.backButtonContainer, styles.verticalCenter]}
+          onPress={() => {
+            navigation.goBack();
+            if (hideNavbar)
+              navigation.dispatch({ type: NavbarAction.ENABLE_NAVBAR });
+          }}
+        />
       </View>
       {disableScroll ? (
         children
@@ -73,7 +70,6 @@ StackPage.propTypes = {
   navigation: PropTypes.any.isRequired,
   containerStyle: PropTypes.any,
   isTransparent: PropTypes.bool,
-  disableBack: PropTypes.bool,
   disablePadding: PropTypes.bool,
   disableScroll: PropTypes.bool,
   hideNavbar: PropTypes.bool,

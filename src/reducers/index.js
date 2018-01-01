@@ -56,7 +56,7 @@ function showModal(state = { show: false, data: null }, action) {
       /**
        * action.data = PropTypes.string.isRequired
        * data = {
-       *  type: 'check', 'select', 'input', 'notice'
+       *  type: 'alert', 'select', 'input', 'blink'
        *  text: PropTypes.string.isRequired,
        *  buttonText: PropTypes.string,
        *  onPress: PropTypes.object,

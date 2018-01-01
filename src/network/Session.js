@@ -106,7 +106,7 @@ export const login = (email, password) => dispatch => {
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
-          type: 'notice',
+          type: 'blink',
           text: err.response.data,
         },
       });
@@ -169,7 +169,7 @@ export const confirmEmail = email => dispatch => {
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
-          type: 'notice',
+          type: 'blink',
           text: err.response.data,
         },
       });
@@ -213,7 +213,7 @@ export const withdraw = (email, password) => dispatch => {
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
-          type: 'notice',
+          type: 'blink',
           text: err.response.data,
         },
       });

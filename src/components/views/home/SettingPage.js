@@ -33,7 +33,7 @@ class SettingPage extends Component {
   };
 
   render() {
-    const { navigation, userInfo } = this.props;
+    const { navigation, dispatch, userInfo } = this.props;
 
     return (
       <ScrollView style={styles.blackBackground}>
@@ -44,7 +44,7 @@ class SettingPage extends Component {
           contents={[
             {
               title: login_string.nickname,
-              value: userInfo && userInfo.nickname, // TODO: 진짜 닉네임으로 변경
+              value: userInfo && userInfo.nickname,
             },
             {
               title: login_string.email,
@@ -80,7 +80,7 @@ class SettingPage extends Component {
           ]}
         />
         <_SettingCard
-          type="notice"
+          type="blink"
           title={setting_string.contact}
           contents={[
             {
@@ -91,7 +91,7 @@ class SettingPage extends Component {
           ]}
         />
         <_SettingCard
-          type="notice"
+          type="blink"
           title={setting_string.policies}
           contents={[
             {
@@ -115,8 +115,8 @@ class SettingPage extends Component {
           <_SquareButton
             backgroundColor={color_string.green_dark_dark}
             text={setting_string.logout}
-            onPress={() =>
-              this.props.dispatch({
+            onPress={() => {
+              dispatch({
                 type: ModalAction.SHOW_MODAL,
                 data: {
                   type: 'select',
@@ -124,24 +124,24 @@ class SettingPage extends Component {
                   buttonText: setting_string.logout,
                   onPress: () => logout(navigation.dispatch),
                 },
-              })
-            }
+              });
+            }}
           />
           <_SquareButton
             backgroundColor={color_string.green_dark_dark}
             text={setting_string.withdraw}
-            onPress={() =>
-              this.props.dispatch({
+            onPress={() => {
+              dispatch({
                 type: ModalAction.SHOW_MODAL,
                 data: {
-                  type: 'input',
+                  type: 'password',
                   text: setting_string.wantToWithdraw,
                   buttonText: setting_string.withdraw,
                   onPress: value =>
-                    withdraw(userInfo.email || '', value)(navigation.dispatch),
+                    withdraw(userInfo.email, value)(navigation.dispatch),
                 },
-              })
-            }
+              });
+            }}
           />
         </View>
       </ScrollView>

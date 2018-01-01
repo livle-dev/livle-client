@@ -38,7 +38,7 @@ export const subscribe = (cardNumber, birth, password, expiry) => dispatch => {
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
-          type: 'check',
+          type: 'alert',
           text: '결제정보 인증에 실패하였습니다',
         },
       });

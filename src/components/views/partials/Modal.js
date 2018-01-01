@@ -20,17 +20,61 @@ import { color_string } from '../../../assets/stylesheets/global/Color';
 // Icons
 import Icon from '../../../assets/images/Icon';
 
-export const modalType = {
-  check: 'check',
+export const ModalType = {
+  alert: 'alert',
   select: 'select',
-  input: 'input',
-  notice: 'notice',
+  password: 'password',
+  blink: 'blink',
 };
 
-function Content({ data, dismiss, value, onTextChange }) {
+class InputModal extends Component {
+  state = { password: '' };
+
+  _handlePassword = text => this.setState({ password: text });
+
+  render() {
+    const { text, buttonText, dismiss, onPress } = this.props;
+    console.log(this.props);
+    const hasPassword = this.state.password.length >= 8;
+    return (
+      <View style={container.modalContainer}>
+        <View style={[styles.flex_1, styles.alignCenter]}>
+          <Text style={[styles.textDefault, styles.textCenter]}>{text}</Text>
+        </View>
+        <_GreenInput
+          placeholder={global_string.enterPassword}
+          onChangeText={this._handlePassword}
+          errorMessage={hasPassword ? null : '비밀번호를 입력해주세요.'}
+          secureTextEntry={true}
+        />
+        <View style={[styles.rowDirection, { marginBottom: 6 }]}>
+          <_SquareButton
+            index={0}
+            backgroundColor={color_string.green_dark_dark}
+            text={global_string.cancel}
+            onPress={dismiss}
+          />
+          <_SquareButton
+            index={1}
+            backgroundColor={color_string.green_light}
+            text={buttonText}
+            onPress={() => {
+              if (hasPassword) {
+                onPress(this.state.password);
+                dismiss();
+              }
+            }}
+          />
+        </View>
+      </View>
+    );
+  }
+}
+
+const Content = ({ data, dismiss }) => {
   const { type, text, buttonText, onPress, showLogo } = data;
   switch (type) {
-    case modalType.check:
+    case ModalType.alert:
       return (
         <View style={container.modalContainer}>
           <View style={[styles.flex_1, styles.alignCenter]}>
@@ -53,7 +97,7 @@ function Content({ data, dismiss, value, onTextChange }) {
           </View>
         </View>
       );
-    case modalType.select:
+    case ModalType.select:
       return (
         <View style={container.modalContainer}>
           <View style={[styles.flex_1, styles.alignCenter]}>
@@ -78,79 +122,45 @@ function Content({ data, dismiss, value, onTextChange }) {
           </View>
         </View>
       );
-    case modalType.input:
-      return (
-        <View style={container.modalContainer}>
-          <View style={[styles.flex_1, styles.alignCenter]}>
-            <Text style={[styles.textCenter, styles.textDefault]}>{text}</Text>
-          </View>
-          <_GreenInput
-            placeholder={global_string.enterPassword}
-            onTextChange={onTextChange}
-            errorMessage="비밀번호가 올바르지 않습니다."
-            secureTextEntry={true}
-          />
-          <View style={[styles.rowDirection, { marginBottom: 6 }]}>
-            <_SquareButton
-              index={0}
-              backgroundColor={color_string.green_dark_dark}
-              text={global_string.cancel}
-              onPress={dismiss}
-            />
-            <_SquareButton
-              index={1}
-              backgroundColor={color_string.green_light}
-              text={buttonText}
-              onPress={() => {
-                onPress(value);
-                dismiss();
-              }}
-            />
-          </View>
-        </View>
-      );
-    case modalType.notice:
+    case ModalType.blink:
       return (
         <View style={[container.modalContainer, styles.alignCenter]}>
           <Text style={[styles.textCenter, styles.textDefault]}>{text}</Text>
         </View>
       );
+    case ModalType.password:
+      return (
+        <InputModal
+          text={text}
+          buttonText={buttonText}
+          dismiss={dismiss}
+          onPress={onPress}
+        />
+      );
   }
-}
+};
 
 class Modal extends Component {
-  state = { value: '' };
-
   hideModal = () => this.props.dispatch({ type: ModalAction.HIDE_MODAL });
-
-  _handleValue = text => this.setState({ value: text });
 
   componentWillUpdate(props) {
     const { data } = props.status;
-    if (data)
-      data.type === modalType.notice && setTimeout(this.hideModal, 1500);
+    if (data) data.type === ModalType.blink && setTimeout(this.hideModal, 1500);
   }
 
   render() {
     const { show, data } = this.props.status;
-
+    console.log(data);
     return show ? (
       <View style={[styles.modalBackground, styles.alignCenter]}>
-        <Content
-          data={data}
-          dismiss={this.hideModal}
-          onTextChange={this._handleValue}
-          value={this.state.value}
-        />
+        <Content data={data} dismiss={this.hideModal} />
       </View>
     ) : null;
   }
 }
 
 const mapStateToProps = state => {
-  return {
-    status: state.showModal,
-  };
+  return { status: state.showModal };
 };
 
 export default connect(mapStateToProps)(Modal);

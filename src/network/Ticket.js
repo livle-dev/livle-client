@@ -85,13 +85,13 @@ export const canReserveTicket = (auth, data) => dispatch => {
     case 'full_capacity':
       return dispatch({
         type: ModalAction.SHOW_MODAL,
-        data: { type: 'check', text: '좌석이 매진되었습니다.' },
+        data: { type: 'alert', text: '좌석이 매진되었습니다.' },
       });
     case 'suspended':
       return dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
-          type: 'check',
+          type: 'alert',
           text: `노쇼에 대한 패널티로
         ${getTime(auth.data.suspended_by).timestamp.format(
           'MM월 DD일 hh시 mm분'
@@ -139,7 +139,7 @@ export const reserveTicket = id => dispatch => {
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
-          type: 'check',
+          type: 'alert',
           text: main_string.concertBooked,
           showLogo: true,
         },
@@ -153,7 +153,7 @@ export const reserveTicket = id => dispatch => {
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
-          type: 'check',
+          type: 'alert',
           text: '에러가 발생했습니다',
           showLogo: true,
         },
@@ -175,7 +175,7 @@ export const cancelTicket = id => dispatch => {
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
-          type: 'check',
+          type: 'alert',
           text: main_string.cancelReservation,
           showLogo: true,
         },
@@ -189,10 +189,10 @@ export const cancelTicket = id => dispatch => {
     });
 };
 
-export const checkCode = (id, code) => dispatch => {
+export const alertCode = (id, code) => dispatch => {
   dispatch({ type: LoadingAction.SHOW_LOADING });
   return axios
-    .post(`/reservation/${id}/check`, { code: code })
+    .post(`/reservation/${id}/alert`, { code: code })
     .then(response => {
       dispatch({
         type: TicketAction.UPDATE_RESERVATION,
@@ -212,7 +212,7 @@ export const checkCode = (id, code) => dispatch => {
           dispatch({
             type: ModalAction.SHOW_MODAL,
             data: {
-              type: 'check',
+              type: 'alert',
               text: '잘못된 코드입니다',
               showLogo: true,
             },
