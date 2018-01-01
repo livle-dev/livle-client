@@ -33,9 +33,13 @@ export const NavbarAction = {
   DISABLE_NAVBAR: 'DISABLE_NAVBAR',
   ENABLE_NAVBAR: 'ENABLE_NAVBAR',
 };
+export const LoadingAction = {
+  SHOW_LOADING: 'SHOW_LOADING',
+  HIDE_LOADING: 'HIDE_LOADING',
+};
 export const MessageBarAction = {
   SHOW_MESSAGE_BAR: 'SHOW_MESSAGE_BAR',
-  ANIMATE_ENDED: 'ANIMATE_ENDED',
+  HIDE_MESSAGE_BAR: 'HIDE_MESSAGE_BAR',
 };
 export const ModalAction = {
   SHOW_MODAL: 'SHOW_MODAL',

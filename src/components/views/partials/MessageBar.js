@@ -33,7 +33,7 @@ class MessageBar extends Component {
         duration: duration,
       }),
     ]).start(() => {
-      dispatch({ type: MessageBarAction.ANIMATE_ENDED });
+      dispatch({ type: MessageBarAction.HIDE_MESSAGE_BAR });
     });
   };
 
@@ -50,8 +50,7 @@ class MessageBar extends Component {
           container.messagebarContainer,
           styles.alignCenter,
           { top: this.state.barPosition },
-        ]}
-      >
+        ]}>
         <Text style={styles.textDefault}>{status.message}</Text>
       </Animated.View>
     ) : null;

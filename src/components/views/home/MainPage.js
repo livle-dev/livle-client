@@ -5,6 +5,8 @@ import Carousel from 'react-native-snap-carousel';
 // Views
 import _MainCard from '../partials/_MainCard';
 import Calendar from '../partials/Calendar';
+// Actions
+import { LoadingAction } from '../../../reducers/Actions';
 // Styles
 import { mainpage } from '../../../assets/stylesheets/local/mainPageStyle';
 import { styles } from '../../../assets/stylesheets/global/Style';
@@ -51,9 +53,18 @@ class CardLists extends Component {
 }
 
 export default class MainPage extends Component {
+  state = { isLoaded: false };
+
+  componentWillReceiveProps(props) {
+    if (!this.state.isLoaded && props.ticket.data.length > 0) {
+      props.navigation.dispatch({ type: LoadingAction.HIDE_LOADING });
+      this.setState({ isLoaded: true });
+    }
+  }
+
   render() {
     const { ticket, storeInfo, updateIndex, showMessageBar } = this.props;
-    return ticket.data.length > 0 ? (
+    return this.state.isLoaded ? (
       <View style={styles.blackBackground}>
         <CardLists
           data={ticket.data}
@@ -69,9 +80,7 @@ export default class MainPage extends Component {
         />
       </View>
     ) : (
-      <View style={[styles.blackBackground, styles.alignCenter]}>
-        <Text style={styles.textDefault}>메인페이지 로딩중...</Text>
-      </View>
+      <View style={styles.blackBackground} />
     );
   }
 }

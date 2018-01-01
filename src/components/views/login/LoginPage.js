@@ -16,7 +16,7 @@ import {
 import { color_string } from '../../../assets/stylesheets/global/Color';
 import { font_size, font_style } from '../../../assets/fonts/Font';
 // Actions
-import { AppAction } from '../../../reducers/Actions';
+import { AppAction, LoadingAction } from '../../../reducers/Actions';
 // Network
 import { login, facebookLogin } from '../../../network';
 // Views
@@ -30,6 +30,11 @@ import Icon from '../../../assets/images/Icon';
 
 export default class LoginPage extends Component {
   state = { email: '', password: '' };
+
+  componentDidMount() {
+    const { dispatch } = this.props;
+    dispatch({ type: LoadingAction.HIDE_LOADING });
+  }
 
   _handleEmail = text => this.setState({ email: text });
   _handlePassword = text => this.setState({ password: text });
