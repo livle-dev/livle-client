@@ -4,6 +4,7 @@ import {
   AppAction,
   TicketAction,
   MainAction,
+  LoadingAction,
   ModalAction,
   MessageBarAction,
 } from '../reducers/Actions';
@@ -63,20 +64,28 @@ export const canReserveTicket = (auth, data) => dispatch => {
 
   let error;
 
+  dispatch({ type: LoadingAction.SHOW_LOADING });
   if (auth.data.valid_by)
     if (isVaildNow)
       if (isSuspendEnd)
-        if (isCapable) return reserveTicket(data.id)(dispatch);
+        if (isCapable)
+          return reserveTicket(data.id)(dispatch).then(result => {
+            if (result) dispatch({ type: LoadingAction.HIDE_LOADING });
+          });
         else error = 'full_capacity';
       else error = 'suspended';
     else if (!isCancelled)
       if (isSuspendEnd)
-        if (isCapable) return reserveTicket(data.id)(dispatch);
+        if (isCapable)
+          return reserveTicket(data.id)(dispatch).then(result => {
+            if (result) dispatch({ type: LoadingAction.HIDE_LOADING });
+          });
         else error = 'full_capacity';
       else error = 'suspended';
     else error = 're_subscribe';
   else if (!didFreeTrial) error = 'start_subscribe';
   else error = 're_subscribe';
+  dispatch({ type: LoadingAction.HIDE_LOADING });
 
   switch (error) {
     case 'full_capacity':
@@ -158,6 +167,7 @@ export const reserveTicket = id => dispatch => {
 };
 
 export const cancelTicket = id => dispatch => {
+  dispatch({ type: LoadingAction.SHOW_LOADING });
   return axios
     .delete(`/reservation/${id}`)
     .then(response => {
@@ -165,6 +175,7 @@ export const cancelTicket = id => dispatch => {
         type: TicketAction.CANCEL_RESERVATION,
         id: id,
       });
+      dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
@@ -176,6 +187,7 @@ export const cancelTicket = id => dispatch => {
     })
     .catch(err => {
       console.log(err.response);
+      dispatch({ type: LoadingAction.HIDE_LOADING });
     });
 };
 

@@ -8,16 +8,23 @@ import { styles, container } from '../../../assets/stylesheets/global/Style';
 class Loading extends Component {
   state = { spin: new Animated.Value(0) };
 
-  componentDidMount() {
-    const { spin } = this.state;
+  ShowLoading() {
     Animated.loop(
-      Animated.timing(spin, {
+      Animated.timing(this.state.spin, {
         toValue: 1,
         duration: 1000,
         easing: Easing.bezier(0.58, 0.07, 0.46, 0.96),
         useNativeDriver: true,
       })
     ).start();
+  }
+
+  componentDidMount() {
+    this.ShowLoading();
+  }
+
+  componentWillReceiveProps(props) {
+    if (props.status.show) this.ShowLoading();
   }
 
   render() {
