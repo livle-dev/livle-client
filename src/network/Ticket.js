@@ -189,7 +189,7 @@ export const cancelTicket = id => dispatch => {
     });
 };
 
-export const alertCode = (id, code) => dispatch => {
+export const checkCode = (id, code) => dispatch => {
   dispatch({ type: LoadingAction.SHOW_LOADING });
   return axios
     .post(`/reservation/${id}/alert`, { code: code })

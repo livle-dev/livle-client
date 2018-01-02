@@ -16,6 +16,8 @@ import {
   container,
   navbar,
 } from '../../../assets/stylesheets/global/Style';
+// Actions
+import { ModalAction } from '../../../reducers/Actions';
 // Network
 import { cancelTicket, checkCode } from '../../../network';
 // Views
@@ -89,7 +91,17 @@ export default class ShowReservation extends Component {
         ) : (
           <TouchableOpacity
             style={[styles.flex_1, styles.alignCenter]}
-            onPress={() => cancelTicket(item.id)(dispatch)}>
+            onPress={() =>
+              dispatch({
+                type: ModalAction.SHOW_MODAL,
+                data: {
+                  type: 'select',
+                  text: '예약을 취소하시겠습니까?',
+                  buttonText: '취소하기',
+                  onPress: () => cancelTicket(item.id)(dispatch),
+                },
+              })
+            }>
             <Text style={goStyle.cancel_text}>
               {go_string.cancelReservation}
             </Text>
