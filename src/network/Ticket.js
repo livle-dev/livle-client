@@ -183,8 +183,19 @@ export const cancelTicket = id => dispatch => {
       return Promise.resolve();
     })
     .catch(err => {
-      console.log(err.response);
+      const { status } = err.response;
       dispatch({ type: LoadingAction.HIDE_LOADING });
+      switch (status) {
+        case 405:
+          return dispatch({
+            type: ModalAction.SHOW_MODAL,
+            data: {
+              type: 'alert',
+              text: '공연시작 4시간 전에는 예약을 취소할 수 없습니다.',
+              showLogo: true,
+            },
+          });
+      }
       return Promise.reject();
     });
 };

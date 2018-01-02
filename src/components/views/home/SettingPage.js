@@ -16,7 +16,6 @@ import {
   help_support_string,
   privacy_string,
   terms_string,
-  license_string,
 } from '../../../assets/strings';
 // Styles
 import {
@@ -104,11 +103,13 @@ class SettingPage extends Component {
               navigation: navigation,
               body: terms_string,
             },
+            /*
             {
               title: setting_string.license,
               navigation: navigation,
               body: license_string,
             },
+            */
           ]}
         />
         <View style={container.textContainer}>
