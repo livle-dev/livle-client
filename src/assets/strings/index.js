@@ -2,10 +2,10 @@
 import LocalizedStrings from 'react-native-localization';
 
 export * from './Constant';
-export * from './Login';
 export * from './Main';
 export * from './Membership';
 export * from './Notice';
+export * from './Session';
 export * from './Setting';
 export * from './Ticket';
 

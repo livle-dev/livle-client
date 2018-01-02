@@ -24,7 +24,7 @@ import BackgroundVideo from '../partials/BackgroundVideo';
 import _GreenInput from '../partials/_GreenInput';
 import _SquareButton from '../partials/_SquareButton';
 // Strings
-import { login_string } from '../../../assets/strings';
+import { session_string } from '../../../assets/strings';
 // Icons
 import Icon from '../../../assets/images/Icon';
 
@@ -54,12 +54,12 @@ export default class LoginPage extends Component {
             disabled={true}
           />
           <_GreenInput
-            placeholder={login_string.email}
+            placeholder={session_string.email}
             keyboardType="email-address"
             onChangeText={this._handleEmail}
           />
           <_GreenInput
-            placeholder={login_string.password}
+            placeholder={session_string.password}
             secureTextEntry={true}
             onChangeText={this._handlePassword}
           />
@@ -67,13 +67,13 @@ export default class LoginPage extends Component {
             <View style={styles.rowDirection}>
               <_SquareButton
                 backgroundColor={color_string.green_dark}
-                text={login_string.signUp}
+                text={session_string.signUp}
                 onPress={() => navigation.navigate('Signup')}
                 index={0}
               />
               <_SquareButton
                 backgroundColor={color_string.green_aqua}
-                text={login_string.logIn}
+                text={session_string.logIn}
                 onPress={() => {
                   const { email, password } = this.state;
                   login(email, password)(dispatch);
@@ -84,7 +84,7 @@ export default class LoginPage extends Component {
             <View style={styles.rowDirection}>
               <_SquareButton
                 backgroundColor={color_string.blue_facebook}
-                text={login_string.facebook}
+                text={session_string.facebook}
                 onPress={() => facebookLogin(dispatch)}
               />
             </View>
@@ -93,7 +93,7 @@ export default class LoginPage extends Component {
             style={loginStyle.textButton}
             onPress={() => navigation.navigate('ConfirmEmail')}>
             <Text style={loginStyle.defaultText}>
-              {login_string.findPassword}
+              {session_string.findPassword}
             </Text>
           </TouchableOpacity>
         </KeyboardAvoidingView>

@@ -9,7 +9,7 @@ import _SquareButton from '../partials/_SquareButton';
 // Network
 import { changePassword } from '../../../network';
 // Strings
-import { login_string } from '../../../assets/strings';
+import { session_string } from '../../../assets/strings';
 // Styles
 import { styles, container } from '../../../assets/stylesheets/global/Style';
 import { color_string } from '../../../assets/stylesheets/global/Color';
@@ -35,12 +35,12 @@ export default class ChangePasswordPage extends Component {
       case 'password':
         const check_password_length = data.length < MIN_PASSWORD_LENGTH;
         updateError.pwd = check_password_length
-          ? login_string.enterPassword
+          ? session_string.enterPassword
           : null;
         break;
       case 'confirmPassword':
         updateError.confirmPwd = !data
-          ? login_string.enterConfirmPassword
+          ? session_string.enterConfirmPassword
           : null;
         break;
     }
@@ -55,7 +55,7 @@ export default class ChangePasswordPage extends Component {
 
     return (
       <StackPage
-        title={login_string.changePassword}
+        title={session_string.changePassword}
         navigation={navigation}
         containerStyle={styles.alignCenter}
         isTransparent
@@ -63,13 +63,13 @@ export default class ChangePasswordPage extends Component {
         disableScroll>
         <BackgroundVideo />
         <_GreenInput
-          placeholder={login_string.newPassword}
+          placeholder={session_string.newPassword}
           secureTextEntry={true}
           onChangeText={this._handlePassword}
           errorMessage={error.pwd}
         />
         <_GreenInput
-          placeholder={login_string.confirmPassword}
+          placeholder={session_string.confirmPassword}
           secureTextEntry={true}
           onChangeText={this._handleConfirmPassword}
           errorMessage={error.confirmPwd}
@@ -79,7 +79,7 @@ export default class ChangePasswordPage extends Component {
             backgroundColor={
               isCofirmed ? color_string.green_aqua : color_string.gray_light
             }
-            text={login_string.changePassword}
+            text={session_string.changePassword}
             disabled={!isCofirmed}
             onPress={() => {
               changePassword(token, password)(navigation.dispatch)

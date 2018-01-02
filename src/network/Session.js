@@ -7,7 +7,7 @@ import {
   MessageBarAction,
   ModalAction,
 } from '../reducers/Actions';
-import { consts } from '../assets/strings';
+import { consts, session_string } from '../assets/strings';
 import { getAllTicket } from './Ticket';
 
 /**
@@ -51,7 +51,7 @@ const dispatchUserData = data => dispatch => {
   getAllTicket(dispatch);
   dispatch({
     type: MessageBarAction.SHOW_MESSAGE_BAR,
-    message: '로그인 되었습니다',
+    message: session_string.signedIn,
   });
 };
 
@@ -137,7 +137,7 @@ export const logout = dispatch => {
   dispatch({ type: AppAction.LOGOUT });
   dispatch({
     type: MessageBarAction.SHOW_MESSAGE_BAR,
-    message: '로그아웃 되었습니다',
+    message: session_string.signedOut,
   });
 };
 
@@ -185,7 +185,7 @@ export const changePassword = (token, password) => dispatch => {
       dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
         type: MessageBarAction,
-        message: '비밀번호가 변경되었습니다',
+        message: session_string.completeChangePassword,
       });
       return Promise.resolve();
     })
@@ -204,7 +204,7 @@ export const withdraw = (email, password) => dispatch => {
       dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
         type: MessageBarAction.SHOW_MESSAGE_BAR,
-        message: '계정이 삭제되었습니다',
+        message: session_string.withdraw,
       });
       return Promise.resolve();
     })

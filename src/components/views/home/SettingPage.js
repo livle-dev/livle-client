@@ -12,7 +12,7 @@ import { ModalAction } from '../../../reducers/Actions';
 // Strings
 import {
   setting_string,
-  login_string,
+  session_string,
   help_support_string,
   privacy_string,
   terms_string,
@@ -42,11 +42,11 @@ class SettingPage extends Component {
           title={setting_string.loginInfo}
           contents={[
             {
-              title: login_string.email,
+              title: session_string.email,
               value: userInfo && userInfo.email,
             },
             {
-              title: login_string.nickname,
+              title: session_string.nickname,
               value: userInfo && userInfo.nickname,
             },
           ]}

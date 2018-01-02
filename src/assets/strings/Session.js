@@ -1,9 +1,11 @@
 import LocalizedStrings from 'react-native-localization';
 
-export const login_string = new LocalizedStrings({
+export const session_string = new LocalizedStrings({
   en: {
     signUp: 'Sign Up',
     logIn: 'Login',
+    signedIn: 'Successfully Signed In',
+    signedOut: 'Successfully Signed Out',
     facebook: 'Start with Facebook',
     findPassword: 'Find Password',
     email: 'E-mail',
@@ -11,6 +13,7 @@ export const login_string = new LocalizedStrings({
     newPassword: 'Password (at least 8 characters)',
     confirmPassword: 'Confirm Password',
     changePassword: 'Change Password',
+    completeChangePassword: 'Password has been changed',
     confirmEmail: 'Confirm E-mail',
     sendConfirmEmail: `The verification code was
     sent to your email.`,
@@ -22,10 +25,13 @@ export const login_string = new LocalizedStrings({
     enterNickname: 'please enter your nickname',
     existEmail: 'email already exists',
     wrongEmail: 'wrong email address',
+    withdraw: 'Successfully withdraw account',
   },
   ko: {
     signUp: '회원가입',
     logIn: '로그인',
+    signedIn: '로그인 되었습니다',
+    signedOut: '로그아웃 되었습니다',
     facebook: '페이스북으로 시작하기',
     findPassword: '비밀번호 찾기',
     email: '이메일',
@@ -33,6 +39,7 @@ export const login_string = new LocalizedStrings({
     newPassword: '비밀번호 (8자리 이상)',
     confirmPassword: '비밀번호 확인',
     changePassword: '비밀번호 변경',
+    completeChangePassword: '비밀번호가 변경되었습니다',
     confirmEmail: '이메일 인증하기',
     sendConfirmEmail: `입력하신 이메일로
     인증코드가 전송되었습니다.`,
@@ -44,5 +51,6 @@ export const login_string = new LocalizedStrings({
     enterNickname: '닉네임을 입력해주세요',
     existEmail: '이미 존재하는 이메일입니다',
     wrongEmail: '잘못된 이메일 형식입니다',
+    withdraw: '계정이 삭제되었습니다',
   },
 });

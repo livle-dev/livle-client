@@ -9,7 +9,7 @@ import _SquareButton from '../partials/_SquareButton';
 // Actions
 import { confirmEmail } from '../../../network';
 // Strings
-import { login_string } from '../../../assets/strings';
+import { session_string } from '../../../assets/strings';
 // Styles
 import { styles, container } from '../../../assets/stylesheets/global/Style';
 import { color_string } from '../../../assets/stylesheets/global/Color';
@@ -22,7 +22,7 @@ export default class ChangePasswordPage extends Component {
     const { navigation } = this.props;
     return (
       <StackPage
-        title={login_string.confirmEmail}
+        title={session_string.confirmEmail}
         navigation={navigation}
         containerStyle={styles.alignCenter}
         isTransparent
@@ -32,14 +32,14 @@ export default class ChangePasswordPage extends Component {
         {!this.state.sendEmail ? (
           <View style={[container.fullContainer, styles.alignCenter]}>
             <_GreenInput
-              placeholder={login_string.email}
+              placeholder={session_string.email}
               keyboardType="email-address"
               onChangeText={this._handleEmail}
             />
             <View style={[container.wrapContainer, styles.rowDirection]}>
               <_SquareButton
                 backgroundColor={color_string.green_aqua}
-                text={login_string.confirmEmail}
+                text={session_string.confirmEmail}
                 onPress={() =>
                   confirmEmail(this.state.email)(navigation.dispatch).then(() =>
                     this.setState({ sendEmail: true })
@@ -58,7 +58,7 @@ export default class ChangePasswordPage extends Component {
               {this.state.email}
             </Text>
             <Text style={[styles.textDefault, styles.textCenter]}>
-              {login_string.sendConfirmEmail}
+              {session_string.sendConfirmEmail}
             </Text>
           </View>
         )}

@@ -9,7 +9,7 @@ import StackPage from '../partials/StackPage';
 import _GreenInput from '../partials/_GreenInput';
 import _SquareButton from '../partials/_SquareButton';
 // Strings
-import { login_string } from '../../../assets/strings';
+import { session_string } from '../../../assets/strings';
 // Network
 import { signUp } from '../../../network';
 // Styles
@@ -39,23 +39,25 @@ class SignupPage extends Component {
       case 'email':
         const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,6}$/i;
         const check_email_exist = data.match(regExp) !== null;
-        updateError.email = !check_email_exist ? login_string.enterEmail : info;
+        updateError.email = !check_email_exist
+          ? session_string.enterEmail
+          : info;
         break;
       case 'password':
         const check_password_length = data.length < MIN_PASSWORD_LENGTH;
         updateError.pwd = check_password_length
-          ? info || login_string.enterPassword
+          ? info || session_string.enterPassword
           : null;
         break;
       case 'confirmPassword':
         updateError.confirmPwd = !data
-          ? info || login_string.enterConfirmPassword
+          ? info || session_string.enterConfirmPassword
           : null;
         break;
       case 'nickname':
         const check_nickname_exist = data.length !== 0;
         updateError.nickname = !check_nickname_exist
-          ? info || login_string.enterNickname
+          ? info || session_string.enterNickname
           : null;
         break;
     }
@@ -76,7 +78,7 @@ class SignupPage extends Component {
 
     return (
       <StackPage
-        title={login_string.signUp}
+        title={session_string.signUp}
         navigation={navigation}
         containerStyle={styles.alignCenter}
         isTransparent
@@ -86,26 +88,26 @@ class SignupPage extends Component {
         <KeyboardAwareScrollView style={container.fullContainer}>
           <View style={[container.fullContainer, styles.alignCenter]}>
             <_GreenInput
-              placeholder={login_string.email}
+              placeholder={session_string.email}
               keyboardType="email-address"
               autoFocus={true}
               onChangeText={this._handleEmail}
               errorMessage={error.email}
             />
             <_GreenInput
-              placeholder={login_string.newPassword}
+              placeholder={session_string.newPassword}
               secureTextEntry={true}
               onChangeText={this._handlePassword}
               errorMessage={error.pwd}
             />
             <_GreenInput
-              placeholder={login_string.confirmPassword}
+              placeholder={session_string.confirmPassword}
               secureTextEntry={true}
               onChangeText={this._handleConfirmPassword}
               errorMessage={error.confirmPwd}
             />
             <_GreenInput
-              placeholder={login_string.nickname}
+              placeholder={session_string.nickname}
               onChangeText={this._handleNickname}
               errorMessage={error.nickname}
             />
@@ -116,7 +118,7 @@ class SignupPage extends Component {
                     ? color_string.green_aqua
                     : color_string.gray_light
                 }
-                text={login_string.signUp}
+                text={session_string.signUp}
                 disabled={!isConfirmed}
                 onPress={() => {
                   if (isConfirmed)
@@ -130,14 +132,14 @@ class SignupPage extends Component {
                           this._checkError(
                             'email',
                             this.state.email,
-                            login_string.existEmail
+                            session_string.existEmail
                           );
                           break;
                         case 405:
                           this._checkError(
                             'email',
                             this.state.email,
-                            login_string.wrongEmail
+                            session_string.wrongEmail
                           );
                       }
                     });
@@ -149,8 +151,8 @@ class SignupPage extends Component {
               style={loginStyle.textButton}
               onPress={() => navigation.goBack()}>
               <Text style={loginStyle.defaultText}>
-                {login_string.alreadyHaveId}
-                <Text style={loginStyle.boldText}>{login_string.logIn}</Text>
+                {session_string.alreadyHaveId}
+                <Text style={loginStyle.boldText}>{session_string.logIn}</Text>
               </Text>
             </TouchableOpacity>
           </View>
