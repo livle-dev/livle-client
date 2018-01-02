@@ -108,7 +108,7 @@ export default class SecondContent extends Component {
         </Container>
         <Container>
           <Text style={[mainCard.textDefault, styles.textCenter]}>
-            관련 영상
+            {main_string.relatedVideo}
           </Text>
           {this.state.isMounted &&
             !removePlayer && <VideoPlayer videoId={data.video_id} />}

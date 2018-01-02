@@ -5,6 +5,7 @@ import {
   MessageBarAction,
   ModalAction,
 } from '../reducers/Actions';
+import { membership_string } from '../assets/strings';
 
 export const subscribe = (cardNumber, birth, password, expiry) => dispatch => {
   const assembleCard = `${cardNumber[0]}-${cardNumber[1]}-${cardNumber[2]}-${
@@ -28,7 +29,7 @@ export const subscribe = (cardNumber, birth, password, expiry) => dispatch => {
       dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
         type: MessageBarAction.SHOW_MESSAGE_BAR,
-        message: '멤버십 등록이 완료되었습니다',
+        message: membership_string.compleltApplying,
       });
       return Promise.resolve();
     })
@@ -39,7 +40,7 @@ export const subscribe = (cardNumber, birth, password, expiry) => dispatch => {
         type: ModalAction.SHOW_MODAL,
         data: {
           type: 'alert',
-          text: '결제정보 인증에 실패하였습니다',
+          text: membership_string.failedVerifyPayment,
         },
       });
       return Promise.reject();
@@ -59,11 +60,12 @@ export const cancelSubscribe = dispatch => {
       dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
         type: MessageBarAction.SHOW_MESSAGE_BAR,
-        message: '멤버십이 해지되었습니다',
+        message: membership_string.completeTerminate,
       });
       return Promise.resolve();
     })
     .catch(err => {
+      console.log(err.response);
       dispatch({ type: LoadingAction.HIDE_LOADING });
       return Promise.reject(err.response);
     });

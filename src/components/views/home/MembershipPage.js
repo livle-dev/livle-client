@@ -25,10 +25,11 @@ const MembershipPage = ({ navigation }) => {
   const isSubscribing = body.valid_by && !body.cancelled_at;
 
   function getPlan() {
-    const { free_trial_started_at, valid_by, cancelled_at } = body;
-    if (getDday(valid_by) - getDday(free_trial_started_at) === 7)
-      return 'FREE TRIAL';
-    else return 'BASIC';
+    const checkFreeTrial =
+      getDday(body.valid_by) - getDday(body.free_trial_started_at) === 7;
+    return checkFreeTrial
+      ? membership_string.freeTrial
+      : membership_string.basic;
   }
 
   return (
@@ -39,13 +40,15 @@ const MembershipPage = ({ navigation }) => {
         contents={[
           {
             title: membership_string.plan,
-            value: body.valid_by ? getPlan() : '등록 안함',
+            value: body.valid_by ? getPlan() : membership_string.unsubscribe,
           },
           {
-            title: !body.cancelled_at ? membership_string.renewal : '종료일',
+            title: !body.cancelled_at
+              ? membership_string.renewal
+              : membership_string.endDate,
             value:
               body.valid_by &&
-              getTime(body.valid_by).timestamp.format('YYYY년 MM월 DD일'),
+              getTime(body.valid_by).timestamp.format('YYYY.MM.DD'),
           },
         ]}
       />
@@ -69,14 +72,14 @@ const MembershipPage = ({ navigation }) => {
         {isSubscribing ? (
           <_SquareButton
             backgroundColor={color_string.green_dark_dark}
-            text="멤버십 해지하기"
+            text={membership_string.terminateMembership}
             onPress={() =>
               navigation.dispatch({
                 type: ModalAction.SHOW_MODAL,
                 data: {
                   type: 'select',
-                  text: '정말 멤버십을 해지하시겠어요?',
-                  buttonText: '해지하기',
+                  text: membership_string.reallyTerminate,
+                  buttonText: membership_string.terminate,
                   onPress: () =>
                     cancelSubscribe(navigation.dispatch).then(() =>
                       navigation.goBack()
@@ -88,7 +91,11 @@ const MembershipPage = ({ navigation }) => {
         ) : (
           <_SquareButton
             backgroundColor={color_string.green_dark_dark}
-            text={body.valid_by ? '멤버십 재등록하기' : '멤버십 신청하기'}
+            text={
+              body.valid_by
+                ? membership_string.reApplyMembership
+                : membership_string.applyMembership
+            }
             onPress={() => navigation.dispatch({ type: AppAction.SUBSCRIBE })}
           />
         )}

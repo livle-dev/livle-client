@@ -38,22 +38,3 @@ export const setting_string = new LocalizedStrings({
     withdraw: '탈퇴하기',
   },
 });
-
-export const membership_string = new LocalizedStrings({
-  en: {
-    membershipInfo: 'Membership Info',
-    plan: 'Plan',
-    renewal: 'Renewal Date',
-    payment: 'Payment',
-    paymentInfo: 'Payment Info',
-    name: 'Name',
-  },
-  ko: {
-    membershipInfo: '멤버십 정보',
-    plan: '멤버십 플랜',
-    renewal: '갱신일',
-    payment: '지불',
-    paymentInfo: '지불 정보',
-    name: '이름',
-  },
-});

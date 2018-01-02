@@ -5,6 +5,7 @@ export * from './Constant';
 export * from './Go';
 export * from './Login';
 export * from './Main';
+export * from './Membership';
 export * from './Notice';
 export * from './Setting';
 
