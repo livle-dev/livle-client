@@ -6,10 +6,13 @@ import { color_string, color } from '../global/Color';
 // const options
 export const width = {
   ticket: percent('width', 84.5),
-  ticketMargin: percent('width', 7.75),
+  ticketMargin: percent('width', 2),
 };
 export const goStyle = StyleSheet.create({
   // containers
+  ticket_container: {
+    height: percent('height', 100),
+  },
   confirm_container: {
     height: width.ticket * height_width_ratio(350, 219),
     backgroundColor: 'transparent',

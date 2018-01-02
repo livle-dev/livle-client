@@ -9,7 +9,10 @@ import {
   container,
   width,
 } from '../../../assets/stylesheets/global/Style';
-import { goStyle } from '../../../assets/stylesheets/local/goPageStyle';
+import {
+  goStyle,
+  width as goWidth,
+} from '../../../assets/stylesheets/local/goPageStyle';
 import { color } from '../../../assets/stylesheets/global/Color';
 // Views
 import ShowReservation from '../partials/ShowReservation';
@@ -77,7 +80,7 @@ export default class GoPage extends Component {
         style={styles.blackBackground}
         enableAutoAutomaticScroll={false}
         keyboardShouldPersistTaps="always">
-        <View style={container.fullContainer}>
+        <View style={goStyle.ticket_container}>
           {hasItem ? (
             <Carousel
               ref={c => (this.carousel = c)}
@@ -90,7 +93,7 @@ export default class GoPage extends Component {
                 />
               )}
               sliderWidth={width.full}
-              itemWidth={width.full}
+              itemWidth={goWidth.ticket + 2 * goWidth.ticketMargin}
               inactiveSlideScale={1}
               keyboardShouldPersistTaps="handled"
             />
