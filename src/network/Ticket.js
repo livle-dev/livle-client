@@ -8,7 +8,7 @@ import {
   ModalAction,
   MessageBarAction,
 } from '../reducers/Actions';
-import { global_string, main_string } from '../assets/strings';
+import { global_string, ticket_string } from '../assets/strings';
 
 export const getAllTicket = dispatch => {
   return axios
@@ -51,7 +51,10 @@ export const getAllTicket = dispatch => {
       return Promise.resolve(dispatch);
     })
     .then(dispatch => getReserveTicket(dispatch))
-    .catch(err => console.log(err.response));
+    .catch(err => {
+      console.log(err.response);
+      return Promise.reject(err.response.status);
+    });
 };
 
 export const canReserveTicket = (auth, data) => dispatch => {
@@ -85,17 +88,17 @@ export const canReserveTicket = (auth, data) => dispatch => {
     case 'full_capacity':
       return dispatch({
         type: ModalAction.SHOW_MODAL,
-        data: { type: 'alert', text: '좌석이 매진되었습니다.' },
+        data: { type: 'alert', text: ticket_string.fullCapacity },
       });
     case 'suspended':
       return dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
           type: 'alert',
-          text: `노쇼에 대한 패널티로
-        ${getTime(auth.data.suspended_by).timestamp.format(
-          'MM월 DD일 hh시 mm분'
-        )}까지 이용이 불가합니다.`,
+          text: `${ticket_string.penaltyFront}
+${getTime(auth.data.suspended_by).timestamp.format(
+            ticket_string.penaltyTime
+          )} ${ticket_string.penaltyBack}`,
         },
       });
     case 'start_subscribe':
@@ -105,9 +108,8 @@ export const canReserveTicket = (auth, data) => dispatch => {
         type: ModalAction.SHOW_MODAL,
         data: {
           type: 'select',
-          text: `멤버십을 다시 등록하여
-          수많은 콘서트들을 즐겨보세요!`,
-          buttonText: '구독하기',
+          text: ticket_string.reApplyMembership,
+          buttonText: global_string.subscribe,
           onPress: () => dispatch({ type: AppAction.SUBSCRIBE }),
         },
       });
@@ -140,7 +142,7 @@ export const reserveTicket = id => dispatch => {
         type: ModalAction.SHOW_MODAL,
         data: {
           type: 'alert',
-          text: main_string.concertBooked,
+          text: ticket_string.concertBooked,
           showLogo: true,
         },
       });

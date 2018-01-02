@@ -9,6 +9,8 @@ import {
 import Carousel from 'react-native-snap-carousel';
 // Functions
 import { getTime } from '../../../assets/functions';
+// Strings
+import { main_string } from '../../../assets/strings';
 // Styles
 import { styles } from '../../../assets/stylesheets/global/Style';
 import Scale, { percent } from '../../../assets/stylesheets/global/Scale';
@@ -109,7 +111,7 @@ export default class Calendar extends Component {
               if (isUpdate) {
                 this.setState({ isTouched: false });
               } else {
-                showMessageBar('해당 날짜에 콘서트가 없습니다.');
+                showMessageBar(main_string.hasNoConcert);
                 this.carousel.snapToItem(nearestIndex(index, dataIndex));
               }
             }

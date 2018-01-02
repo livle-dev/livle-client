@@ -25,7 +25,7 @@ const FirstContent = ({ data, showDetail }) => {
         <Text style={[mainCard.textVacancies]}>
           {data.capacity > 0
             ? `${data.capacity}${main_string.capacity}`
-            : main_string.booked}
+            : main_string.full}
         </Text>
         <Icon src="ic_more" width={mainWidth.icMore} onPress={showDetail} />
       </TouchableOpacity>
