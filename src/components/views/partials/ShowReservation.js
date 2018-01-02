@@ -25,7 +25,7 @@ import _SquareButton from './_SquareButton';
 import GreenNumbox from './GreenNumbox';
 import ShowInfo from './ShowInfo';
 // Strings
-import { go_string } from '../../../assets/strings';
+import { global_string, ticket_string } from '../../../assets/strings';
 // Icons
 import { ticket } from '../../../assets/images/Background';
 import Icon from '../../../assets/images/Icon';
@@ -39,12 +39,12 @@ function GoCheckEnter({ isConfirmed, handleCode }) {
         width={60}
         style={goStyle.confirm_icon}
       />
-      <Text style={goStyle.check_text}>{go_string.entryConfirmed}</Text>
+      <Text style={goStyle.check_text}>{ticket_string.entryConfirmed}</Text>
     </View>
   ) : (
     <View style={styles.alignCenter}>
       <GreenNumbox handleCode={handleCode} />
-      <Text style={goStyle.check_text}>{go_string.showToStaff}</Text>
+      <Text style={goStyle.check_text}>{ticket_string.showToStaff}</Text>
     </View>
   );
 }
@@ -83,7 +83,7 @@ export default class ShowReservation extends Component {
                   ? color_string.green_light
                   : color_string.gray_light
               }
-              text={go_string.confirmEntry}
+              text={ticket_string.confirmEntry}
               disabled={this.state.code.length < 4}
               onPress={() => checkCode(this.state.code)(dispatch)}
             />
@@ -96,14 +96,14 @@ export default class ShowReservation extends Component {
                 type: ModalAction.SHOW_MODAL,
                 data: {
                   type: 'select',
-                  text: '예약을 취소하시겠습니까?',
-                  buttonText: '취소하기',
+                  text: ticket_string.wannaCancelReservation,
+                  buttonText: global_string.confirm,
                   onPress: () => cancelTicket(item.id)(dispatch),
                 },
               })
             }>
             <Text style={goStyle.cancel_text}>
-              {go_string.cancelReservation}
+              {ticket_string.cancelReservation}
             </Text>
           </TouchableOpacity>
         )}

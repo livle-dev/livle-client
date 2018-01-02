@@ -8,7 +8,7 @@ import {
   ModalAction,
   MessageBarAction,
 } from '../reducers/Actions';
-import { main_string } from '../assets/strings';
+import { global_string, main_string } from '../assets/strings';
 
 export const getAllTicket = dispatch => {
   return axios
@@ -154,7 +154,7 @@ export const reserveTicket = id => dispatch => {
         type: ModalAction.SHOW_MODAL,
         data: {
           type: 'alert',
-          text: '에러가 발생했습니다',
+          text: `${err.response.status} ${global_string.errorOccured}`,
           showLogo: true,
         },
       });
@@ -176,7 +176,7 @@ export const cancelTicket = id => dispatch => {
         type: ModalAction.SHOW_MODAL,
         data: {
           type: 'alert',
-          text: main_string.cancelReservation,
+          text: ticket_string.reservationCanceled,
           showLogo: true,
         },
       });
@@ -191,7 +191,7 @@ export const cancelTicket = id => dispatch => {
             type: ModalAction.SHOW_MODAL,
             data: {
               type: 'alert',
-              text: '공연시작 4시간 전에는 예약을 취소할 수 없습니다.',
+              text: ticket_string.unableCancelReservation,
               showLogo: true,
             },
           });
@@ -212,7 +212,7 @@ export const checkCode = (id, code) => dispatch => {
       dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
         type: MessageBarAction.SHOW_MESSAGE_BAR,
-        message: '입장이 확인되었습니다',
+        message: ticket_string.entryConfirmed,
       });
     })
     .catch(err => {
@@ -224,7 +224,7 @@ export const checkCode = (id, code) => dispatch => {
             type: ModalAction.SHOW_MODAL,
             data: {
               type: 'alert',
-              text: '잘못된 코드입니다',
+              text: ticket_string.invalidCode,
               showLogo: true,
             },
           });

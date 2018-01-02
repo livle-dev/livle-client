@@ -7,7 +7,6 @@ export const main_string = new LocalizedStrings({
     lineUp: 'LINE - UP',
     relatedVideo: 'Related Video',
     concertBooked: 'Successfully Booked',
-    cancelReservation: 'Reservation Canceled',
   },
   ko: {
     capacity: '석 남음',
@@ -15,6 +14,5 @@ export const main_string = new LocalizedStrings({
     lineUp: '출연진',
     relatedVideo: '관련 영상',
     concertBooked: '예약되었습니다',
-    cancelReservation: '예약이 취소되었습니다',
   },
 });

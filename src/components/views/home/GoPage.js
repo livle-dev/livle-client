@@ -14,7 +14,7 @@ import { color } from '../../../assets/stylesheets/global/Color';
 // Views
 import ShowReservation from '../partials/ShowReservation';
 // String
-import { go_string } from '../../../assets/strings';
+import { ticket_string } from '../../../assets/strings';
 // Icons
 import { ticket } from '../../../assets/images/Background';
 import Icon from '../../../assets/images/Icon';
@@ -33,10 +33,10 @@ function NoReservation() {
           disabled={true}
         />
         <Text style={[goStyle.no_reservation_text, styles.textCenter]}>
-          {go_string.noReservation}
+          {ticket_string.noReservation}
           {'\n'}
-          <Text style={color.green_light}>{go_string.bookTicket}</Text>
-          {go_string.toEnjoyConcert}
+          <Text style={color.green_light}>{ticket_string.bookTicket}</Text>
+          {ticket_string.toEnjoyConcert}
         </Text>
       </View>
     </ImageBackground>
