@@ -3,12 +3,12 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 // Functions
-import { convertTimeToString } from '../../../assets/functions';
+import { getTime } from '../../../assets/functions';
 // Styles
 import { mainCard } from '../../../assets/stylesheets/local/mainCardStyle';
 import { styles } from '../../../assets/stylesheets/global/Style';
 
-export default function({ data }) {
+export default function({ data, showDate }) {
   const { title, artists, place, start_at, end_at } = data;
 
   return (
@@ -19,11 +19,16 @@ export default function({ data }) {
           return `${artist.name}${i + 1 < artists.length && ', '}`;
         })}
       </Text>
+      {showDate && (
+        <Text style={[mainCard.textDefault, styles.textCenter]}>
+          {getTime(start_at).timestamp.format('MMMM, DD')}
+        </Text>
+      )}
       <Text style={[mainCard.textDefault, styles.textCenter]}>{place}</Text>
       <Text style={[mainCard.textDefault, styles.textCenter]}>
-        {convertTimeToString(start_at)}
+        {getTime(start_at).timestamp.format('hh : mm')}
         {' - '}
-        {convertTimeToString(end_at)}
+        {getTime(end_at).timestamp.format('hh : mm')}
       </Text>
     </View>
   );

@@ -65,7 +65,7 @@ export default class ShowReservation extends Component {
           style={goStyle.background_size}
           imageStyle={goStyle.background_ticket}>
           <View style={container.contentContainer}>
-            <ShowInfo data={ticket_data} />
+            <ShowInfo data={ticket_data} showDate />
             <View style={[goStyle.confirm_container, styles.alignCenter]}>
               <GoCheckEnter
                 dataId={item.id}
