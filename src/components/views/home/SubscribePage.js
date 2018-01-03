@@ -251,6 +251,7 @@ export default class SubscribePage extends Component {
                 placeholder="**"
                 onChangeText={this._handlePassword}
                 maxLength={2}
+                secureTextEntry={true}
                 onFocus={e => this._scrollToInput(findNodeHandle(e.target))}
               />
             </View>

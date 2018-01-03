@@ -34,13 +34,14 @@ export const subscribe = (cardNumber, birth, password, expiry) => dispatch => {
       return Promise.resolve();
     })
     .catch(err => {
-      console.log(err.response);
       dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
           type: 'alert',
-          text: membership_string.failedVerifyPayment,
+          text: `${membership_string.failedVerifyPayment} ERROR${
+            err.response.status
+          }`,
         },
       });
       return Promise.reject();
