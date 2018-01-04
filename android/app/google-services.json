@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "149850679951",
+    "firebase_url": "https://livle-client-e2fca.firebaseio.com",
+    "project_id": "livle-client-e2fca",
+    "storage_bucket": "livle-client-e2fca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:149850679951:android:3e019d264d54f660",
+        "android_client_info": {
+          "package_name": "com.livle_client"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "149850679951-s9k2r09b5no6ec64daijoac4fvi2qtvu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.livle_client",
+            "certificate_hash": "f87b01e4bd635edadd590a3e0d8ccf4f36c1225e"
+          }
+        },
+        {
+          "client_id": "149850679951-g9eldhkj0chv085cet5njnu5jsdc26cg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoKE6oU-JsjuWPF_2Q0QD4jopo9tyKQ8k"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "149850679951-g9eldhkj0chv085cet5njnu5jsdc26cg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
