@@ -23,6 +23,7 @@ export default class PushNotification extends Component {
 
     // This method give received notifications to mobile to display.
     this.notificationUnsubscribe = FCM.on(FCMEvent.Notification, notif => {
+      console.log('notificationUnsubscribe', notif);
       if (notif && notif.local_notification) return;
       this.sendRemote(notif);
     });
@@ -44,7 +45,6 @@ export default class PushNotification extends Component {
       click_action: notif.click_action,
       show_in_foreground: true,
       sound: 'default',
-      large_icon: 'ic_launcher', // Android only
       local: true,
       vibrate: 500,
       lights: true, // Android only, LED blinking (default false)
