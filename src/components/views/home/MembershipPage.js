@@ -8,7 +8,7 @@ import StackPage from '../partials/StackPage';
 import _SettingCard from '../partials/_SettingCard';
 import _SquareButton from '../partials/_SquareButton';
 // Network
-import { cancelSubscribe } from '../../../network';
+import { restoreMembership, cancelSubscribe } from '../../../network';
 // Actions
 import { AppAction, ModalAction } from '../../../reducers/Actions';
 // Functions
@@ -93,10 +93,14 @@ const MembershipPage = ({ navigation }) => {
             backgroundColor={color_string.green_dark_dark}
             text={
               body.valid_by
-                ? membership_string.reApplyMembership
+                ? membership_string.restoreMembership
                 : membership_string.applyMembership
             }
-            onPress={() => navigation.dispatch({ type: AppAction.SUBSCRIBE })}
+            onPress={() => {
+              if (isFuture(body.valid_by))
+                restoreMembership(navigation.dispatch);
+              else navigation.dispatch({ type: AppAction.SUBSCRIBE });
+            }}
           />
         )}
       </View>

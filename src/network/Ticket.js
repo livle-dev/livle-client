@@ -108,7 +108,7 @@ ${getTime(auth.data.suspended_by).timestamp.format(
         type: ModalAction.SHOW_MODAL,
         data: {
           type: 'select',
-          text: ticket_string.reApplyMembership,
+          text: ticket_string.restoreMembership,
           buttonText: global_string.subscribe,
           onPress: () => dispatch({ type: AppAction.SUBSCRIBE }),
         },

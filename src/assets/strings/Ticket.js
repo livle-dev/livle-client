@@ -19,7 +19,7 @@ export const ticket_string = new LocalizedStrings({
     reservationCanceled: 'Reservation has been canceled',
     invalidCode: 'Invalid Code',
     fullCapacity: 'Seats has been fully booked',
-    reApplyMembership: `Re-Apply Membership and
+    restoreMembership: `Re-Apply Membership and
 enjoy tons of concerts that
 make your heart shaking everyday`,
   },
@@ -40,7 +40,7 @@ make your heart shaking everyday`,
     reservationCanceled: '예약이 취소되었습니다',
     invalidCode: '잘못된 코드입니다',
     fullCapacity: '좌석이 매진되었습니다',
-    reApplyMembership: `멤버십을 다시 등록하여
+    restoreMembership: `멤버십을 다시 등록하여
 당신을 설레게 할
 수많은 공연들을 즐겨보세요!`,
   },
