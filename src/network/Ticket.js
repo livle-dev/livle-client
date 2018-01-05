@@ -1,4 +1,5 @@
 import axios from './axios';
+import pusher from './pusher';
 import { getTime, getDday, isFuture } from '../assets/functions';
 import {
   AppAction,
