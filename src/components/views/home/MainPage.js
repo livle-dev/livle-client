@@ -5,8 +5,10 @@ import Carousel from 'react-native-snap-carousel';
 // Views
 import _MainCard from '../partials/_MainCard';
 import Calendar from '../partials/Calendar';
+// Networks
+import pusher from '../../../network/pusher';
 // Actions
-import { LoadingAction } from '../../../reducers/Actions';
+import { LoadingAction, TicketAction } from '../../../reducers/Actions';
 // Styles
 import { mainpage } from '../../../assets/stylesheets/local/mainPageStyle';
 import { styles } from '../../../assets/stylesheets/global/Style';
@@ -54,6 +56,24 @@ class CardLists extends Component {
 
 export default class MainPage extends Component {
   state = { isLoaded: false };
+
+  componentWillMount() {
+    this.vacancies = pusher.subscribe('vacancies');
+  }
+
+  componentDidMount() {
+    const { dispatch } = this.props.navigation;
+    const { data } = this.props.ticket;
+    data.forEach(item =>
+      this.vacancies.bind(`ticket-${item.id}`, vacancies => {
+        console.log(item, vacancies);
+        dispatch({
+          type: TicketAction.UPDATE_TICKET,
+          data: { id: item.id, capacity: vacancies },
+        });
+      })
+    );
+  }
 
   componentWillReceiveProps(props) {
     if (!this.state.isLoaded && props.ticket.data.length > 0) {

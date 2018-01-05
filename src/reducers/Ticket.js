@@ -21,6 +21,18 @@ export function ticket(state = initialState, action) {
         ticket: { data: updateData, dataIndex: action.dataIndex },
       };
     }
+    case TicketAction.UPDATE_TICKET: {
+      /**
+       * action.data = PropTypes.object.isRequired
+       **/
+      const updateTicket = state.ticket;
+      const updateData = action.data;
+      let ticket = updateTicket.data.find(
+        ticket => ticket.id === updateData.id
+      );
+      ticket.capacity = updateData.capacity;
+      return { ...state, ticket: updateTicket };
+    }
     case TicketAction.SET_RESERVATION: {
       /**
        * action.data = PropTypes.object.isRequired
@@ -63,9 +75,10 @@ export function ticket(state = initialState, action) {
       const prunedList = state.reservation.filter(
         item => item.id !== action.id
       );
-      updateTicket.data.forEach(item => {
-        if (item.reservation_id === action.id) item.reservation_id = null;
-      });
+      let ticket = updateTicket.data.find(
+        ticket => ticket.reservation_id === action.id
+      );
+      ticket.reservation_id = null;
 
       return { ticket: updateTicket, reservation: prunedList };
     }
@@ -74,10 +87,11 @@ export function ticket(state = initialState, action) {
        * action.data = PropTypes.object.isRequired
        **/
       const updateReservation = state.reservation;
+      const updateData = action.data;
       let reservation = updateReservation.find(
-        item => item.id === action.data.id
+        item => item.id === updateData.id
       );
-      reservation.checked_at = action.data.checked_at;
+      reservation.checked_at = updateData.checked_at;
       return { ...state, reservation: updateReservation };
     }
     default:
