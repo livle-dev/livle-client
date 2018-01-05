@@ -23,10 +23,7 @@ export default class PushNotification extends Component {
 
     // This method give received notifications to mobile to display.
     this.notificationUnsubscribe = FCM.on(FCMEvent.Notification, notif => {
-      console.log('a', notif);
-      if (notif && notif.local_notification) {
-        return;
-      }
+      if (notif && notif.local_notification) return;
       this.sendRemote(notif);
     });
 
@@ -39,14 +36,18 @@ export default class PushNotification extends Component {
 
   // This method display the notification on mobile screen.
   sendRemote(notif) {
-    console.log('send');
+    const { fcm } = notif;
     FCM.presentLocalNotification({
-      title: notif.title,
-      body: notif.body,
+      title: fcm.title || 'LIVLE',
+      body: fcm.body,
       priority: 'high',
       click_action: notif.click_action,
       show_in_foreground: true,
+      sound: 'default',
+      large_icon: 'ic_launcher', // Android only
       local: true,
+      vibrate: 500,
+      lights: true, // Android only, LED blinking (default false)
     });
   }
 
