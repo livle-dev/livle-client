@@ -1,4 +1,4 @@
-// Auth
+// Session
 export const AuthAction = {
   UPDATE_USER_DATA: 'UPDATE_USER_DATA',
 };

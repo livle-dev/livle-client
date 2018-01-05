@@ -1,3 +1,5 @@
+// Functions
+import { subscriptionStatus } from '../assets/functions';
 // Actions
 import { AuthAction, AppAction } from './Actions';
 
@@ -15,7 +17,7 @@ export function auth(state = initialState, action) {
        **/
       return {
         isLoggedIn: true,
-        data: action.data,
+        data: { ...action.data, status: subscriptionStatus(action.data) },
       };
     case AppAction.LOGOUT:
       return { isLoggedIn: false, data: null };
@@ -25,7 +27,7 @@ export function auth(state = initialState, action) {
        **/
       return {
         ...state,
-        data: action.data,
+        data: { ...action.data, status: subscriptionStatus(action.data) },
       };
     default:
       return state;

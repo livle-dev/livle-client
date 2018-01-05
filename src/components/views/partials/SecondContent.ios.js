@@ -80,7 +80,7 @@ export default class SecondContent extends Component {
           </Text>
           {this.state.isMounted && (
             <VideoPlayer
-              videoId={data.video_id}
+              videoId={data.videoId}
               innerRef={c => (this.player = c)}
               play={this.state.isPlaying}
               // callback

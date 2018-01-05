@@ -8,11 +8,11 @@ import StackPage from '../partials/StackPage';
 import _SettingCard from '../partials/_SettingCard';
 import _SquareButton from '../partials/_SquareButton';
 // Network
-import { restoreMembership, cancelSubscribe } from '../../../network';
+import { restoreSubscribe, cancelSubscribe } from '../../../network';
 // Actions
 import { AppAction, ModalAction } from '../../../reducers/Actions';
 // Functions
-import { isFuture, getTime, getDday } from '../../../assets/functions';
+import { getTime, status } from '../../../assets/functions';
 // Strings
 import { membership_string } from '../../../assets/strings';
 // Styles
@@ -20,98 +20,113 @@ import { styles, container } from '../../../assets/stylesheets/global/Style';
 import { noticeStyle } from '../../../assets/stylesheets/local/settingPageStyle';
 import { color_string } from '../../../assets/stylesheets/global/Color';
 
-const MembershipPage = ({ navigation }) => {
-  const { title, body } = navigation.state.params;
-  const isSubscribing = body.valid_by && !body.cancelled_at;
+export default class MembershipPage extends Component {
+  static propTypes = {
+    navigation: PropTypes.any.isRequired,
+    title: PropTypes.string,
+    body: PropTypes.array,
+  };
 
-  function getPlan() {
-    const checkFreeTrial =
-      getDday(body.valid_by) - getDday(body.free_trial_started_at) === 7;
-    return checkFreeTrial
-      ? membership_string.freeTrial
-      : membership_string.basic;
+  setAction() {
+    const { navigation } = this.props;
+    const { body } = navigation.state.params;
+    switch (body.status) {
+      case status.BASIC:
+      case status.FREE_TRIAL:
+      case status.SUSPENDED:
+        return {
+          text: membership_string.terminateMembership,
+          onPress: () =>
+            navigation.dispatch({
+              type: ModalAction.SHOW_MODAL,
+              data: {
+                type: 'select',
+                text: membership_string.reallyTerminate,
+                buttonText: membership_string.terminate,
+                onPress: () =>
+                  cancelSubscribe(navigation.dispatch).then(() =>
+                    navigation.goBack()
+                  ),
+              },
+            }),
+        };
+      case status.WILL_TERMINATE:
+        return {
+          text: membership_string.restoreMembership,
+          onPress: () =>
+            restoreSubscribe(navigation.dispatch).then(() =>
+              navigation.goBack()
+            ),
+        };
+      case status.NEW:
+      case status.UNSUBSCRIBING:
+        return {
+          text: membership_string.applyMembership,
+          onPress: () => navigation.dispatch({ type: AppAction.SUBSCRIBE }),
+        };
+    }
   }
 
-  return (
-    <StackPage title={title} navigation={navigation} disablePadding hideNavbar>
-      <_SettingCard
-        type="string"
-        title={membership_string.membershipInfo}
-        contents={[
-          {
-            title: membership_string.plan,
-            value: body.valid_by ? getPlan() : membership_string.unsubscribe,
-          },
-          {
-            title: !body.cancelled_at
-              ? membership_string.renewal
-              : membership_string.endDate,
-            value:
-              body.valid_by &&
-              getTime(body.valid_by).timestamp.format('YYYY.MM.DD'),
-          },
-        ]}
-      />
-      {isSubscribing && (
+  render() {
+    const { navigation } = this.props;
+    const { title, body } = navigation.state.params;
+    const button = this.setAction();
+
+    return (
+      <StackPage
+        title={title}
+        navigation={navigation}
+        disablePadding
+        hideNavbar>
         <_SettingCard
           type="string"
-          title={membership_string.payment}
+          title={membership_string.membershipInfo}
           contents={[
             {
-              title: membership_string.paymentInfo,
-              value: body.card_name,
+              title: membership_string.plan,
+              value: body.currentSubscription ? body.status : 'None',
             },
-            {
-              title: '',
-              value: `**** **** **** ${body.last_four_digits}`,
-            },
+            body.currentSubscription
+              ? {
+                  title: body.nextSubscription
+                    ? membership_string.renewal
+                    : membership_string.endDate,
+                  value: getTime(
+                    body.nextSubscription
+                      ? body.nextSubscription.from
+                      : body.currentSubscription.to
+                  ).timestamp.format('YYYY.MM.DD'),
+                }
+              : {
+                  title: '',
+                  value: '',
+                },
           ]}
         />
-      )}
-      <View style={container.textContainer}>
-        {isSubscribing ? (
-          <_SquareButton
-            backgroundColor={color_string.green_dark_dark}
-            text={membership_string.terminateMembership}
-            onPress={() =>
-              navigation.dispatch({
-                type: ModalAction.SHOW_MODAL,
-                data: {
-                  type: 'select',
-                  text: membership_string.reallyTerminate,
-                  buttonText: membership_string.terminate,
-                  onPress: () =>
-                    cancelSubscribe(navigation.dispatch).then(() =>
-                      navigation.goBack()
-                    ),
-                },
-              })
-            }
-          />
-        ) : (
-          <_SquareButton
-            backgroundColor={color_string.green_dark_dark}
-            text={
-              body.valid_by
-                ? membership_string.restoreMembership
-                : membership_string.applyMembership
-            }
-            onPress={() => {
-              if (isFuture(body.valid_by))
-                restoreMembership(navigation.dispatch);
-              else navigation.dispatch({ type: AppAction.SUBSCRIBE });
-            }}
+        {body.currentSubscription && (
+          <_SettingCard
+            type="string"
+            title={membership_string.payment}
+            contents={[
+              {
+                title: membership_string.paymentInfo,
+                value: body.cardName,
+              },
+              {
+                title: '',
+                value: `**** **** **** ${body.lastFourDigits}`,
+              },
+            ]}
           />
         )}
-      </View>
-    </StackPage>
-  );
-};
-
-MembershipPage.propTypes = {
-  navigation: PropTypes.any.isRequired,
-  title: PropTypes.string,
-  body: PropTypes.array,
-};
-
-export default MembershipPage;
+        <View style={container.textContainer}>
+          <_SquareButton
+            backgroundColor={color_string.green_dark_dark}
+            text={this.setAction().text}
+            onPress={this.setAction().onPress}
+          />
+        </View>
+      </StackPage>
+    );
+  }
+}

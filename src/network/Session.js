@@ -44,10 +44,8 @@ function _removeToken() {
 /* GET DATA & DISPATCH FROM SERVER */
 const dispatchUserData = data => dispatch => {
   const { token, ...option } = data;
-  dispatch({
-    type: AppAction.LOGIN,
-    data: { ...option },
-  });
+  console.log(data);
+  dispatch({ type: AppAction.LOGIN, data: { ...option } });
   getAllTicket(dispatch);
   dispatch({
     type: MessageBarAction.SHOW_MESSAGE_BAR,
@@ -152,6 +150,7 @@ export const signUp = (email, password, nickname) => dispatch => {
       return Promise.resolve();
     })
     .catch(err => {
+      console.log(err.response);
       Promise.reject(err.response.status);
     });
 };

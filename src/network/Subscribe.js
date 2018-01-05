@@ -39,22 +39,21 @@ export const subscribe = (cardNumber, birth, password, expiry) => dispatch => {
         type: ModalAction.SHOW_MODAL,
         data: {
           type: 'alert',
-          text: `${membership_string.failedVerifyPayment} ERROR${
-            err.response.status
-          }`,
+          text: `${membership_string.failedVerifyPayment}
+ERROR: ${err.response.status}`,
         },
       });
       return Promise.reject();
     });
 };
 
-// TODO: restoreSubscribe swagger 보고 업데이트하기
 export const restoreSubscribe = dispatch => {
   dispatch({ type: LoadingAction.SHOW_LOADING });
   return axios
     .post(`/subscription/restore`)
     .then(response => {
       const { token, ...option } = response.data;
+      console.log(response.data);
       dispatch({
         type: AuthAction.UPDATE_USER_DATA,
         data: { ...option },
@@ -72,9 +71,8 @@ export const restoreSubscribe = dispatch => {
         type: ModalAction.SHOW_MODAL,
         data: {
           type: 'alert',
-          text: `${membership_string.failedVerifyPayment} ERROR${
-            err.response.status
-          }`,
+          text: `${membership_string.failedVerifyPayment}
+ERROR${err.response.status}`,
         },
       });
       return Promise.reject();

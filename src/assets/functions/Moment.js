@@ -14,10 +14,10 @@ export function getTime(data, key) {
   };
 }
 
-export function getDday(data) {
-  const today = moment().startOf('date');
-  const d_day = moment(data).startOf('date');
-  return d_day.diff(today, 'days');
+export function getDday(timeTo, timeFrom) {
+  const startAt = moment(timeFrom && timeFrom).startOf('date');
+  const endAt = moment(timeTo).startOf('date');
+  return endAt.diff(startAt, 'days');
 }
 
 export function isFuture(timeTo, timeFrom) {

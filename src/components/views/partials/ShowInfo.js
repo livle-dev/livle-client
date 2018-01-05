@@ -9,7 +9,7 @@ import { mainCard } from '../../../assets/stylesheets/local/mainCardStyle';
 import { styles } from '../../../assets/stylesheets/global/Style';
 
 export default function({ data, showDate }) {
-  const { title, artists, place, start_at, end_at } = data;
+  const { title, artists, place, startAt, endAt } = data;
 
   return (
     <View style={[styles.flex_1, styles.alignCenter]}>
@@ -21,14 +21,14 @@ export default function({ data, showDate }) {
       </Text>
       {showDate && (
         <Text style={[mainCard.textDefault, styles.textCenter]}>
-          {getTime(start_at).timestamp.format('MMMM, DD')}
+          {getTime(startAt).timestamp.format('MMMM, DD')}
         </Text>
       )}
       <Text style={[mainCard.textDefault, styles.textCenter]}>{place}</Text>
       <Text style={[mainCard.textDefault, styles.textCenter]}>
-        {getTime(start_at).timestamp.format('hh : mm')}
+        {getTime(startAt).timestamp.format('hh : mm')}
         {' - '}
-        {getTime(end_at).timestamp.format('hh : mm')}
+        {getTime(endAt).timestamp.format('hh : mm')}
       </Text>
     </View>
   );

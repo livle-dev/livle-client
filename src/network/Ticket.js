@@ -1,5 +1,5 @@
 import axios from './axios';
-import { getTime, getDday, isFuture } from '../assets/functions';
+import { getTime, getDday, status } from '../assets/functions';
 import {
   AppAction,
   TicketAction,
@@ -15,20 +15,21 @@ export const getAllTicket = dispatch => {
     .get(`/ticket`)
     .then(response => {
       const sortData = response.data.sort(
-        (x, y) => getTime(x.start_at).timestamp - getTime(y.start_at).timestamp
+        (x, y) => getTime(x.startAt).timestamp - getTime(y.startAt).timestamp
       );
       return sortData;
     })
     .then(data => {
       let dataIndex = []; //card_index, calendar_index의 관계
       let saveDate;
+      console.log(data);
       data.map((item, index) => {
-        const getDate = getTime(item.start_at).date;
+        const getDate = getTime(item.startAt).date;
         const data_index = dataIndex.length - 1;
         if (!saveDate || saveDate !== getDate) {
           saveDate = getDate;
           dataIndex.push({
-            calendar_index: getDday(item.start_at),
+            calendar_index: getDday(item.startAt),
             card_start: index,
             card_end: index,
           });
@@ -58,53 +59,22 @@ export const getAllTicket = dispatch => {
 };
 
 export const canReserveTicket = (auth, data) => dispatch => {
-  const isVaildNow = isFuture(auth.data.valid_by, data.start_at);
-  const isCancelled = auth.data.cancelled_at;
-  const isSuspendEnd =
-    !auth.data.suspended_by || !isFuture(auth.data.suspended_by);
-  const isCapable = data.capacity > 0;
-  const didFreeTrial = auth.data.free_trial_started_at;
-
-  let error;
-
   dispatch({ type: LoadingAction.SHOW_LOADING });
-  if (auth.data.valid_by)
-    if (isVaildNow)
-      if (isSuspendEnd)
-        if (isCapable) return reserveTicket(data.id)(dispatch);
-        else error = 'full_capacity';
-      else error = 'suspended';
-    else if (!isCancelled)
-      if (isSuspendEnd)
-        if (isCapable) return reserveTicket(data.id)(dispatch);
-        else error = 'full_capacity';
-      else error = 'suspended';
-    else error = 're_subscribe';
-  else if (!didFreeTrial) error = 'start_subscribe';
-  else error = 're_subscribe';
-  dispatch({ type: LoadingAction.HIDE_LOADING });
-
-  switch (error) {
-    case 'full_capacity':
-      return dispatch({
+  switch (auth.data.status) {
+    case status.BASIC:
+    case status.FREE_TRIAL:
+    case status.WILL_TERMINATE:
+      if (data.vacancies > 0) return reserveTicket(data.id)(dispatch);
+      dispatch({
         type: ModalAction.SHOW_MODAL,
         data: { type: 'alert', text: ticket_string.fullCapacity },
       });
-    case 'suspended':
-      return dispatch({
-        type: ModalAction.SHOW_MODAL,
-        data: {
-          type: 'alert',
-          text: `${ticket_string.penaltyFront}
-${getTime(auth.data.suspended_by).timestamp.format(
-            ticket_string.penaltyTime
-          )} ${ticket_string.penaltyBack}`,
-        },
-      });
-    case 'start_subscribe':
-      return dispatch({ type: AppAction.PROMOTION });
-    case 're_subscribe':
-      return dispatch({
+      break;
+    case status.NEW:
+      dispatch({ type: AppAction.PROMOTION });
+      break;
+    case status.UNSUBSCRIBING:
+      dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
           type: 'select',
@@ -113,7 +83,21 @@ ${getTime(auth.data.suspended_by).timestamp.format(
           onPress: () => dispatch({ type: AppAction.SUBSCRIBE }),
         },
       });
+      break;
+    case status.SUSPENDED:
+      dispatch({
+        type: ModalAction.SHOW_MODAL,
+        data: {
+          type: 'alert',
+          text: `${ticket_string.penaltyFront}
+${getTime(auth.data.suspendedBy).timestamp.format(ticket_string.penaltyTime)} ${
+            ticket_string.penaltyBack
+          }`,
+        },
+      });
+      break;
   }
+  dispatch({ type: LoadingAction.HIDE_LOADING });
 };
 
 export const getReserveTicket = dispatch => {

@@ -88,15 +88,15 @@ class _MainCard extends Component {
         title: data.title,
         place: data.place,
         image: data.image,
-        start_at: data.start_at,
-        end_at: data.end_at,
-        capacity: data.capacity,
+        startAt: data.startAt,
+        endAt: data.endAt,
+        vacancies: data.vacancies,
         artists: data.artists,
       },
       {
         artists: data.artists,
         music_id: data.music_id,
-        video_id: data.video_id,
+        videoId: data.videoId,
         article: data.article,
       },
     ];
@@ -124,7 +124,7 @@ class _MainCard extends Component {
     const { auth, data, dispatch } = this.props;
     const { isGo, showTopButton } = this.state;
 
-    const hasReservation = data.reservation_id !== null;
+    const hasReservation = data.reservationId !== null;
 
     return (
       <View>
@@ -134,7 +134,7 @@ class _MainCard extends Component {
           showTopButton={showTopButton}
           clickTop={() => this._snapToTop()}
           onPress={() => {
-            if (hasReservation) cancelTicket(data.reservation_id)(dispatch);
+            if (hasReservation) cancelTicket(data.reservationId)(dispatch);
             else canReserveTicket(auth, data)(dispatch);
           }}
         />

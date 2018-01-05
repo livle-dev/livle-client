@@ -69,7 +69,7 @@ export default class MainPage extends Component {
         console.log(item, vacancies);
         dispatch({
           type: TicketAction.UPDATE_TICKET,
-          data: { id: item.id, capacity: vacancies },
+          data: { id: item.id, vacancies: vacancies },
         });
       })
     );

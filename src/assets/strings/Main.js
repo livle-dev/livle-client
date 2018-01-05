@@ -2,14 +2,14 @@ import LocalizedStrings from 'react-native-localization';
 
 export const main_string = new LocalizedStrings({
   en: {
-    capacity: ' seats left',
+    vacancies: ' seats left',
     full: 'FULL',
     lineUp: 'LINE - UP',
     relatedVideo: 'Related Video',
     hasNoConcert: 'There are no concert on that date',
   },
   ko: {
-    capacity: '석 남음',
+    vacancies: '석 남음',
     full: '좌석 매진됨',
     lineUp: '출연진',
     relatedVideo: '관련 영상',
