@@ -44,7 +44,6 @@ function _removeToken() {
 /* GET DATA & DISPATCH FROM SERVER */
 const dispatchUserData = data => dispatch => {
   const { token, ...option } = data;
-  console.log(data);
   dispatch({ type: AppAction.LOGIN, data: { ...option } });
   getAllTicket(dispatch);
   dispatch({

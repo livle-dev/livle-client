@@ -1,5 +1,5 @@
 import axios from './axios';
-import { getTime, getDday, status } from '../assets/functions';
+import { getTime, getDday, isFuture, status } from '../assets/functions';
 import {
   AppAction,
   TicketAction,
@@ -22,7 +22,6 @@ export const getAllTicket = dispatch => {
     .then(data => {
       let dataIndex = []; //card_index, calendar_index의 관계
       let saveDate;
-      console.log(data);
       data.map((item, index) => {
         const getDate = getTime(item.startAt).date;
         const data_index = dataIndex.length - 1;
@@ -59,16 +58,19 @@ export const getAllTicket = dispatch => {
 };
 
 export const canReserveTicket = (auth, data) => dispatch => {
+  const { currentSubscription, nextSubscription } = auth.data;
   dispatch({ type: LoadingAction.SHOW_LOADING });
   switch (auth.data.status) {
     case status.BASIC:
     case status.FREE_TRIAL:
+      if (isFuture(currentSubscription.to, data.startAt)) {
+        checkTicket(currentSubscription, data)(dispatch);
+      } else {
+        checkTicket(nextSubscription, data)(dispatch);
+      }
+      break;
     case status.WILL_TERMINATE:
-      if (data.vacancies > 0) return reserveTicket(data.id)(dispatch);
-      dispatch({
-        type: ModalAction.SHOW_MODAL,
-        data: { type: 'alert', text: ticket_string.fullCapacity },
-      });
+      checkTicket(currentSubscription, data)(dispatch);
       break;
     case status.NEW:
       dispatch({ type: AppAction.PROMOTION });
@@ -100,21 +102,25 @@ ${getTime(auth.data.suspendedBy).timestamp.format(ticket_string.penaltyTime)} ${
   dispatch({ type: LoadingAction.HIDE_LOADING });
 };
 
-export const getReserveTicket = dispatch => {
-  return axios
-    .get(`/reservation`)
-    .then(response => {
+const checkTicket = (subscription, data) => dispatch => {
+  if (subscription.used < 2)
+    if (data.vacancies > 0) reserveTicket(data.id)(dispatch);
+    else
       dispatch({
-        type: TicketAction.SET_RESERVATION,
-        data: response.data,
+        type: ModalAction.SHOW_MODAL,
+        data: { type: 'alert', text: ticket_string.fullCapacity },
       });
-    })
-    .catch(err => {
-      console.log(err.response);
+  else
+    dispatch({
+      type: ModalAction.SHOW_MODAL,
+      data: {
+        type: 'alert',
+        text: '구독기간 중 2번 까지만 예약이 가능합니다',
+      },
     });
 };
 
-export const reserveTicket = id => dispatch => {
+const reserveTicket = id => dispatch => {
   return axios
     .post(`/ticket/${id}/reserve`)
     .then(response => {
@@ -132,19 +138,32 @@ export const reserveTicket = id => dispatch => {
       });
       return Promise.resolve();
     })
-    .then(() => {
-      dispatch({ type: LoadingAction.HIDE_LOADING });
-    })
     .catch(err => {
+      console.log(err.response);
+      dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
           type: 'alert',
-          text: `${err.response.status} ${global_string.errorOccured}`,
-          showLogo: true,
+          text: `${global_string.errorOccured}
+ERROR ${err.response.status}`,
         },
       });
       return Promise.reject(err.response.data);
+    });
+};
+
+export const getReserveTicket = dispatch => {
+  return axios
+    .get(`/reservation`)
+    .then(response => {
+      dispatch({
+        type: TicketAction.SET_RESERVATION,
+        data: response.data,
+      });
+    })
+    .catch(err => {
+      console.log(err.response);
     });
 };
 

@@ -61,7 +61,6 @@ export function ticket(state = initialState, action) {
       addTicketData(updateData, ticket);
       updateData.checkedAt = null;
       updateData.cancelledAt = null;
-
       return {
         ticket: updateTicket,
         reservation: [...state.reservation, updateData],

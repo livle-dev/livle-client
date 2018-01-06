@@ -53,7 +53,6 @@ export const restoreSubscribe = dispatch => {
     .post(`/subscription/restore`)
     .then(response => {
       const { token, ...option } = response.data;
-      console.log(response.data);
       dispatch({
         type: AuthAction.UPDATE_USER_DATA,
         data: { ...option },

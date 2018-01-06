@@ -10,7 +10,11 @@ import _SquareButton from '../partials/_SquareButton';
 // Network
 import { restoreSubscribe, cancelSubscribe } from '../../../network';
 // Actions
-import { AppAction, ModalAction } from '../../../reducers/Actions';
+import {
+  AppAction,
+  ModalAction,
+  NavbarAction,
+} from '../../../reducers/Actions';
 // Functions
 import { getTime, status } from '../../../assets/functions';
 // Strings
@@ -44,9 +48,10 @@ export default class MembershipPage extends Component {
                 text: membership_string.reallyTerminate,
                 buttonText: membership_string.terminate,
                 onPress: () =>
-                  cancelSubscribe(navigation.dispatch).then(() =>
-                    navigation.goBack()
-                  ),
+                  cancelSubscribe(navigation.dispatch).then(() => {
+                    navigation.goBack();
+                    navigation.dispatch({ type: NavbarAction.ENABLE_NAVBAR });
+                  }),
               },
             }),
         };
@@ -54,9 +59,10 @@ export default class MembershipPage extends Component {
         return {
           text: membership_string.restoreMembership,
           onPress: () =>
-            restoreSubscribe(navigation.dispatch).then(() =>
-              navigation.goBack()
-            ),
+            restoreSubscribe(navigation.dispatch).then(() => {
+              navigation.goBack();
+              navigation.dispatch({ type: NavbarAction.ENABLE_NAVBAR });
+            }),
         };
       case status.NEW:
       case status.UNSUBSCRIBING:
@@ -84,7 +90,11 @@ export default class MembershipPage extends Component {
           contents={[
             {
               title: membership_string.plan,
-              value: body.currentSubscription ? body.status : 'None',
+              value: body.currentSubscription
+                ? body.status === status.FREE_TRIAL
+                  ? status.FREE_TRIAL
+                  : status.BASIC
+                : 'None',
             },
             body.currentSubscription
               ? {

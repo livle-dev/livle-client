@@ -65,6 +65,7 @@ export default class PushNotification extends Component {
   }
 
   render() {
+    console.ignoredYellowBox = ['Setting a timer'];
     return null;
   }
 }
