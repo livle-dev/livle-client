@@ -106,7 +106,6 @@ export const cancelSubscribe = dispatch => {
       return Promise.resolve();
     })
     .catch(err => {
-      console.log(err.response);
       dispatch({ type: LoadingAction.HIDE_LOADING });
       return Promise.reject(err.response);
     });

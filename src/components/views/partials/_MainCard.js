@@ -5,10 +5,13 @@ import PropTypes from 'prop-types';
 import Carousel from 'react-native-snap-carousel';
 import { connect } from 'react-redux';
 // Networks
+import pusher from '../../../network/pusher';
 import { canReserveTicket, cancelTicket } from '../../../network';
 // Views
 import FirstContent from './FirstContent';
 import SecondContent from './SecondContent';
+// Actions
+import { TicketAction } from '../../../reducers/Actions';
 // Strings
 import { main_string } from '../../../assets/strings';
 // Styles
@@ -116,8 +119,20 @@ class _MainCard extends Component {
 
   state = { showTopButton: false };
 
+  componentDidMount() {
+    const { data, dispatch } = this.props;
+    vacancies = pusher.subscribe('vacancies');
+    vacancies.bind(`ticket-${data.id}`, vacancies => {
+      dispatch({
+        type: TicketAction.UPDATE_TICKET,
+        data: { id: data.id, vacancies: vacancies },
+      });
+    });
+  }
+
   componentWillReceiveProps(props) {
     if (props.curIndex !== props.cardIndex) this._snapToTop();
+    console.log(props.data);
   }
 
   render() {

@@ -64,14 +64,12 @@ export const canReserveTicket = (auth, data) => dispatch => {
     case status.BASIC:
     case status.FREE_TRIAL:
       if (isFuture(currentSubscription.to, data.startAt)) {
-        checkTicket(currentSubscription, data)(dispatch);
+        return checkTicket(currentSubscription, data)(dispatch);
       } else {
-        checkTicket(nextSubscription, data)(dispatch);
+        return checkTicket(nextSubscription, data)(dispatch);
       }
-      break;
     case status.WILL_TERMINATE:
-      checkTicket(currentSubscription, data)(dispatch);
-      break;
+      return checkTicket(currentSubscription, data)(dispatch);
     case status.NEW:
       dispatch({ type: AppAction.PROMOTION });
       break;
@@ -103,14 +101,17 @@ ${getTime(auth.data.suspendedBy).timestamp.format(ticket_string.penaltyTime)} ${
 };
 
 const checkTicket = (subscription, data) => dispatch => {
-  if (subscription.used < 2)
-    if (data.vacancies > 0) reserveTicket(data.id)(dispatch);
-    else
+  if (subscription.used < 2) {
+    if (data.vacancies > 0) {
+      reserveTicket(data.id)(dispatch);
+    } else {
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: { type: 'alert', text: ticket_string.fullCapacity },
       });
-  else
+    }
+  } else {
+    dispatch({ type: LoadingAction.HIDE_LOADING });
     dispatch({
       type: ModalAction.SHOW_MODAL,
       data: {
@@ -118,6 +119,7 @@ const checkTicket = (subscription, data) => dispatch => {
         text: '구독기간 중 2번 까지만 예약이 가능합니다',
       },
     });
+  }
 };
 
 const reserveTicket = id => dispatch => {
@@ -135,11 +137,11 @@ const reserveTicket = id => dispatch => {
           text: ticket_string.addReservation,
         },
       });
+      dispatch({ type: LoadingAction.HIDE_LOADING });
       return Promise.resolve();
     })
     .catch(err => {
-      console.log(err.response);
-      dispatch({ type: LoadingAction.HIDE_LOADING });
+      const { response } = err;
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
