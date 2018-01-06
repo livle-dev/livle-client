@@ -35,6 +35,16 @@ export const subscribe = (cardNumber, birth, password, expiry) => dispatch => {
     })
     .catch(err => {
       dispatch({ type: LoadingAction.HIDE_LOADING });
+      if (err.response.status === 406) {
+        dispatch({
+          type: ModalAction.SHOW_MODAL,
+          data: {
+            type: 'alert',
+            text: `${membership_string.failedVerifyPayment}
+ERROR: ${err.response.status}`,
+          },
+        });
+      }
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {

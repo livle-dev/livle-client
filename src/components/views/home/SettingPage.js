@@ -79,8 +79,8 @@ class SettingPage extends Component {
           ]}
         />
         <_SettingCard
-          type="blink"
-          title={setting_string.contact}
+          type="notice"
+          title={setting_string.serviceCenter}
           contents={[
             {
               title: setting_string.helpSupport,
@@ -90,7 +90,7 @@ class SettingPage extends Component {
           ]}
         />
         <_SettingCard
-          type="blink"
+          type="notice"
           title={setting_string.policies}
           contents={[
             {

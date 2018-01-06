@@ -132,8 +132,7 @@ const reserveTicket = id => dispatch => {
         type: ModalAction.SHOW_MODAL,
         data: {
           type: 'alert',
-          text: ticket_string.concertBooked,
-          showLogo: true,
+          text: ticket_string.addReservation,
         },
       });
       return Promise.resolve();
@@ -182,7 +181,6 @@ export const cancelTicket = id => dispatch => {
         data: {
           type: 'alert',
           text: ticket_string.reservationCanceled,
-          showLogo: true,
         },
       });
       return Promise.resolve();

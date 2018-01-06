@@ -57,7 +57,7 @@ export default class PromotionPage extends Component {
             <Text style={promotionStyle.textPromotion}>멤버십 이벤트</Text>
           </ImageBackground>
           <Text style={[promotionStyle.textTitle, styles.textCenter]}>
-            이번 달은{'\n'}첫 1주일 무료!
+            첫 한달,{'\n'}공연 2회 무료!
           </Text>
           <Icon
             src="ic_ticket_blink"
@@ -89,7 +89,7 @@ export default class PromotionPage extends Component {
             <View style={promotionStyle.button}>
               <_SquareButton
                 backgroundColor={color_string.green_light}
-                text="첫 1주일 이후 매달 | 14,900원"
+                text="첫 1달 이후 매달 | 14,900원"
                 onPress={() => navigation.navigate('Subscribe')}
               />
             </View>
