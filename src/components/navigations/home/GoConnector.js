@@ -5,10 +5,7 @@ import { TicketAction } from '../../../reducers/Actions';
 import GoPage from '../../views/home/GoPage';
 
 const mapStateToProps = state => {
-  return {
-    reservation: state.ticket.reservation,
-    auth: state.auth.data,
-  };
+  return { reservation: state.ticket.reservation };
 };
 
 export default connect(mapStateToProps)(GoPage);

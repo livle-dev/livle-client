@@ -111,6 +111,10 @@ export default class MembershipPage extends Component {
                   title: '',
                   value: '',
                 },
+            body.currentSubscription && {
+              title: '예약 가능 횟수',
+              value: 2 - body.currentSubscription.used,
+            },
           ]}
         />
         {body.currentSubscription && (

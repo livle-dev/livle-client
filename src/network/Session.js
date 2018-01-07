@@ -3,6 +3,7 @@ import { AsyncStorage } from 'react-native';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
 import {
   AppAction,
+  AuthAction,
   LoadingAction,
   MessageBarAction,
   ModalAction,
@@ -126,6 +127,23 @@ export const facebookLogin = dispatch => {
       console.log(err);
     }
   );
+};
+
+export const updateSession = dispatch => {
+  dispatch({ type: LoadingAction.SHOW_LOADING });
+  return axios
+    .get('/user')
+    .then(response => {
+      dispatch({
+        type: AuthAction.UPDATE_USER_DATA,
+        data: response.data,
+      });
+      dispatch({ type: LoadingAction.HIDE_LOADING });
+    })
+    .catch(err => {
+      dispatch({ type: LoadingAction.HIDE_LOADING });
+      console.log(err.response);
+    });
 };
 
 export const logout = dispatch => {

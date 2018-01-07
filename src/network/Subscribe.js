@@ -21,10 +21,9 @@ export const subscribe = (cardNumber, birth, password, expiry) => dispatch => {
       expiry: assembleExpiry,
     })
     .then(response => {
-      const { token, ...option } = response.data;
       dispatch({
         type: AuthAction.UPDATE_USER_DATA,
-        data: { ...option },
+        data: response.data,
       });
       dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
@@ -62,10 +61,9 @@ export const restoreSubscribe = dispatch => {
   return axios
     .post(`/subscription/restore`)
     .then(response => {
-      const { token, ...option } = response.data;
       dispatch({
         type: AuthAction.UPDATE_USER_DATA,
-        data: { ...option },
+        data: response.data,
       });
       dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
@@ -93,10 +91,9 @@ export const cancelSubscribe = dispatch => {
   return axios
     .delete(`/subscription`)
     .then(response => {
-      const { token, ...option } = response.data;
       dispatch({
         type: AuthAction.UPDATE_USER_DATA,
-        data: { ...option },
+        data: response.data,
       });
       dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({

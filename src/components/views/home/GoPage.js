@@ -16,10 +16,8 @@ import {
 import { color } from '../../../assets/stylesheets/global/Color';
 // Views
 import ShowReservation from '../partials/ShowReservation';
-// Action
-import { AuthAction } from '../../../reducers/Actions';
-// Function
-import { isFuture } from '../../../assets/functions';
+// Network
+import { updateSession } from '../../../network';
 // String
 import { ticket_string } from '../../../assets/strings';
 // Icons
@@ -74,17 +72,7 @@ export default class GoPage extends Component {
   }
 
   componentWillUpdate(props, s) {
-    const { reservation, auth, dispatch } = props;
-    let data = { current: 0, next: 0 };
-    reservation.forEach(item => {
-      if (isFuture(auth.currentSubscription.to, item.ticketData.startAt))
-        data.current = data.current + 1;
-      else data.next = data.next + 1;
-    });
-    dispatch({
-      type: AuthAction.UPDATE_USED_COUNT,
-      data: data,
-    });
+    updateSession(props.dispatch);
   }
 
   render() {
