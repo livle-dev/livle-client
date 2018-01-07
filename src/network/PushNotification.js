@@ -21,24 +21,24 @@ export default class PushNotification extends Component {
       console.error(e);
     }
     FCM.getFCMToken().then(token => {
-      console.log('TOKEN (getFCMToken)', token);
+      // console.log('TOKEN (getFCMToken)', token);
     });
 
     // This method get all notification from server side.
     FCM.getInitialNotification().then(notif => {
-      console.log('INITIAL NOTIFICATION', notif);
+      // console.log('INITIAL NOTIFICATION', notif);
     });
 
     // This method give received notifications to mobile to display.
     this.notificationUnsubscribe = FCM.on(FCMEvent.Notification, notif => {
-      console.log('notificationUnsubscribe', notif);
+      // console.log('notificationUnsubscribe', notif);
       if (notif && notif.local_notification) return;
       this.sendRemote(notif);
     });
 
     // this method call when FCM token is update(FCM token update any time so will get updated token from this method)
     this.refreshUnsubscribe = FCM.on(FCMEvent.RefreshToken, token => {
-      console.log('refreshUnsubscribe', token);
+      // console.log('refreshUnsubscribe', token);
       this.props.onChangeToken(token);
     });
   }
