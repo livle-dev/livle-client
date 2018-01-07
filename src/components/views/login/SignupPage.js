@@ -126,23 +126,26 @@ class SignupPage extends Component {
                       this.state.email,
                       this.state.password,
                       this.state.nickname
-                    )(this.props.dispatch).catch(status => {
-                      switch (status) {
-                        case 403:
-                          this._checkError(
-                            'email',
-                            this.state.email,
-                            session_string.existEmail
-                          );
-                          break;
-                        case 405:
-                          this._checkError(
-                            'email',
-                            this.state.email,
-                            session_string.wrongEmail
-                          );
-                      }
-                    });
+                    )(this.props.dispatch)
+                      .then(res => console.log(res))
+                      .catch(status => {
+                        console.log(status);
+                        switch (status) {
+                          case 403:
+                            this._checkError(
+                              'email',
+                              this.state.email,
+                              session_string.existEmail
+                            );
+                            break;
+                          case 405:
+                            this._checkError(
+                              'email',
+                              this.state.email,
+                              session_string.wrongEmail
+                            );
+                        }
+                      });
                 }}
               />
             </View>

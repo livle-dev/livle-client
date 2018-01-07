@@ -23,7 +23,7 @@ function setHeader(item) {
 async function _getToken() {
   const result = await AsyncStorage.getItem(consts.asyncToken);
   const item = await JSON.parse(result);
-  setHeader(item);
+  if (item) setHeader(item);
   return item;
 }
 async function _setToken(token) {
@@ -44,8 +44,7 @@ function _removeToken() {
 
 /* GET DATA & DISPATCH FROM SERVER */
 const dispatchUserData = data => dispatch => {
-  const { token, ...option } = data;
-  dispatch({ type: AppAction.LOGIN, data: { ...option } });
+  dispatch({ type: AppAction.LOGIN, data: data });
   getAllTicket(dispatch);
   dispatch({
     type: MessageBarAction.SHOW_MESSAGE_BAR,
@@ -96,6 +95,7 @@ export const login = (email, password) => dispatch => {
     .post(`/user/session`, { email: email, password: password })
     .then(response => {
       const { data } = response;
+      console.log(data);
       _setToken(data.token);
       dispatchUserData(data)(dispatch);
     })
@@ -130,20 +130,24 @@ export const facebookLogin = dispatch => {
 };
 
 export const updateSession = dispatch => {
-  dispatch({ type: LoadingAction.SHOW_LOADING });
-  return axios
-    .get('/user')
-    .then(response => {
-      dispatch({
-        type: AuthAction.UPDATE_USER_DATA,
-        data: response.data,
-      });
-      dispatch({ type: LoadingAction.HIDE_LOADING });
-    })
-    .catch(err => {
-      dispatch({ type: LoadingAction.HIDE_LOADING });
-      console.log(err.response);
-    });
+  return _getToken().then(response => {
+    if (response) {
+      dispatch({ type: LoadingAction.SHOW_LOADING });
+      return axios
+        .get('/user')
+        .then(response => {
+          dispatch({
+            type: AuthAction.UPDATE_USER_DATA,
+            data: response.data,
+          });
+          dispatch({ type: LoadingAction.HIDE_LOADING });
+        })
+        .catch(err => {
+          dispatch({ type: LoadingAction.HIDE_LOADING });
+          console.log(err.response);
+        });
+    }
+  });
 };
 
 export const logout = dispatch => {
@@ -167,7 +171,14 @@ export const signUp = (email, password, nickname) => dispatch => {
       return Promise.resolve();
     })
     .catch(err => {
-      console.log(err.response);
+      dispatch({
+        type: ModalAction.SHOW_MODAL,
+        data: {
+          type: 'blink',
+          text: err.response.data,
+        },
+      });
+      dispatch({ type: LoadingAction.HIDE_LOADING });
       Promise.reject(err.response.status);
     });
 };

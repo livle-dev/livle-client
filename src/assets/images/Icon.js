@@ -86,9 +86,9 @@ const icon_info = {
     originHeight: 201,
   },
   logo_livle: {
-    source: require('./logo_livle.png'),
-    originWidth: 2061,
-    originHeight: 418,
+    source: require('./logo_livle_beta.png'),
+    originWidth: 205,
+    originHeight: 76,
   },
 };
 

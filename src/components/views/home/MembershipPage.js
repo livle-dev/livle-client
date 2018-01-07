@@ -77,6 +77,41 @@ export default class MembershipPage extends Component {
     const { navigation } = this.props;
     const { title, body } = navigation.state.params;
     const button = this.setAction();
+    const infoContents = body.currentSubscription
+      ? [
+          {
+            title: membership_string.plan,
+            value: body.currentSubscription
+              ? body.status === status.FREE_TRIAL
+                ? status.FREE_TRIAL
+                : status.BASIC
+              : 'None',
+          },
+          {
+            title: body.nextSubscription
+              ? membership_string.renewal
+              : membership_string.endDate,
+            value: getTime(
+              body.nextSubscription
+                ? body.nextSubscription.from
+                : body.currentSubscription.to
+            ).timestamp.format('YYYY.MM.DD'),
+          },
+          {
+            title: '예약 가능 횟수',
+            value: 2 - body.currentSubscription.used,
+          },
+        ]
+      : [
+          {
+            title: membership_string.plan,
+            value: body.currentSubscription
+              ? body.status === status.FREE_TRIAL
+                ? status.FREE_TRIAL
+                : status.BASIC
+              : 'None',
+          },
+        ];
 
     return (
       <StackPage
@@ -87,35 +122,7 @@ export default class MembershipPage extends Component {
         <_SettingCard
           type="string"
           title={membership_string.membershipInfo}
-          contents={[
-            {
-              title: membership_string.plan,
-              value: body.currentSubscription
-                ? body.status === status.FREE_TRIAL
-                  ? status.FREE_TRIAL
-                  : status.BASIC
-                : 'None',
-            },
-            body.currentSubscription
-              ? {
-                  title: body.nextSubscription
-                    ? membership_string.renewal
-                    : membership_string.endDate,
-                  value: getTime(
-                    body.nextSubscription
-                      ? body.nextSubscription.from
-                      : body.currentSubscription.to
-                  ).timestamp.format('YYYY.MM.DD'),
-                }
-              : {
-                  title: '',
-                  value: '',
-                },
-            body.currentSubscription && {
-              title: '예약 가능 횟수',
-              value: 2 - body.currentSubscription.used,
-            },
-          ]}
+          contents={infoContents}
         />
         {body.currentSubscription && (
           <_SettingCard
