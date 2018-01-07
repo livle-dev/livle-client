@@ -73,7 +73,7 @@ export default class GoPage extends Component {
     this.keyboardHideListener.remove();
   }
 
-  componentWillUpdate(props, state) {
+  componentWillUpdate(props, s) {
     const { reservation, auth, dispatch } = props;
     let data = { current: 0, next: 0 };
     reservation.forEach(item => {
@@ -87,13 +87,10 @@ export default class GoPage extends Component {
     });
   }
 
-  compon
-
   render() {
     const { isKeyboardShow } = this.state;
     const { reservation, dispatch } = this.props;
     const hasItem = reservation.length > 0;
-    // this.updateSessionData();
 
     return (
       <KeyboardAwareScrollView
