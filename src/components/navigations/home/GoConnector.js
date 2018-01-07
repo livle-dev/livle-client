@@ -7,6 +7,7 @@ import GoPage from '../../views/home/GoPage';
 const mapStateToProps = state => {
   return {
     reservation: state.ticket.reservation,
+    auth: state.auth.data,
   };
 };
 

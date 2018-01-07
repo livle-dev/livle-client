@@ -29,6 +29,17 @@ export function auth(state = initialState, action) {
         ...state,
         data: { ...action.data, status: subscriptionStatus(action.data) },
       };
+    case AuthAction.UPDATE_USED_COUNT:
+      /**
+       * action.data = PropTypes.object.isRequired
+       **/
+      const updateData = state.data;
+      updateData.currentSubscription.used = action.data.current;
+      updateData.nextSubscription.used = action.data.next;
+      return {
+        ...state,
+        data: updateData,
+      };
     default:
       return state;
   }

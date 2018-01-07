@@ -1,6 +1,7 @@
 // Session
 export const AuthAction = {
   UPDATE_USER_DATA: 'UPDATE_USER_DATA',
+  UPDATE_USED_COUNT: 'UPDATE_USED_COUNT',
 };
 
 // Navigation
