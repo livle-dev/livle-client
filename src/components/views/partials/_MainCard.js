@@ -132,7 +132,6 @@ class _MainCard extends Component {
 
   componentWillReceiveProps(props) {
     if (props.curIndex !== props.cardIndex) this._snapToTop();
-    console.log(props.data);
   }
 
   render() {
