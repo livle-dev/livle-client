@@ -9,7 +9,7 @@ import {
   ModalAction,
 } from './Actions';
 // Reducers
-import { auth } from './Auth';
+import { auth } from './Session';
 import { appReducer, homeReducer, navNavbar, navMainCard } from './Navigations';
 import { ticket } from './Ticket';
 
@@ -73,7 +73,7 @@ function showModal(state = { show: false, data: null }, action) {
 
 // COMBINE REDUCERS
 const Reducer = combineReducers({
-  // Auth
+  // Session
   auth: auth,
   // Navigation
   appReducer: appReducer,

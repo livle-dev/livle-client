@@ -111,7 +111,7 @@ export default class SecondContent extends Component {
             {main_string.relatedVideo}
           </Text>
           {this.state.isMounted &&
-            !removePlayer && <VideoPlayer videoId={data.video_id} />}
+            !removePlayer && <VideoPlayer videoId={data.videoId} />}
         </Container>
       </ScrollView>
     );

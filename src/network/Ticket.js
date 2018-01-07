@@ -1,5 +1,5 @@
 import axios from './axios';
-import { getTime, getDday, isFuture } from '../assets/functions';
+import { getTime, getDday, isFuture, status } from '../assets/functions';
 import {
   AppAction,
   TicketAction,
@@ -15,7 +15,7 @@ export const getAllTicket = dispatch => {
     .get(`/ticket`)
     .then(response => {
       const sortData = response.data.sort(
-        (x, y) => getTime(x.start_at).timestamp - getTime(y.start_at).timestamp
+        (x, y) => getTime(x.startAt).timestamp - getTime(y.startAt).timestamp
       );
       return sortData;
     })
@@ -23,12 +23,12 @@ export const getAllTicket = dispatch => {
       let dataIndex = []; //card_index, calendar_index의 관계
       let saveDate;
       data.map((item, index) => {
-        const getDate = getTime(item.start_at).date;
+        const getDate = getTime(item.startAt).date;
         const data_index = dataIndex.length - 1;
         if (!saveDate || saveDate !== getDate) {
           saveDate = getDate;
           dataIndex.push({
-            calendar_index: getDday(item.start_at),
+            calendar_index: getDday(item.startAt),
             card_start: index,
             card_end: index,
           });
@@ -58,62 +58,100 @@ export const getAllTicket = dispatch => {
 };
 
 export const canReserveTicket = (auth, data) => dispatch => {
-  const isVaildNow = isFuture(auth.data.valid_by, data.start_at);
-  const isCancelled = auth.data.cancelled_at;
-  const isSuspendEnd =
-    !auth.data.suspended_by || !isFuture(auth.data.suspended_by);
-  const isCapable = data.capacity > 0;
-  const didFreeTrial = auth.data.free_trial_started_at;
-
-  let error;
-
+  const { currentSubscription, nextSubscription } = auth.data;
   dispatch({ type: LoadingAction.SHOW_LOADING });
-  if (auth.data.valid_by)
-    if (isVaildNow)
-      if (isSuspendEnd)
-        if (isCapable) return reserveTicket(data.id)(dispatch);
-        else error = 'full_capacity';
-      else error = 'suspended';
-    else if (!isCancelled)
-      if (isSuspendEnd)
-        if (isCapable) return reserveTicket(data.id)(dispatch);
-        else error = 'full_capacity';
-      else error = 'suspended';
-    else error = 're_subscribe';
-  else if (!didFreeTrial) error = 'start_subscribe';
-  else error = 're_subscribe';
-  dispatch({ type: LoadingAction.HIDE_LOADING });
-
-  switch (error) {
-    case 'full_capacity':
-      return dispatch({
-        type: ModalAction.SHOW_MODAL,
-        data: { type: 'alert', text: ticket_string.fullCapacity },
-      });
-    case 'suspended':
-      return dispatch({
-        type: ModalAction.SHOW_MODAL,
-        data: {
-          type: 'alert',
-          text: `${ticket_string.penaltyFront}
-${getTime(auth.data.suspended_by).timestamp.format(
-            ticket_string.penaltyTime
-          )} ${ticket_string.penaltyBack}`,
-        },
-      });
-    case 'start_subscribe':
-      return dispatch({ type: AppAction.PROMOTION });
-    case 're_subscribe':
-      return dispatch({
+  switch (auth.data.status) {
+    case status.BASIC:
+    case status.FREE_TRIAL:
+      if (isFuture(currentSubscription.to, data.startAt)) {
+        return checkTicket(currentSubscription, data)(dispatch);
+      } else {
+        return checkTicket(nextSubscription, data)(dispatch);
+      }
+    case status.WILL_TERMINATE:
+      return checkTicket(currentSubscription, data)(dispatch);
+    case status.NEW:
+      dispatch({ type: AppAction.PROMOTION });
+      break;
+    case status.UNSUBSCRIBING:
+      dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
           type: 'select',
-          text: ticket_string.reApplyMembership,
+          text: ticket_string.restoreMembership,
           buttonText: global_string.subscribe,
           onPress: () => dispatch({ type: AppAction.SUBSCRIBE }),
         },
       });
+      break;
+    case status.SUSPENDED:
+      dispatch({
+        type: ModalAction.SHOW_MODAL,
+        data: {
+          type: 'alert',
+          text: `${ticket_string.penaltyFront}
+${getTime(auth.data.suspendedBy).timestamp.format(ticket_string.penaltyTime)} ${
+            ticket_string.penaltyBack
+          }`,
+        },
+      });
+      break;
   }
+  dispatch({ type: LoadingAction.HIDE_LOADING });
+};
+
+const checkTicket = (subscription, data) => dispatch => {
+  if (subscription.used < 2) {
+    if (data.vacancies > 0) {
+      reserveTicket(data.id)(dispatch);
+    } else {
+      dispatch({
+        type: ModalAction.SHOW_MODAL,
+        data: { type: 'alert', text: ticket_string.fullCapacity },
+      });
+    }
+  } else {
+    dispatch({ type: LoadingAction.HIDE_LOADING });
+    dispatch({
+      type: ModalAction.SHOW_MODAL,
+      data: {
+        type: 'alert',
+        text: '구독기간 중 2번 까지만 예약이 가능합니다',
+      },
+    });
+  }
+};
+
+const reserveTicket = id => dispatch => {
+  return axios
+    .post(`/ticket/${id}/reserve`)
+    .then(response => {
+      dispatch({
+        type: TicketAction.ADD_RESERVATION,
+        data: response.data,
+      });
+      dispatch({
+        type: ModalAction.SHOW_MODAL,
+        data: {
+          type: 'alert',
+          text: ticket_string.addReservation,
+        },
+      });
+      dispatch({ type: LoadingAction.HIDE_LOADING });
+      return Promise.resolve();
+    })
+    .catch(err => {
+      const { response } = err;
+      dispatch({
+        type: ModalAction.SHOW_MODAL,
+        data: {
+          type: 'alert',
+          text: `${global_string.errorOccured}
+ERROR ${err.response.status}`,
+        },
+      });
+      return Promise.reject(err.response.data);
+    });
 };
 
 export const getReserveTicket = dispatch => {
@@ -127,40 +165,6 @@ export const getReserveTicket = dispatch => {
     })
     .catch(err => {
       console.log(err.response);
-    });
-};
-
-export const reserveTicket = id => dispatch => {
-  return axios
-    .post(`/ticket/${id}/reserve`)
-    .then(response => {
-      dispatch({
-        type: TicketAction.ADD_RESERVATION,
-        data: response.data,
-      });
-      dispatch({
-        type: ModalAction.SHOW_MODAL,
-        data: {
-          type: 'alert',
-          text: ticket_string.concertBooked,
-          showLogo: true,
-        },
-      });
-      return Promise.resolve();
-    })
-    .then(() => {
-      dispatch({ type: LoadingAction.HIDE_LOADING });
-    })
-    .catch(err => {
-      dispatch({
-        type: ModalAction.SHOW_MODAL,
-        data: {
-          type: 'alert',
-          text: `${err.response.status} ${global_string.errorOccured}`,
-          showLogo: true,
-        },
-      });
-      return Promise.reject(err.response.data);
     });
 };
 
@@ -179,7 +183,6 @@ export const cancelTicket = id => dispatch => {
         data: {
           type: 'alert',
           text: ticket_string.reservationCanceled,
-          showLogo: true,
         },
       });
       return Promise.resolve();

@@ -1,6 +1,7 @@
-// Auth
+// Session
 export const AuthAction = {
   UPDATE_USER_DATA: 'UPDATE_USER_DATA',
+  UPDATE_USED_COUNT: 'UPDATE_USED_COUNT',
 };
 
 // Navigation
@@ -22,6 +23,7 @@ export const MainAction = {
 // Ticket
 export const TicketAction = {
   SET_TICKET: 'SET_TICKET',
+  UPDATE_TICKET: 'UPDATE_TICKET',
   SET_RESERVATION: 'SET_RESERVATION',
   ADD_RESERVATION: 'ADD_RESERVATION',
   CANCEL_RESERVATION: 'CANCEL_RESERVATION',

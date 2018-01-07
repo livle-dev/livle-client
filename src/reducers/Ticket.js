@@ -14,12 +14,24 @@ export function ticket(state = initialState, action) {
        **/
       const updateData = action.data;
       updateData.forEach(item => {
-        item.reservation_id = null;
+        item.reservationId = null;
       });
       return {
         ...state,
         ticket: { data: updateData, dataIndex: action.dataIndex },
       };
+    }
+    case TicketAction.UPDATE_TICKET: {
+      /**
+       * action.data = PropTypes.object.isRequired
+       **/
+      const updateTicket = state.ticket;
+      const updateData = action.data;
+      let ticket = updateTicket.data.find(
+        ticket => ticket.id === updateData.id
+      );
+      ticket.vacancies = updateData.vacancies;
+      return { ...state, ticket: updateTicket };
     }
     case TicketAction.SET_RESERVATION: {
       /**
@@ -29,9 +41,9 @@ export function ticket(state = initialState, action) {
       const updateData = action.data;
       updateData.forEach(item => {
         let ticket = updateTicket.data.find(
-          ticket => ticket.id === item.ticket_id
+          ticket => ticket.id === item.ticketId
         );
-        ticket.reservation_id = item.id;
+        ticket.reservationId = item.id;
         addTicketData(item, ticket);
       });
       return { ticket: updateTicket, reservation: updateData };
@@ -43,13 +55,12 @@ export function ticket(state = initialState, action) {
       const updateTicket = state.ticket;
       const updateData = action.data;
       let ticket = updateTicket.data.find(
-        ticket => ticket.id === updateData.ticket_id
+        ticket => ticket.id === updateData.ticketId
       );
-      ticket.reservation_id = updateData.id;
+      ticket.reservationId = updateData.id;
       addTicketData(updateData, ticket);
-      updateData.checked_at = null;
-      updateData.cancelled_at = null;
-
+      updateData.checkedAt = null;
+      updateData.cancelledAt = null;
       return {
         ticket: updateTicket,
         reservation: [...state.reservation, updateData],
@@ -63,9 +74,10 @@ export function ticket(state = initialState, action) {
       const prunedList = state.reservation.filter(
         item => item.id !== action.id
       );
-      updateTicket.data.forEach(item => {
-        if (item.reservation_id === action.id) item.reservation_id = null;
-      });
+      let ticket = updateTicket.data.find(
+        ticket => ticket.reservationId === action.id
+      );
+      ticket.reservationId = null;
 
       return { ticket: updateTicket, reservation: prunedList };
     }
@@ -74,10 +86,11 @@ export function ticket(state = initialState, action) {
        * action.data = PropTypes.object.isRequired
        **/
       const updateReservation = state.reservation;
+      const updateData = action.data;
       let reservation = updateReservation.find(
-        item => item.id === action.data.id
+        item => item.id === updateData.id
       );
-      reservation.checked_at = action.data.checked_at;
+      reservation.checkedAt = updateData.checkedAt;
       return { ...state, reservation: updateReservation };
     }
     default:
@@ -86,11 +99,11 @@ export function ticket(state = initialState, action) {
 }
 
 const addTicketData = (reservation, ticket) => {
-  reservation.ticket_data = {
+  reservation.ticketData = {
     title: ticket.title,
     artists: ticket.artists,
-    start_at: ticket.start_at,
-    end_at: ticket.end_at,
+    startAt: ticket.startAt,
+    endAt: ticket.endAt,
     image: ticket.image,
     place: ticket.place,
   };

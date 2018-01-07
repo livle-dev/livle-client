@@ -5,10 +5,13 @@ import PropTypes from 'prop-types';
 import Carousel from 'react-native-snap-carousel';
 import { connect } from 'react-redux';
 // Networks
+import pusher from '../../../network/pusher';
 import { canReserveTicket, cancelTicket } from '../../../network';
 // Views
 import FirstContent from './FirstContent';
 import SecondContent from './SecondContent';
+// Actions
+import { TicketAction } from '../../../reducers/Actions';
 // Strings
 import { main_string } from '../../../assets/strings';
 // Styles
@@ -88,15 +91,15 @@ class _MainCard extends Component {
         title: data.title,
         place: data.place,
         image: data.image,
-        start_at: data.start_at,
-        end_at: data.end_at,
-        capacity: data.capacity,
+        startAt: data.startAt,
+        endAt: data.endAt,
+        vacancies: data.vacancies,
         artists: data.artists,
       },
       {
         artists: data.artists,
         music_id: data.music_id,
-        video_id: data.video_id,
+        videoId: data.videoId,
         article: data.article,
       },
     ];
@@ -116,6 +119,17 @@ class _MainCard extends Component {
 
   state = { showTopButton: false };
 
+  componentDidMount() {
+    const { data, dispatch } = this.props;
+    vacancies = pusher.subscribe('vacancies');
+    vacancies.bind(`ticket-${data.id}`, vacancies => {
+      dispatch({
+        type: TicketAction.UPDATE_TICKET,
+        data: { id: data.id, vacancies: vacancies },
+      });
+    });
+  }
+
   componentWillReceiveProps(props) {
     if (props.curIndex !== props.cardIndex) this._snapToTop();
   }
@@ -124,7 +138,7 @@ class _MainCard extends Component {
     const { auth, data, dispatch } = this.props;
     const { isGo, showTopButton } = this.state;
 
-    const hasReservation = data.reservation_id !== null;
+    const hasReservation = data.reservationId !== null;
 
     return (
       <View>
@@ -134,7 +148,7 @@ class _MainCard extends Component {
           showTopButton={showTopButton}
           clickTop={() => this._snapToTop()}
           onPress={() => {
-            if (hasReservation) cancelTicket(data.reservation_id)(dispatch);
+            if (hasReservation) cancelTicket(data.reservationId)(dispatch);
             else canReserveTicket(auth, data)(dispatch);
           }}
         />

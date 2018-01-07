@@ -63,7 +63,7 @@ const CardContent = ({ type, index, content }) => {
           <Icon src="ic_next" height={settingHeight.icNext} />
         </TouchableOpacity>
       );
-    case 'blink':
+    case 'notice':
       return (
         <TouchableOpacity
           style={[
@@ -89,7 +89,6 @@ const CardContent = ({ type, index, content }) => {
 CardContent.propTypes = {
   type: PropTypes.string.isRequired,
   content: PropTypes.object.isRequired,
-
   // Content objects
   title: PropTypes.string,
   value: PropTypes.any, //string or bool

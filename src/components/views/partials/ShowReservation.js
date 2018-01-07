@@ -55,8 +55,8 @@ export default class ShowReservation extends Component {
   handleCode = text => this.setState({ code: text });
   render() {
     const { item, isKeyboardShow, dispatch } = this.props;
-    const { ticket_data } = item;
-    const isConfirmed = item.checked_at !== null;
+    const { ticketData } = item;
+    const isConfirmed = item.checkedAt !== null;
 
     return (
       <View style={[styles.flex_1, styles.horizontalCenter]}>
@@ -65,7 +65,7 @@ export default class ShowReservation extends Component {
           style={goStyle.background_size}
           imageStyle={goStyle.background_ticket}>
           <View style={container.contentContainer}>
-            <ShowInfo data={ticket_data} showDate />
+            <ShowInfo data={ticketData} showDate />
             <View style={[goStyle.confirm_container, styles.alignCenter]}>
               <GoCheckEnter
                 dataId={item.id}

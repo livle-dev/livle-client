@@ -35,13 +35,53 @@ export const subscribe = (cardNumber, birth, password, expiry) => dispatch => {
     })
     .catch(err => {
       dispatch({ type: LoadingAction.HIDE_LOADING });
+      if (err.response.status === 406) {
+        dispatch({
+          type: ModalAction.SHOW_MODAL,
+          data: {
+            type: 'alert',
+            text: `${membership_string.failedVerifyPayment}
+ERROR: ${err.response.status}`,
+          },
+        });
+      }
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
           type: 'alert',
-          text: `${membership_string.failedVerifyPayment} ERROR${
-            err.response.status
-          }`,
+          text: `${membership_string.failedVerifyPayment}
+ERROR: ${err.response.status}`,
+        },
+      });
+      return Promise.reject();
+    });
+};
+
+export const restoreSubscribe = dispatch => {
+  dispatch({ type: LoadingAction.SHOW_LOADING });
+  return axios
+    .post(`/subscription/restore`)
+    .then(response => {
+      const { token, ...option } = response.data;
+      dispatch({
+        type: AuthAction.UPDATE_USER_DATA,
+        data: { ...option },
+      });
+      dispatch({ type: LoadingAction.HIDE_LOADING });
+      dispatch({
+        type: MessageBarAction.SHOW_MESSAGE_BAR,
+        message: membership_string.compleltApplying,
+      });
+      return Promise.resolve();
+    })
+    .catch(err => {
+      dispatch({ type: LoadingAction.HIDE_LOADING });
+      dispatch({
+        type: ModalAction.SHOW_MODAL,
+        data: {
+          type: 'alert',
+          text: `${membership_string.failedVerifyPayment}
+ERROR${err.response.status}`,
         },
       });
       return Promise.reject();
@@ -66,7 +106,6 @@ export const cancelSubscribe = dispatch => {
       return Promise.resolve();
     })
     .catch(err => {
-      console.log(err.response);
       dispatch({ type: LoadingAction.HIDE_LOADING });
       return Promise.reject(err.response);
     });

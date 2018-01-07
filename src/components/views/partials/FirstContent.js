@@ -1,5 +1,5 @@
 // Libraries
-import React from 'react';
+import React, { Component } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 // Views
@@ -14,23 +14,24 @@ import {
 import { styles } from '../../../assets/stylesheets/global/Style';
 import Icon from '../../../assets/images/Icon';
 
-const FirstContent = ({ data, showDetail }) => {
-  return (
-    <View style={[mainCard.innerContainer, styles.horizontalCenter]}>
-      <Image style={mainCard.imgContainer} source={{ uri: data.image }} />
-      <ShowInfo data={data} />
-      <TouchableOpacity
-        style={[mainCard.moreButton, styles.horizontalCenter]}
-        onPress={showDetail}>
-        <Text style={[mainCard.textVacancies]}>
-          {data.capacity > 0
-            ? `${data.capacity}${main_string.capacity}`
-            : main_string.full}
-        </Text>
-        <Icon src="ic_more" width={mainWidth.icMore} onPress={showDetail} />
-      </TouchableOpacity>
-    </View>
-  );
-};
-
-export default FirstContent;
+export default class FirstContent extends Component {
+  render() {
+    const { data, showDetail } = this.props;
+    return (
+      <View style={[mainCard.innerContainer, styles.horizontalCenter]}>
+        <Image style={mainCard.imgContainer} source={{ uri: data.image }} />
+        <ShowInfo data={data} />
+        <TouchableOpacity
+          style={[mainCard.moreButton, styles.horizontalCenter]}
+          onPress={showDetail}>
+          <Text style={[mainCard.textVacancies]}>
+            {data.vacancies > 0
+              ? `${data.vacancies}${main_string.vacancies}`
+              : main_string.full}
+          </Text>
+          <Icon src="ic_more" width={mainWidth.icMore} onPress={showDetail} />
+        </TouchableOpacity>
+      </View>
+    );
+  }
+}
