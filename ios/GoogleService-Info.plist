@@ -7,9 +7,9 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>149850679951-p5mt1lnlgdg91mmf5bqdnhn4tnu2b433.apps.googleusercontent.com</string>
+	<string>149850679951-p8ge3q07b1m7l74jdehl9811i3ntig5l.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.149850679951-p5mt1lnlgdg91mmf5bqdnhn4tnu2b433</string>
+	<string>com.googleusercontent.apps.149850679951-p8ge3q07b1m7l74jdehl9811i3ntig5l</string>
 	<key>API_KEY</key>
 	<string>AIzaSyAnGmMHSKquAtFwPvavbwiYOQxymxaJ6Q4</string>
 	<key>GCM_SENDER_ID</key>
@@ -17,7 +17,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>org.reactjs.native.example.livle-client</string>
+	<string>kr.livle.ios.livle-client</string>
 	<key>PROJECT_ID</key>
 	<string>livle-client-e2fca</string>
 	<key>STORAGE_BUCKET</key>
@@ -33,7 +33,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:149850679951:ios:1b3788e36d0fc39e</string>
+	<string>1:149850679951:ios:484e70d1027f7163</string>
 	<key>DATABASE_URL</key>
 	<string>https://livle-client-e2fca.firebaseio.com</string>
 </dict>
