@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.livle_client"
+    package="kr.livle.android.livle_client"
     android:versionCode="1"
     android:versionName="1.0">
 

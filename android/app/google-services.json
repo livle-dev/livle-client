@@ -8,20 +8,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:149850679951:android:3e019d264d54f660",
+        "mobilesdk_app_id": "1:149850679951:android:d50fe4be2a06a223",
         "android_client_info": {
-          "package_name": "com.livle_client"
+          "package_name": "kr.livle.android.livle_client"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "149850679951-s9k2r09b5no6ec64daijoac4fvi2qtvu.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.livle_client",
-            "certificate_hash": "f87b01e4bd635edadd590a3e0d8ccf4f36c1225e"
-          }
-        },
         {
           "client_id": "149850679951-g9eldhkj0chv085cet5njnu5jsdc26cg.apps.googleusercontent.com",
           "client_type": 3
@@ -37,13 +29,8 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 2,
-          "other_platform_oauth_client": [
-            {
-              "client_id": "149850679951-g9eldhkj0chv085cet5njnu5jsdc26cg.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "status": 1,
+          "other_platform_oauth_client": []
         },
         "ads_service": {
           "status": 2

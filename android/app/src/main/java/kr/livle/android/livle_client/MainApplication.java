@@ -1,4 +1,4 @@
-package com.livle_client;
+package kr.livle.android.livle_client;
 
 import android.app.Application;
 
@@ -14,9 +14,7 @@ import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 
-import com.facebook.FacebookSdk;
 import com.facebook.CallbackManager;
-import com.facebook.appevents.AppEventsLogger;
 
 import java.util.Arrays;
 import java.util.List;

@@ -60,7 +60,7 @@ function getLivleData(dispatch) {
       dispatchUserData(data)(dispatch);
     })
     .catch(err => {
-      if (err.status === 403) _removeToken();
+      if (err.response.status === 403) _removeToken();
       dispatch({ type: AppAction.LOGOUT });
     });
 }
@@ -74,6 +74,17 @@ const getFacebookData = facebookToken => dispatch => {
       dispatchUserData(data)(dispatch);
     })
     .catch(err => {
+      if (err.response.status === 403) {
+        _removeToken();
+        dispatch({
+          type: ModalAction.SHOW_MODAL,
+          data: {
+            type: 'blink',
+            text: `동일한 이메일로 회원가입한 유저가 있습니다.
+이메일로 로그인해주세요`,
+          },
+        });
+      }
       dispatch({ type: AppAction.LOGOUT });
     });
 };

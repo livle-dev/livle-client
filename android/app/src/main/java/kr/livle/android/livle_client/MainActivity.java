@@ -1,4 +1,4 @@
-package com.livle_client;
+package kr.livle.android.livle_client;
 
 import com.facebook.react.ReactActivity;
 
