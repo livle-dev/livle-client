@@ -153,8 +153,8 @@ export default class SubscribePage extends Component {
             title={membership_string.payment}
             contents={[
               {
-                title: '결제 금액',
-                value: '14,900원',
+                title: membership_string.subscriptionFee,
+                value: '₩14,900',
               },
             ]}>
             {/* 카드번호 */}
@@ -165,7 +165,7 @@ export default class SubscribePage extends Component {
                 { marginTop: 24 },
               ]}>
               <Text style={[settingStyle.contentTitleText, styles.flex_1]}>
-                카드번호 입력
+                {membership_string.cardNumber}
               </Text>
             </View>
             <View
@@ -225,7 +225,7 @@ export default class SubscribePage extends Component {
                 { marginTop: 24 },
               ]}>
               <Text style={[settingStyle.contentTitleText, styles.flex_1]}>
-                생년월일 (6자리)
+                {membership_string.birth}
               </Text>
               <Numbox
                 inputRef={c => (this.inputBirth = c)}
@@ -244,7 +244,7 @@ export default class SubscribePage extends Component {
                 { marginTop: 24 },
               ]}>
               <Text style={[settingStyle.contentTitleText, styles.flex_1]}>
-                카드 비밀번호 (앞 2자리)
+                {membership_string.cardPassword}
               </Text>
               <Numbox
                 inputRef={c => (this.inputPassword = c)}
@@ -264,7 +264,7 @@ export default class SubscribePage extends Component {
                 { marginTop: 24 },
               ]}>
               <Text style={[settingStyle.contentTitleText, styles.flex_1]}>
-                유효기간
+                {membership_string.validity}
               </Text>
               <Numbox
                 inputRef={c => (this.inputExpiry[0] = c)}
@@ -293,7 +293,7 @@ export default class SubscribePage extends Component {
           <View style={container.textContainer}>
             <_SquareButton
               backgroundColor={color_string.green_dark_dark}
-              text="멤버십 등록하기"
+              text={membership_string.registerMembership}
               onPress={() => {
                 if (this._checkInputs())
                   subscribe(
@@ -309,7 +309,7 @@ export default class SubscribePage extends Component {
                     type: ModalAction.SHOW_MODAL,
                     data: {
                       type: 'alert',
-                      text: '모든 결제정보를 입력해주세요',
+                      text: membership_string.enterAllInfo,
                     },
                   });
               }}

@@ -57,7 +57,7 @@ export default class PromotionPage extends Component {
             <Text style={promotionStyle.textPromotion}>멤버십 이벤트</Text>
           </ImageBackground>
           <Text style={[promotionStyle.textTitle, styles.textCenter]}>
-            첫 한달,{'\n'}공연 2회 무료!
+            이번 달은{'\n'}첫 1개월 무료!
           </Text>
           <Icon
             src="ic_ticket_blink"

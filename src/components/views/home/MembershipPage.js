@@ -98,7 +98,7 @@ export default class MembershipPage extends Component {
             ).timestamp.format('YYYY.MM.DD'),
           },
           {
-            title: '예약 가능 횟수',
+            title: membership_string.reservationCount,
             value: 2 - body.currentSubscription.used,
           },
         ]
