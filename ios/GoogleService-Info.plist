@@ -7,34 +7,36 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>149850679951-p8ge3q07b1m7l74jdehl9811i3ntig5l.apps.googleusercontent.com</string>
+	<string>160671398179-4sk6jpmt02pm9na3h26gs4orp5ei8iiq.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.149850679951-p8ge3q07b1m7l74jdehl9811i3ntig5l</string>
+	<string>com.googleusercontent.apps.160671398179-4sk6jpmt02pm9na3h26gs4orp5ei8iiq</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>160671398179-9q0rp4tsggkl1tqtqnueqgtpomac4678.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
-	<string>AIzaSyAnGmMHSKquAtFwPvavbwiYOQxymxaJ6Q4</string>
+	<string>AIzaSyBj6BjAG8MVhj6ScfdbWezLU3oYdQwslIw</string>
 	<key>GCM_SENDER_ID</key>
-	<string>149850679951</string>
+	<string>160671398179</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>kr.livle.ios.livle-client</string>
+	<string>kr.livle.client.ios</string>
 	<key>PROJECT_ID</key>
-	<string>livle-client-e2fca</string>
+	<string>livle-client-6c432</string>
 	<key>STORAGE_BUCKET</key>
-	<string>livle-client-e2fca.appspot.com</string>
+	<string>livle-client-6c432.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<true></true>
 	<key>IS_ANALYTICS_ENABLED</key>
 	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<false></false>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
 	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:149850679951:ios:484e70d1027f7163</string>
+	<string>1:160671398179:ios:b7efeb500ba9b0fc</string>
 	<key>DATABASE_URL</key>
-	<string>https://livle-client-e2fca.firebaseio.com</string>
+	<string>https://livle-client-6c432.firebaseio.com</string>
 </dict>
 </plist>
