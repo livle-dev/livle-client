@@ -17,17 +17,33 @@ export function auth(state = initialState, action) {
        **/
       return {
         isLoggedIn: true,
-        data: { ...action.data, status: subscriptionStatus(action.data) },
+        data: {
+          ...state.data,
+          ...action.data,
+          status: subscriptionStatus(action.data),
+        },
       };
     case AppAction.LOGOUT:
       return { isLoggedIn: false, data: null };
+    case AuthAction.SET_FCM_TOKEN:
+      /**
+       * action.token = PropTypes.String.isRequired
+       **/
+      return {
+        ...state,
+        data: { ...state.data, fcmToken: action.token },
+      };
     case AuthAction.UPDATE_USER_DATA:
       /**
        * action.data = PropTypes.object.isRequired
        **/
       return {
         ...state,
-        data: { ...action.data, status: subscriptionStatus(action.data) },
+        data: {
+          ...state.data,
+          ...action.data,
+          status: subscriptionStatus(action.data),
+        },
       };
     default:
       return state;

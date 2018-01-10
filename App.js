@@ -21,7 +21,7 @@ export default class App extends Component {
         <View style={{ flex: 1, justifyContent: 'center' }}>
           <AppNavigation />
           {/* Global Components */}
-          <PushNotification />
+          <PushNotification dispatch={store.dispatch} />
           <Loading />
           <MessageBar />
           <Modal />

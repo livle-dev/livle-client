@@ -106,7 +106,6 @@ export const login = (email, password) => dispatch => {
     .post(`/user/session`, { email: email, password: password })
     .then(response => {
       const { data } = response;
-      console.log(data);
       _setToken(data.token);
       dispatchUserData(data)(dispatch);
     })
