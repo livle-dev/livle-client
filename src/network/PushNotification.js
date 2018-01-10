@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Platform } from 'react-native';
 import FCM, {
   FCMEvent,
   RemoteNotificationResult,
@@ -12,12 +11,12 @@ import { consts } from '../assets/strings';
 const setBadgeNumber = number => FCM.setBadgeNumber(number);
 const getBadgeNumber = async () => await FCM.getBadgeNumber();
 
-export async function PresentNotification(
+export const PresentNotification = async (
   title,
   body,
   click_action = null,
   id = null
-) {
+) => {
   const addBadge = (await getBadgeNumber()) + 1;
   let notifSetting = {
     title: title || 'LIVLE',
@@ -32,18 +31,25 @@ export async function PresentNotification(
     wake_screen: true, // wake up screen when notification arrives
     lights: true, // LED blinking
   };
-
-  if (click_action)
-    notifSetting = { ...notifSetting, click_action: click_action };
-  if (id) notifSetting = { ...notifSetting, id: id };
+  if (click_action) notifSetting.click_action = click_action;
+  if (id) notifSetting.id = id;
 
   FCM.presentLocalNotification(notifSetting);
-}
+};
+
+export const scheduleLocalNotification = (title, body, moment, id) =>
+  FCM.scheduleLocalNotification({
+    fire_date: moment.toDate(),
+    id: id, // this is what you use to lookup and delete notification. In android notification with same ID will override each other
+    title: title || 'LIVLE',
+    body: body,
+    show_in_foreground: true,
+  });
 
 export default class PushNotification extends Component {
   componentDidMount() {
     try {
-      // iOS only
+      // iOS
       FCM.requestPermissions({ badge: true, sound: true, alert: true });
     } catch (err) {
       console.error(err);
@@ -62,13 +68,17 @@ export default class PushNotification extends Component {
 
     // This method give received notifications to mobile to display.
     this.notificationListener = FCM.on(FCMEvent.Notification, notif => {
-      console.log('notificationListener', notif);
       if (notif.local_notification || notif.opened_from_tray) {
-        const { click_action } = notif;
-        // TODO: set click action
-        switch (click_action) {
+        /**
+         * opened_from_tray
+         * iOS: app is open/resumed because user clicked banner
+         * Android: app is open/resumed because user clicked banner or tapped app icon
+         */
+        switch (notif.click_action) {
           case 'SUBTRACK_BADGE':
             return getBadgeNumber().then(number => setBadgeNumber(number - 1));
+          case 'CLEAR_BADGE':
+            return setBadgeNumber(0);
           default:
             return;
         }
