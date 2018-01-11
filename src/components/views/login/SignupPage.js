@@ -127,7 +127,7 @@ class SignupPage extends Component {
                       this.state.password,
                       this.state.nickname
                     )(this.props.dispatch)
-                      .then(res => console.log(res))
+                      .then(() => {})
                       .catch(status => {
                         console.log(status);
                         switch (status) {

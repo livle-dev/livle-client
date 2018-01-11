@@ -11,6 +11,11 @@ import { consts } from '../assets/strings';
 const setBadgeNumber = number => FCM.setBadgeNumber(number);
 const getBadgeNumber = async () => await FCM.getBadgeNumber();
 
+// `${NotifId['object']}${id}`
+export const NotifId = {
+  RESERVATION: 'RESERVATION',
+};
+
 export const PresentNotification = async (
   title,
   body,
@@ -37,11 +42,10 @@ export const PresentNotification = async (
   FCM.presentLocalNotification(notifSetting);
 };
 
-export const scheduleLocalNotification = (title, body, moment, id) =>
+export const scheduleLocalNotification = (type, id, body, moment) =>
   FCM.scheduleLocalNotification({
-    fire_date: moment.toDate(),
-    id: id, // this is what you use to lookup and delete notification. In android notification with same ID will override each other
-    title: title || 'LIVLE',
+    fire_date: moment.toDate().getTime(),
+    id: `${type}${id}`, // this is what you use to lookup and delete notification. In android notification with same ID will override each other
     body: body,
     show_in_foreground: true,
   });

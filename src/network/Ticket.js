@@ -130,6 +130,7 @@ const reserveTicket = id => dispatch => {
         type: TicketAction.ADD_RESERVATION,
         data: response.data,
       });
+      dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
@@ -137,11 +138,9 @@ const reserveTicket = id => dispatch => {
           text: ticket_string.addReservation,
         },
       });
-      dispatch({ type: LoadingAction.HIDE_LOADING });
       return Promise.resolve();
     })
     .catch(err => {
-      const { response } = err;
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {

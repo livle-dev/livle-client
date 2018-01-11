@@ -235,7 +235,7 @@ export const changePassword = (token, password) => dispatch => {
 export const withdraw = (email, password) => dispatch => {
   dispatch({ type: LoadingAction.SHOW_LOADING });
   return axios
-    .delete('/user', { email: email, password: password })
+    .delete('/user', { body: { email: email, password: password } })
     .then(() => {
       dispatch({ type: AppAction.LOGOUT });
       dispatch({ type: LoadingAction.HIDE_LOADING });

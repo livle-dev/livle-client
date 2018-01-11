@@ -1,3 +1,11 @@
+import FCM from 'react-native-fcm';
+// Network
+import {
+  scheduleLocalNotification,
+  NotifId,
+} from '../network/PushNotification';
+// Function
+import { getTime, isFuture } from '../assets/functions';
 // Actions
 import { TicketAction } from './Actions';
 
@@ -61,6 +69,22 @@ export function ticket(state = initialState, action) {
       addTicketData(updateData, ticket);
       updateData.checkedAt = null;
       updateData.cancelledAt = null;
+
+      const fourHourBeforeStart = getTime(ticket.startAt).timestamp.subtract(
+        4,
+        'hours'
+      );
+      if (isFuture(fourHourBeforeStart)) {
+        scheduleLocalNotification(
+          NotifId.RESERVATION,
+          updateData.id,
+          `티켓리스트에 ${
+            ticket.title
+          }가 추가되었습니다. 현장에서 티켓을 보여주세요.`,
+          fourHourBeforeStart
+        );
+      }
+
       return {
         ticket: updateTicket,
         reservation: [...state.reservation, updateData],
@@ -79,6 +103,7 @@ export function ticket(state = initialState, action) {
       );
       ticket.reservationId = null;
 
+      FCM.getScheduledLocalNotifications().then(notif => console.log(notif));
       return { ticket: updateTicket, reservation: prunedList };
     }
     case TicketAction.UPDATE_RESERVATION: {
