@@ -1,17 +1,12 @@
 import React, { Component } from 'react';
-import FCM, {
-  FCMEvent,
-  RemoteNotificationResult,
-  WillPresentNotificationResult,
-  NotificationType,
-} from 'react-native-fcm';
+import FCM, { FCMEvent } from 'react-native-fcm';
 import { AuthAction } from '../reducers/Actions';
 import { consts } from '../assets/strings';
 
 const setBadgeNumber = number => FCM.setBadgeNumber(number);
 const getBadgeNumber = async () => await FCM.getBadgeNumber();
 
-// `${NotifId['object']}${id}`
+// USAGE: `${NotifId['object']}${id}`
 export const NotifId = {
   RESERVATION: 'RESERVATION',
 };
@@ -42,7 +37,7 @@ export const PresentNotification = async (
   FCM.presentLocalNotification(notifSetting);
 };
 
-export const scheduleLocalNotification = (type, id, body, moment) =>
+export const scheduleLocalNotification = async (type, id, body, moment) => {
   FCM.scheduleLocalNotification({
     fire_date: moment.toDate().getTime(),
     id: `${type}${id}`, // this is what you use to lookup and delete notification. In android notification with same ID will override each other
@@ -50,7 +45,11 @@ export const scheduleLocalNotification = (type, id, body, moment) =>
     body: body,
     priority: 'high',
     show_in_foreground: true,
+    vibrate: 500,
+    wake_screen: true, // wake up screen when notification arrives
+    lights: true, // LED blinking
   });
+};
 
 export default class PushNotification extends Component {
   componentDidMount() {
@@ -67,10 +66,9 @@ export default class PushNotification extends Component {
       dispatch({ type: AuthAction.SET_FCM_TOKEN, token: token });
     });
 
-    // This method get all notification from server side.
-    FCM.getInitialNotification().then(notif => {
-      console.log('InitialNotification', notif);
-    });
+    FCM.getInitialNotification().then(notif => console.log(notif));
+    FCM.getScheduledLocalNotifications().then(notif => console.log(notif));
+    getBadgeNumber().then(number => console.log(number));
 
     // This method give received notifications to mobile to display.
     this.notificationListener = FCM.on(FCMEvent.Notification, notif => {

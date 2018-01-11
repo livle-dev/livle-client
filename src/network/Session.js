@@ -14,7 +14,7 @@ import { getAllTicket } from './Ticket';
 /**
  *  TEST SESSION
  *  EMAIL: contacts@livle.kr
- *  PW: 라이블12
+ *  PW: 12345678
  */
 function setHeader(item) {
   if (item) axios.defaults.headers.common['Authorization'] = item.token;
