@@ -16,7 +16,7 @@ import {
   NavbarAction,
 } from '../../../reducers/Actions';
 // Functions
-import { getTime, status } from '../../../assets/functions';
+import { getTime, getDday, status } from '../../../assets/functions';
 // Strings
 import { membership_string } from '../../../assets/strings';
 // Styles
@@ -82,9 +82,12 @@ export default class MembershipPage extends Component {
           {
             title: membership_string.plan,
             value: body.currentSubscription
-              ? body.status === status.FREE_TRIAL
-                ? status.FREE_TRIAL
-                : status.BASIC
+              ? body.status === status.WILL_TERMINATE
+                ? getDday(body.freeTrial.createdAt) ===
+                  getDday(infoContents.paidAt)
+                  ? status.FREE_TRIAL
+                  : status.BASIC
+                : body.status
               : 'None',
           },
           {

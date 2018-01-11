@@ -66,9 +66,9 @@ export default class PushNotification extends Component {
       dispatch({ type: AuthAction.SET_FCM_TOKEN, token: token });
     });
 
-    FCM.getInitialNotification().then(notif => console.log(notif));
-    FCM.getScheduledLocalNotifications().then(notif => console.log(notif));
-    getBadgeNumber().then(number => console.log(number));
+    // FCM.getInitialNotification().then(notif => console.log(notif));
+    // FCM.getScheduledLocalNotifications().then(notif => console.log(notif));
+    // getBadgeNumber().then(number => console.log(number));
 
     // This method give received notifications to mobile to display.
     this.notificationListener = FCM.on(FCMEvent.Notification, notif => {
