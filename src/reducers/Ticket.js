@@ -70,18 +70,16 @@ export function ticket(state = initialState, action) {
       updateData.checkedAt = null;
       updateData.cancelledAt = null;
 
-      const fourHourBeforeStart = getTime(ticket.startAt).timestamp.subtract(
+      const fourHourBefore = getTime(ticket.startAt).timestamp.subtract(
         4,
         'hours'
       );
-      if (isFuture(fourHourBeforeStart)) {
+      if (isFuture(fourHourBefore)) {
         scheduleLocalNotification(
           NotifId.RESERVATION,
           updateData.id,
-          `티켓리스트에 ${
-            ticket.title
-          }가 추가되었습니다. 현장에서 티켓을 보여주세요.`,
-          fourHourBeforeStart
+          `공연 ${ticket.title}이 4시간 뒤에 시작합니다. 즐거운 관람 되세요!`,
+          fourHourBefore
         );
       }
 
@@ -103,7 +101,11 @@ export function ticket(state = initialState, action) {
       );
       ticket.reservationId = null;
 
-      FCM.getScheduledLocalNotifications().then(notif => console.log(notif));
+      FCM.getScheduledLocalNotifications().then(notif => {
+        const notifId = `${NotifId.RESERVATION}${action.id}`;
+        const scheduledNotif = notif.find(item => item.id === notifId);
+        if (scheduledNotif) FCM.cancelLocalNotification(notifId);
+      });
       return { ticket: updateTicket, reservation: prunedList };
     }
     case TicketAction.UPDATE_RESERVATION: {

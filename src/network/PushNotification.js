@@ -24,7 +24,7 @@ export const PresentNotification = async (
 ) => {
   const addBadge = (await getBadgeNumber()) + 1;
   let notifSetting = {
-    title: title || 'LIVLE',
+    title: 'LIVLE',
     body: body,
     priority: 'high',
     show_in_foreground: true,
@@ -46,7 +46,9 @@ export const scheduleLocalNotification = (type, id, body, moment) =>
   FCM.scheduleLocalNotification({
     fire_date: moment.toDate().getTime(),
     id: `${type}${id}`, // this is what you use to lookup and delete notification. In android notification with same ID will override each other
+    title: 'LIVLE',
     body: body,
+    priority: 'high',
     show_in_foreground: true,
   });
 
