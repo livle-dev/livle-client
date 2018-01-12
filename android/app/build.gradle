@@ -97,14 +97,14 @@ def keystoreProperties = new Properties()
 keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 
 android {
-    compileSdkVersion 26
-    buildToolsVersion "26.0.2"
+    compileSdkVersion Integer.parseInt(project.COMPILE_SDK_VERSION)
+    buildToolsVersion project.BUILD_TOOLS_VERSION
     defaultConfig {
         applicationId "kr.livle.client.android"
         minSdkVersion 16
-        targetSdkVersion 26
-        versionCode 1
-        versionName "1.0.0"
+        targetSdkVersion Integer.parseInt(project.TARGET_SDK_VERSION)
+        versionCode Integer.parseInt(project.VERSION_CODE)
+        versionName project.VERSION_NAME
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }

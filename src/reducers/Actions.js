@@ -1,5 +1,6 @@
 // Session
 export const AuthAction = {
+  SET_FCM_TOKEN: 'SET_FCM_TOKEN',
   UPDATE_USER_DATA: 'UPDATE_USER_DATA',
 };
 

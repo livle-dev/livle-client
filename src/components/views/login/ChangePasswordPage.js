@@ -1,6 +1,8 @@
 // Libraries
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
+import { connect } from 'react-redux';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 // Views
 import StackPage from '../partials/StackPage';
 import BackgroundVideo from '../partials/BackgroundVideo';
@@ -15,7 +17,7 @@ import { styles, container } from '../../../assets/stylesheets/global/Style';
 import { color_string } from '../../../assets/stylesheets/global/Color';
 
 const MIN_PASSWORD_LENGTH = 8;
-export default class ChangePasswordPage extends Component {
+class ChangePasswordPage extends Component {
   state = {
     password: '',
     confirmPassword: false,
@@ -47,11 +49,20 @@ export default class ChangePasswordPage extends Component {
     this.setState({ [type]: data, error: updateError });
   };
 
+  _submit = isConfirmed => {
+    const { navigation, dispatch } = this.props;
+    const { token } = navigation.state.params;
+
+    if (isConfirmed && token)
+      changePassword(token, this.state.password)(dispatch).then(() =>
+        navigation.goBack()
+      );
+  };
+
   render() {
     const { navigation } = this.props;
     const { password, confirmPassword, error } = this.state;
-    const { token } = navigation.state.params;
-    const isCofirmed = !error.pwd && confirmPassword;
+    const isConfirmed = !error.pwd && confirmPassword;
 
     return (
       <StackPage
@@ -62,33 +73,39 @@ export default class ChangePasswordPage extends Component {
         disablePadding
         disableScroll>
         <BackgroundVideo />
-        <_GreenInput
-          placeholder={session_string.newPassword}
-          secureTextEntry={true}
-          onChangeText={this._handlePassword}
-          errorMessage={error.pwd}
-        />
-        <_GreenInput
-          placeholder={session_string.confirmPassword}
-          secureTextEntry={true}
-          onChangeText={this._handleConfirmPassword}
-          errorMessage={error.confirmPwd}
-        />
-        <View style={[container.wrapContainer, styles.rowDirection]}>
-          <_SquareButton
-            backgroundColor={
-              isCofirmed ? color_string.green_aqua : color_string.gray_light
-            }
-            text={session_string.changePassword}
-            disabled={!isCofirmed}
-            onPress={() => {
-              changePassword(token, password)(navigation.dispatch)
-                .then(() => navigation.goBack())
-                .catch(status => console.log(status));
-            }}
-          />
-        </View>
+        <KeyboardAwareScrollView style={styles.flex_1}>
+          <View style={[container.fullContainer, styles.alignCenter]}>
+            <_GreenInput
+              placeholder={session_string.newPassword}
+              secureTextEntry={true}
+              onChangeText={this._handlePassword}
+              errorMessage={error.pwd}
+            />
+            <_GreenInput
+              placeholder={session_string.confirmPassword}
+              secureTextEntry={true}
+              onChangeText={this._handleConfirmPassword}
+              errorMessage={error.confirmPwd}
+              returnKeyType="go"
+              onSubmitEditing={() => this._submit(isConfirmed)}
+            />
+            <View style={[container.wrapContainer, styles.rowDirection]}>
+              <_SquareButton
+                backgroundColor={
+                  isConfirmed
+                    ? color_string.green_aqua
+                    : color_string.gray_light
+                }
+                text={session_string.changePassword}
+                disabled={!isConfirmed}
+                onPress={() => this._submit(isConfirmed)}
+              />
+            </View>
+          </View>
+        </KeyboardAwareScrollView>
       </StackPage>
     );
   }
 }
+
+export default connect()(ChangePasswordPage);

@@ -86,7 +86,7 @@ export default class GoPage extends Component {
         style={styles.blackBackground}
         enableAutoAutomaticScroll={false}
         keyboardShouldPersistTaps="always">
-        <View style={[goStyle.ticket_container, styles.alignCenter]}>
+        <View style={[goStyle.ticket_container, styles.horizontalCenter]}>
           {hasItem ? (
             <Carousel
               ref={c => (this.carousel = c)}

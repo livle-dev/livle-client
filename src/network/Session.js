@@ -14,7 +14,7 @@ import { getAllTicket } from './Ticket';
 /**
  *  TEST SESSION
  *  EMAIL: contacts@livle.kr
- *  PW: 라이블12
+ *  PW: 12345678
  */
 function setHeader(item) {
   if (item) axios.defaults.headers.common['Authorization'] = item.token;
@@ -106,7 +106,6 @@ export const login = (email, password) => dispatch => {
     .post(`/user/session`, { email: email, password: password })
     .then(response => {
       const { data } = response;
-      console.log(data);
       _setToken(data.token);
       dispatchUserData(data)(dispatch);
     })
@@ -162,6 +161,7 @@ export const updateSession = dispatch => {
 };
 
 export const logout = dispatch => {
+  dispatch({ type: LoadingAction.SHOW_LOADING });
   _removeToken();
   LoginManager.logOut();
   dispatch({ type: AppAction.LOGOUT });
@@ -198,7 +198,7 @@ export const confirmEmail = email => dispatch => {
   dispatch({ type: LoadingAction.SHOW_LOADING });
   return axios
     .get(`/user/password?email=${email}`)
-    .then(response => {
+    .then(() => {
       dispatch({ type: LoadingAction.HIDE_LOADING });
       return Promise.resolve();
     })
@@ -222,13 +222,23 @@ export const changePassword = (token, password) => dispatch => {
     .then(() => {
       dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
-        type: MessageBarAction,
-        message: session_string.completeChangePassword,
+        type: ModalAction.SHOW_MODAL,
+        data: {
+          type: 'blink',
+          text: session_string.completeChangePassword,
+        },
       });
       return Promise.resolve();
     })
     .catch(err => {
       dispatch({ type: LoadingAction.HIDE_LOADING });
+      dispatch({
+        type: ModalAction.SHOW_MODAL,
+        data: {
+          type: 'blink',
+          text: err.response.data,
+        },
+      });
       return Promise.reject(err.response.status);
     });
 };
@@ -236,7 +246,7 @@ export const changePassword = (token, password) => dispatch => {
 export const withdraw = (email, password) => dispatch => {
   dispatch({ type: LoadingAction.SHOW_LOADING });
   return axios
-    .delete('/user', { email: email, password: password })
+    .delete('/user', { body: { email: email, password: password } })
     .then(() => {
       dispatch({ type: AppAction.LOGOUT });
       dispatch({ type: LoadingAction.HIDE_LOADING });

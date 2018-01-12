@@ -26,6 +26,9 @@ export const AppScreen = StackNavigator(
     initialRouteName: 'Home',
     mode: 'modal',
     headerMode: 'none',
+    navigationOptions: {
+      gesturesEnabled: false,
+    },
   }
 );
 

@@ -24,6 +24,7 @@
 		23D55FA284304F6B8F52BE82 /* libRCTFBSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 34B42653E53343598D105A62 /* libRCTFBSDK.a */; };
 		29305C306F5E4F81899F71B8 /* libReactNativeLocalization.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A99DD85F26694D5197925B64 /* libReactNativeLocalization.a */; };
 		5521D4B01FE24EAF00A7A57D /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
+		5532DB142008ACB6001F1B9F /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 554442F820089E18000533C6 /* Bolts.framework */; };
 		55C3A51E20033159005CB1BF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 55C3A51D20033159005CB1BF /* LaunchScreen.storyboard */; };
 		55D4653A2005CC2C00B6F528 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 55D465392005CC2C00B6F528 /* GoogleService-Info.plist */; };
 		6FFAAE6BA0AF47B5A24E1857 /* YTPlayerView-iframe-player.html in Resources */ = {isa = PBXBuildFile; fileRef = 853A0C8F12304B3B9F832854 /* YTPlayerView-iframe-player.html */; };
@@ -397,6 +398,7 @@
 		445E9D15EDD54FCA8D722F36 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = ./ios/Frameworks/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		50939D899FBF4F00A40F95CE /* libBVLinearGradient.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libBVLinearGradient.a; sourceTree = "<group>"; };
 		51BA267DCEA442489D2CC800 /* RCTVideo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTVideo.xcodeproj; path = "../node_modules/react-native-video/ios/RCTVideo.xcodeproj"; sourceTree = "<group>"; };
+		554442F820089E18000533C6 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Bolts.framework; path = Frameworks/Bolts.framework; sourceTree = "<group>"; };
 		55464B211FFE929600AE2A41 /* livle_client.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = livle_client.entitlements; path = livle_client/livle_client.entitlements; sourceTree = "<group>"; };
 		55C3A51D20033159005CB1BF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		55D465392005CC2C00B6F528 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -436,6 +438,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5532DB142008ACB6001F1B9F /* Bolts.framework in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
 				5521D4B01FE24EAF00A7A57D /* libRCTAnimation.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -585,6 +588,7 @@
 		4B4FE754CA071D897D928421 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				554442F820089E18000533C6 /* Bolts.framework */,
 				D0236E81653A2AE5D8681329 /* libPods-livle_client.a */,
 				75641210946B5E51FCDD36F1 /* libPods-livle_clientTests.a */,
 			);
@@ -828,6 +832,9 @@
 						SystemCapabilities = {
 							com.apple.BackgroundModes = {
 								enabled = 1;
+							};
+							com.apple.Keychain = {
+								enabled = 0;
 							};
 							com.apple.Push = {
 								enabled = 1;
@@ -1507,7 +1514,7 @@
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = 4APG4YR4B6;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)/**";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-localization",
@@ -1541,7 +1548,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4APG4YR4B6;
 				ENABLE_BITCODE = NO;
-				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)/**";
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-localization",

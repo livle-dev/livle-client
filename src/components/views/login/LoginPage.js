@@ -1,11 +1,7 @@
 // Libraries
 import React, { Component } from 'react';
-import {
-  View,
-  KeyboardAvoidingView,
-  Text,
-  TouchableOpacity,
-} from 'react-native';
+import { View, Text, TouchableOpacity } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 // Styles
 import { loginStyle } from '../../../assets/stylesheets/local/loginPageStyle';
 import {
@@ -16,9 +12,11 @@ import {
 import { color_string } from '../../../assets/stylesheets/global/Color';
 import { font_size, font_style } from '../../../assets/fonts/Font';
 // Actions
-import { AppAction, LoadingAction } from '../../../reducers/Actions';
+import { LoadingAction } from '../../../reducers/Actions';
 // Network
 import { login, facebookLogin } from '../../../network';
+// Function
+import { isEmail } from '../../../assets/functions';
 // Views
 import BackgroundVideo from '../partials/BackgroundVideo';
 import _GreenInput from '../partials/_GreenInput';
@@ -29,24 +27,32 @@ import { session_string } from '../../../assets/strings';
 import Icon from '../../../assets/images/Icon';
 
 export default class LoginPage extends Component {
-  state = { email: '', password: '' };
+  state = { email: '', password: '', error: null };
 
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({ type: LoadingAction.HIDE_LOADING });
   }
 
-  _handleEmail = text => this.setState({ email: text });
+  _handleEmail = text =>
+    this.setState({
+      email: text,
+      error: isEmail(text) ? null : session_string.enterEmail,
+    });
   _handlePassword = text => this.setState({ password: text });
+  _submit = () => {
+    const { email, password } = this.state;
+    if (!this.state.error && this.state.password)
+      login(email, password)(this.props.dispatch);
+  };
 
   render() {
     const { navigation, dispatch } = this.props;
 
     return (
-      <View style={styles.blackBackground}>
+      <KeyboardAwareScrollView style={styles.blackBackground}>
         <BackgroundVideo />
-        <KeyboardAvoidingView
-          style={[container.fullContainer, styles.alignCenter]}>
+        <View style={[container.fullContainer, styles.alignCenter]}>
           <Icon
             src="logo_livle"
             width={width.logo}
@@ -57,11 +63,14 @@ export default class LoginPage extends Component {
             placeholder={session_string.email}
             keyboardType="email-address"
             onChangeText={this._handleEmail}
+            errorMessage={this.state.error}
           />
           <_GreenInput
             placeholder={session_string.password}
             secureTextEntry={true}
             onChangeText={this._handlePassword}
+            returnKeyType="go"
+            onSubmitEditing={this._submit}
           />
           <View style={container.wrapContainer}>
             <View style={styles.rowDirection}>
@@ -74,10 +83,7 @@ export default class LoginPage extends Component {
               <_SquareButton
                 backgroundColor={color_string.green_aqua}
                 text={session_string.logIn}
-                onPress={() => {
-                  const { email, password } = this.state;
-                  login(email, password)(dispatch);
-                }}
+                onPress={this._submit}
                 index={1}
               />
             </View>
@@ -96,8 +102,8 @@ export default class LoginPage extends Component {
               {session_string.findPassword}
             </Text>
           </TouchableOpacity>
-        </KeyboardAvoidingView>
-      </View>
+        </View>
+      </KeyboardAwareScrollView>
     );
   }
 }

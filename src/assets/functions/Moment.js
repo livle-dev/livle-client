@@ -2,7 +2,8 @@ import moment from 'moment';
 
 export function getTime(data, key) {
   let time;
-  if (key) time = moment().add(data, key);
+  if (key)
+    time = data > 0 ? moment().add(data, key) : moment().subtract(-data, key);
   else time = moment(data && data);
 
   return {
