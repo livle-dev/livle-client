@@ -84,7 +84,7 @@ export default class MembershipPage extends Component {
             value: body.currentSubscription
               ? body.status === status.WILL_TERMINATE
                 ? getDday(body.freeTrial.createdAt) ===
-                  getDday(infoContents.paidAt)
+                  getDday(body.currentSubscription.paidAt)
                   ? status.FREE_TRIAL
                   : status.BASIC
                 : body.status
