@@ -15,6 +15,8 @@ import { font_size, font_style } from '../../../assets/fonts/Font';
 import { LoadingAction } from '../../../reducers/Actions';
 // Network
 import { login, facebookLogin } from '../../../network';
+// Function
+import { isEmail } from '../../../assets/functions';
 // Views
 import BackgroundVideo from '../partials/BackgroundVideo';
 import _GreenInput from '../partials/_GreenInput';
@@ -25,18 +27,23 @@ import { session_string } from '../../../assets/strings';
 import Icon from '../../../assets/images/Icon';
 
 export default class LoginPage extends Component {
-  state = { email: '', password: '' };
+  state = { email: '', password: '', error: null };
 
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({ type: LoadingAction.HIDE_LOADING });
   }
 
-  _handleEmail = text => this.setState({ email: text });
+  _handleEmail = text =>
+    this.setState({
+      email: text,
+      error: isEmail(text) ? null : session_string.enterEmail,
+    });
   _handlePassword = text => this.setState({ password: text });
   _submit = () => {
     const { email, password } = this.state;
-    login(email, password)(dispatch);
+    if (!this.state.error && this.state.password)
+      login(email, password)(dispatch);
   };
 
   render() {
@@ -56,6 +63,7 @@ export default class LoginPage extends Component {
             placeholder={session_string.email}
             keyboardType="email-address"
             onChangeText={this._handleEmail}
+            errorMessage={this.state.error}
           />
           <_GreenInput
             placeholder={session_string.password}

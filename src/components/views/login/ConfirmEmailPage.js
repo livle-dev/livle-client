@@ -19,15 +19,14 @@ import { color_string } from '../../../assets/stylesheets/global/Color';
 export default class ChangePasswordPage extends Component {
   state = { email: '', error: null, sendEmail: false };
 
-  _handleEmail = text => {
+  _handleEmail = text =>
     this.setState({
       email: text,
       error: isEmail(text) ? null : session_string.enterEmail,
     });
-  };
   _submit = isConfirmed => {
     if (isConfirmed)
-      confirmEmail(email)(navigation.dispatch).then(() =>
+      confirmEmail(this.state.email)(this.props.navigation.dispatch).then(() =>
         this.setState({ sendEmail: true })
       );
   };
@@ -76,7 +75,7 @@ export default class ChangePasswordPage extends Component {
                 styles.textNumInput,
                 { color: color_string.green_light, marginBottom: 40 },
               ]}>
-              {this.state.email}
+              {email}
             </Text>
             <Text style={[styles.textDefault, styles.textCenter]}>
               {session_string.sendConfirmEmail}

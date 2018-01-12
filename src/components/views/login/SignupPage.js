@@ -71,7 +71,7 @@ class SignupPage extends Component {
     this._checkError('confirmPassword', text === this.state.password);
   _handleNickname = text => this._checkError('nickname', text);
   _submit = isConfirmed => {
-    const { email, password, confirmPassword, nickname, error } = this.state;
+    const { email, password, nickname } = this.state;
     if (isConfirmed)
       signUp(email, password, nickname)(this.props.dispatch)
         .then(() => {})

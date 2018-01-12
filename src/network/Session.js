@@ -228,6 +228,13 @@ export const changePassword = (token, password) => dispatch => {
     })
     .catch(err => {
       dispatch({ type: LoadingAction.HIDE_LOADING });
+      dispatch({
+        type: ModalAction.SHOW_MODAL,
+        data: {
+          type: 'blink',
+          text: err.response.data,
+        },
+      });
       return Promise.reject(err.response.status);
     });
 };
