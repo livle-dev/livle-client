@@ -222,8 +222,11 @@ export const changePassword = (token, password) => dispatch => {
     .then(() => {
       dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
-        type: MessageBarAction,
-        message: session_string.completeChangePassword,
+        type: ModalAction.SHOW_MODAL,
+        data: {
+          type: 'blink',
+          text: session_string.completeChangePassword,
+        },
       });
       return Promise.resolve();
     })

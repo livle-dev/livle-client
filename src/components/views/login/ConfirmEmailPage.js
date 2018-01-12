@@ -25,6 +25,7 @@ class ConfirmEmailPage extends Component {
       email: text,
       error: isEmail(text) ? null : session_string.enterEmail,
     });
+
   _submit = isConfirmed => {
     const { dispatch } = this.props;
     if (isConfirmed)

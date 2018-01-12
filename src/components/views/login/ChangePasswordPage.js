@@ -1,6 +1,7 @@
 // Libraries
 import React, { Component } from 'react';
 import { Text, View } from 'react-native';
+import { connect } from 'react-redux';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 // Views
 import StackPage from '../partials/StackPage';
@@ -16,7 +17,7 @@ import { styles, container } from '../../../assets/stylesheets/global/Style';
 import { color_string } from '../../../assets/stylesheets/global/Color';
 
 const MIN_PASSWORD_LENGTH = 8;
-export default class ChangePasswordPage extends Component {
+class ChangePasswordPage extends Component {
   state = {
     password: '',
     confirmPassword: false,
@@ -49,18 +50,19 @@ export default class ChangePasswordPage extends Component {
   };
 
   _submit = isConfirmed => {
-    const { navigation } = this.props;
+    const { navigation, dispatch } = this.props;
     const { token } = navigation.state.params;
+
     if (isConfirmed && token)
-      changePassword(token, this.state.password)(navigation.dispatch)
-        .then(() => navigation.goBack())
-        .catch(status => console.log(status));
+      changePassword(token, this.state.password)(dispatch).then(() =>
+        navigation.goBack()
+      );
   };
 
   render() {
     const { navigation } = this.props;
     const { password, confirmPassword, error } = this.state;
-    const isCofirmed = !error.pwd && confirmPassword;
+    const isConfirmed = !error.pwd && confirmPassword;
 
     return (
       <StackPage
@@ -90,10 +92,12 @@ export default class ChangePasswordPage extends Component {
             <View style={[container.wrapContainer, styles.rowDirection]}>
               <_SquareButton
                 backgroundColor={
-                  isCofirmed ? color_string.green_aqua : color_string.gray_light
+                  isConfirmed
+                    ? color_string.green_aqua
+                    : color_string.gray_light
                 }
                 text={session_string.changePassword}
-                disabled={!isCofirmed}
+                disabled={!isConfirmed}
                 onPress={() => this._submit(isConfirmed)}
               />
             </View>
@@ -103,3 +107,5 @@ export default class ChangePasswordPage extends Component {
     );
   }
 }
+
+export default connect()(ChangePasswordPage);

@@ -26,7 +26,6 @@ function disableNavbar(state = { disable: false }, action) {
 }
 
 function showLoading(state = { show: false }, action) {
-  console.log(action.type);
   switch (action.type) {
     case LoadingAction.SHOW_LOADING:
       return { show: true };
@@ -43,6 +42,7 @@ function showMessageBar(state = { show: false, message: '' }, action) {
       /**
        * action.message = PropTypes.string.isRequired
        **/
+      console.log(action.message);
       return { show: true, message: action.message };
     case MessageBarAction.HIDE_MESSAGE_BAR:
       return { show: false, message: '' };
