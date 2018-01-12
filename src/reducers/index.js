@@ -26,6 +26,7 @@ function disableNavbar(state = { disable: false }, action) {
 }
 
 function showLoading(state = { show: false }, action) {
+  console.log(action.type);
   switch (action.type) {
     case LoadingAction.SHOW_LOADING:
       return { show: true };

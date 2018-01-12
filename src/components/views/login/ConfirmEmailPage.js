@@ -1,5 +1,6 @@
 // Libraries
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Text, View } from 'react-native';
 // Views
 import BackgroundVideo from '../partials/BackgroundVideo';
@@ -8,7 +9,7 @@ import _GreenInput from '../partials/_GreenInput';
 import _SquareButton from '../partials/_SquareButton';
 // Functions
 import { isEmail } from '../../../assets/functions';
-// Actions
+// Networks
 import { confirmEmail } from '../../../network';
 // Strings
 import { session_string } from '../../../assets/strings';
@@ -16,7 +17,7 @@ import { session_string } from '../../../assets/strings';
 import { styles, container } from '../../../assets/stylesheets/global/Style';
 import { color_string } from '../../../assets/stylesheets/global/Color';
 
-export default class ChangePasswordPage extends Component {
+class ConfirmEmailPage extends Component {
   state = { email: '', error: null, sendEmail: false };
 
   _handleEmail = text =>
@@ -25,10 +26,11 @@ export default class ChangePasswordPage extends Component {
       error: isEmail(text) ? null : session_string.enterEmail,
     });
   _submit = isConfirmed => {
+    const { dispatch } = this.props;
     if (isConfirmed)
-      confirmEmail(this.state.email)(this.props.navigation.dispatch).then(() =>
-        this.setState({ sendEmail: true })
-      );
+      confirmEmail(this.state.email)(dispatch).then(() => {
+        this.setState({ sendEmail: true });
+      });
   };
 
   render() {
@@ -86,3 +88,5 @@ export default class ChangePasswordPage extends Component {
     );
   }
 }
+
+export default connect()(ConfirmEmailPage);

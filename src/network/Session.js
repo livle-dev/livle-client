@@ -161,6 +161,7 @@ export const updateSession = dispatch => {
 };
 
 export const logout = dispatch => {
+  dispatch({ type: LoadingAction.SHOW_LOADING });
   _removeToken();
   LoginManager.logOut();
   dispatch({ type: AppAction.LOGOUT });
@@ -197,7 +198,7 @@ export const confirmEmail = email => dispatch => {
   dispatch({ type: LoadingAction.SHOW_LOADING });
   return axios
     .get(`/user/password?email=${email}`)
-    .then(response => {
+    .then(() => {
       dispatch({ type: LoadingAction.HIDE_LOADING });
       return Promise.resolve();
     })

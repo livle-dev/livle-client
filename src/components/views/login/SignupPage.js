@@ -76,7 +76,6 @@ class SignupPage extends Component {
       signUp(email, password, nickname)(this.props.dispatch)
         .then(() => {})
         .catch(status => {
-          console.log(status);
           switch (status) {
             case 403:
               this._checkError('email', email, session_string.existEmail);

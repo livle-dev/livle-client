@@ -43,14 +43,14 @@ export default class LoginPage extends Component {
   _submit = () => {
     const { email, password } = this.state;
     if (!this.state.error && this.state.password)
-      login(email, password)(dispatch);
+      login(email, password)(this.props.dispatch);
   };
 
   render() {
     const { navigation, dispatch } = this.props;
 
     return (
-      <KeyboardAwareScrollView style={styles.flex_1}>
+      <KeyboardAwareScrollView style={styles.blackBackground}>
         <BackgroundVideo />
         <View style={[container.fullContainer, styles.alignCenter]}>
           <Icon
