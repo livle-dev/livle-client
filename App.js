@@ -15,8 +15,11 @@ import MessageBar from './src/components/views/partials/MessageBar';
 import Modal from './src/components/views/partials/Modal';
 
 export default class App extends Component {
-  render() {
+  componentDidMount() {
     FCM.setBadgeNumber(0); // remove all badge&number
+  }
+
+  render() {
     return (
       <Provider store={store}>
         <View style={{ flex: 1, justifyContent: 'center' }}>
