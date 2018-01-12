@@ -8,6 +8,8 @@ import BackgroundVideo from '../partials/BackgroundVideo';
 import StackPage from '../partials/StackPage';
 import _GreenInput from '../partials/_GreenInput';
 import _SquareButton from '../partials/_SquareButton';
+// Funtions
+import { isEmail } from '../../../assets/functions';
 // Strings
 import { session_string } from '../../../assets/strings';
 // Network
@@ -37,8 +39,7 @@ class SignupPage extends Component {
     const updateError = this.state.error;
     switch (type) {
       case 'email':
-        const regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,6}$/i;
-        const check_email_exist = data.match(regExp) !== null;
+        const check_email_exist = isEmail(data);
         updateError.email = !check_email_exist
           ? session_string.enterEmail
           : info;
@@ -69,6 +70,22 @@ class SignupPage extends Component {
   _handleConfirmPassword = text =>
     this._checkError('confirmPassword', text === this.state.password);
   _handleNickname = text => this._checkError('nickname', text);
+  _submit = isConfirmed => {
+    const { email, password, confirmPassword, nickname, error } = this.state;
+    if (isConfirmed)
+      signUp(email, password, nickname)(this.props.dispatch)
+        .then(() => {})
+        .catch(status => {
+          console.log(status);
+          switch (status) {
+            case 403:
+              this._checkError('email', email, session_string.existEmail);
+              break;
+            case 405:
+              this._checkError('email', email, session_string.wrongEmail);
+          }
+        });
+  };
 
   render() {
     const { navigation } = this.props;
@@ -110,6 +127,8 @@ class SignupPage extends Component {
               placeholder={session_string.nickname}
               onChangeText={this._handleNickname}
               errorMessage={error.nickname}
+              returnKeyType="go"
+              onSubmitEditing={() => this._submit(isConfirmed)}
             />
             <View style={[container.wrapContainer, styles.rowDirection]}>
               <_SquareButton
@@ -120,33 +139,7 @@ class SignupPage extends Component {
                 }
                 text={session_string.signUp}
                 disabled={!isConfirmed}
-                onPress={() => {
-                  if (isConfirmed)
-                    signUp(
-                      this.state.email,
-                      this.state.password,
-                      this.state.nickname
-                    )(this.props.dispatch)
-                      .then(() => {})
-                      .catch(status => {
-                        console.log(status);
-                        switch (status) {
-                          case 403:
-                            this._checkError(
-                              'email',
-                              this.state.email,
-                              session_string.existEmail
-                            );
-                            break;
-                          case 405:
-                            this._checkError(
-                              'email',
-                              this.state.email,
-                              session_string.wrongEmail
-                            );
-                        }
-                      });
-                }}
+                onPress={() => this._submit(isConfirmed)}
               />
             </View>
 
