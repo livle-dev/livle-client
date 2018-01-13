@@ -61,6 +61,7 @@ class SettingPage extends Component {
   componentWillReceiveProps(props) {
     const { userInfo } = props;
     if (
+      userInfo &&
       userInfo.status !== status.NEW &&
       userInfo.status !== status.UNSUBSCRIBE
     )

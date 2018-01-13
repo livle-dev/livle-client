@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { View } from 'react-native';
 import { Provider } from 'react-redux';
-import FCM from 'react-native-fcm';
 // Navigator
 import AppNavigation from './src/components/navigations/AppNavigation';
 // Reducer
@@ -15,10 +14,6 @@ import MessageBar from './src/components/views/partials/MessageBar';
 import Modal from './src/components/views/partials/Modal';
 
 export default class App extends Component {
-  componentDidMount() {
-    FCM.setBadgeNumber(0); // remove all badge&number
-  }
-
   render() {
     return (
       <Provider store={store}>

@@ -6,7 +6,6 @@ import { consts } from '../assets/strings';
 const setBadgeNumber = number => FCM.setBadgeNumber(number);
 const getBadgeNumber = async () => await FCM.getBadgeNumber();
 
-// USAGE: `${NotifId['object']}${id}`
 export const NotifId = {
   RESERVATION: 'RESERVATION',
 };
@@ -17,16 +16,16 @@ export const PresentNotification = async (
   click_action = null,
   id = null
 ) => {
-  const addBadge = (await getBadgeNumber()) + 1;
+  // const currentBadge = await getBadgeNumber();
   let notifSetting = {
     title: 'LIVLE',
     body: body,
     priority: 'high',
     show_in_foreground: true,
     // iOS
-    badge: addBadge,
+    // badge: currentBadge + 1,
     // Android
-    number: addBadge,
+    // number: currentBadge + 1,
     vibrate: 500,
     wake_screen: true, // wake up screen when notification arrives
     lights: true, // LED blinking
@@ -45,6 +44,7 @@ export const scheduleLocalNotification = async (type, id, body, moment) => {
     body: body,
     priority: 'high',
     show_in_foreground: true,
+    // Android
     vibrate: 500,
     wake_screen: true, // wake up screen when notification arrives
     lights: true, // LED blinking
@@ -59,12 +59,6 @@ export default class PushNotification extends Component {
     } catch (err) {
       console.error(err);
     }
-
-    // this method generate fcm token.
-    FCM.getFCMToken().then(token => {
-      const { dispatch } = this.props;
-      dispatch({ type: AuthAction.SET_FCM_TOKEN, token: token });
-    });
 
     // FCM.getInitialNotification().then(notif => console.log(notif));
     // FCM.getScheduledLocalNotifications().then(notif => console.log(notif));
@@ -81,8 +75,6 @@ export default class PushNotification extends Component {
         switch (notif.click_action) {
           case 'SUBTRACK_BADGE':
             return getBadgeNumber().then(number => setBadgeNumber(number - 1));
-          case 'CLEAR_BADGE':
-            return setBadgeNumber(0);
           default:
             return;
         }
@@ -93,14 +85,13 @@ export default class PushNotification extends Component {
     // this method call when FCM token is update(FCM token update any time so will get updated token from this method)
     this.refreshListener = FCM.on(FCMEvent.RefreshToken, token => {
       console.log('refreshListener', token);
-      dispatch({ type: AuthAction.SET_FCM_TOKEN, token: token });
     });
   }
 
   // This method display the notification on mobile screen.
   sendRemote(notif) {
     const { fcm } = notif;
-    PresentNotification(fcm.title, fcm.body, 'SUBTRACK_BADGE');
+    PresentNotification(fcm.title, fcm.body);
   }
 
   componentWillUnmount() {

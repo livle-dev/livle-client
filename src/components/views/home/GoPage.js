@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { View, Text, Platform, Keyboard, ImageBackground } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import FCM from 'react-native-fcm';
 // Styles
 import {
   styles,
@@ -79,6 +80,7 @@ export default class GoPage extends Component {
     const { isKeyboardShow } = this.state;
     const { reservation, dispatch } = this.props;
     const hasItem = reservation.length > 0;
+    FCM.setBadgeNumber(reservation.length);
 
     return (
       <KeyboardAwareScrollView

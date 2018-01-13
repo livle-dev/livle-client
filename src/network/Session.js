@@ -1,6 +1,7 @@
 import axios from './axios';
 import { AsyncStorage } from 'react-native';
 import { LoginManager, AccessToken } from 'react-native-fbsdk';
+import FCM from 'react-native-fcm';
 import {
   AppAction,
   AuthAction,
@@ -52,9 +53,10 @@ const dispatchUserData = data => dispatch => {
   });
 };
 
-function getLivleData(dispatch) {
+async function getLivleData(dispatch) {
+  const fcmToken = await FCM.getFCMToken();
   return axios
-    .get('/user')
+    .get('/user', { body: { fcmToken: fcmToken } })
     .then(response => {
       const { data } = response;
       dispatchUserData(data)(dispatch);
@@ -65,9 +67,9 @@ function getLivleData(dispatch) {
     });
 }
 
-const getFacebookData = facebookToken => dispatch => {
+const getFacebookData = (facebookToken, fcmToken) => dispatch => {
   return axios
-    .post(`/user/facebook`, { accessToken: facebookToken })
+    .post(`/user/facebook`, { accessToken: facebookToken, fcmToken: fcmToken })
     .then(response => {
       const { data } = response;
       _setToken(data.token);
@@ -100,10 +102,14 @@ export const checkSession = dispatch => {
   });
 };
 
-export const login = (email, password) => dispatch => {
+export const login = (email, password, fcmToken) => dispatch => {
   dispatch({ type: LoadingAction.SHOW_LOADING });
   return axios
-    .post(`/user/session`, { email: email, password: password })
+    .post(`/user/session`, {
+      email: email,
+      password: password,
+      fcmToken: fcmToken,
+    })
     .then(response => {
       const { data } = response;
       _setToken(data.token);
@@ -121,14 +127,14 @@ export const login = (email, password) => dispatch => {
     });
 };
 
-export const facebookLogin = dispatch => {
+export const facebookLogin = fcmToken => dispatch => {
   dispatch({ type: LoadingAction.SHOW_LOADING });
   LoginManager.logInWithReadPermissions(['public_profile', 'email']).then(
     result => {
       if (!result.isCancelled) {
         AccessToken.getCurrentAccessToken().then(data => {
           const facebookToken = data.accessToken;
-          getFacebookData(facebookToken)(dispatch);
+          getFacebookData(facebookToken, fcmToken)(dispatch);
         });
       }
     },
@@ -171,10 +177,15 @@ export const logout = dispatch => {
   });
 };
 
-export const signUp = (email, password, nickname) => dispatch => {
+export const signUp = (email, password, nickname, fcmToken) => dispatch => {
   dispatch({ type: LoadingAction.SHOW_LOADING });
   return axios
-    .post('/user', { email: email, password: password, nickname: nickname })
+    .post('/user', {
+      email: email,
+      password: password,
+      nickname: nickname,
+      fcmToken: fcmToken,
+    })
     .then(response => {
       const { data } = response;
       _setToken(data.token);
