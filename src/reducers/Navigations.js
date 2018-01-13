@@ -99,8 +99,8 @@ export function navNavbar(state = initialNavbarState, action) {
 }
 
 const initialMainState = {
-  cardIndex: 0,
-  calendarIndex: 0,
+  cardIndex: null,
+  calendarIndex: null,
 };
 export function navMainCard(state = initialMainState, action) {
   switch (action.type) {

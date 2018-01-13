@@ -47,8 +47,7 @@ export default class Calendar extends Component {
   state = { isTouched: false };
 
   componentWillReceiveProps(props) {
-    const { storeInfo } = props;
-    this.carousel.snapToItem(storeInfo.calendarIndex);
+    this.carousel.snapToItem(props.storeInfo.calendarIndex);
   }
 
   _renderItem = ({ item, index }) => {
@@ -94,21 +93,22 @@ export default class Calendar extends Component {
           sliderWidth={percent('width', 100)}
           itemWidth={Scale.CALENDAR_ITEM_WIDTH}
           inactiveSlideScale={1}
-          inactiveSlideOpacity={0.3}
+          inactiveSlideOpacity={0.5}
           enableMomentum={true}
-          firstItem={storeInfo.calendarIndex}
+          firstItem={dataIndex[0].calendar_index}
           // callback
           onSnapToItem={index => {
             if (this.state.isTouched) {
-              let isUpdate = false;
-              dataIndex.map(item => {
-                if (item.calendar_index === index) {
-                  isUpdate = true;
-                  updateIndex(item.card_start, index);
-                }
-              });
+              let doUpdate = false;
+              const item = dataIndex.find(
+                item => item.calendar_index === index
+              );
+              if (item) {
+                doUpdate = true;
+                updateIndex(item.card_start, index);
+              }
 
-              if (isUpdate) {
+              if (doUpdate) {
                 this.setState({ isTouched: false });
               } else {
                 showMessageBar(main_string.hasNoConcert);

@@ -14,8 +14,7 @@ import Scale, { percent } from '../../../assets/stylesheets/global/Scale';
 
 class CardLists extends Component {
   componentWillReceiveProps(props) {
-    const { storeInfo } = props;
-    this.carousel.snapToItem(storeInfo.cardIndex);
+    this.carousel.snapToItem(props.storeInfo.cardIndex);
   }
 
   render() {
