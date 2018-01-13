@@ -9,8 +9,9 @@ import {
   ModalAction,
 } from './Actions';
 // Reducers
-import { auth } from './Session';
 import { appReducer, homeReducer, navNavbar, navMainCard } from './Navigations';
+import { notif } from './Notification';
+import { auth } from './Session';
 import { ticket } from './Ticket';
 
 // REDUCERS
@@ -80,6 +81,8 @@ const Reducer = combineReducers({
   homeReducer: homeReducer,
   navNavbar: navNavbar,
   navMainCard: navMainCard,
+  // Notification
+  notif: notif,
   // Ticket
   ticket: ticket,
   // Tool

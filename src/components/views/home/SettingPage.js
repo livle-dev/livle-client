@@ -190,4 +190,5 @@ const mapStateToProps = state => {
     userInfo: state.auth.data,
   };
 };
+
 export default connect(mapStateToProps)(SettingPage);

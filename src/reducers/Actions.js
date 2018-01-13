@@ -20,6 +20,12 @@ export const MainAction = {
   UPDATE_INDEX: 'UPDATE_INDEX',
 };
 
+// Notification
+export const PushNotifAction = {
+  START_NOTIF: 'START_NOTIF',
+  LIST_UPDATE_NOTIF: 'LIST_UPDATE_NOTIF',
+};
+
 // Ticket
 export const TicketAction = {
   SET_TICKET: 'SET_TICKET',
