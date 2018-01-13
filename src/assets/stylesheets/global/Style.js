@@ -7,6 +7,7 @@ import { font_size, font_style } from '../../fonts/Font';
 export const width = {
   full: percent('width', 100),
   logo: percent('width', 49.1),
+  navbar: percent('width', 42),
   wrapContainer: percent('width', 72.4),
   defaultPadding: 24,
 };
@@ -114,7 +115,6 @@ export const styles = StyleSheet.create({
   },
   // icons & logos & images
   navbarLogo: {
-    width: percent('width', 42),
     height: Scale.NAVBAR_ICON_HEIGHT,
     resizeMode: 'contain',
   },

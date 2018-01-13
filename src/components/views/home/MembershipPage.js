@@ -24,92 +24,103 @@ import { styles, container } from '../../../assets/stylesheets/global/Style';
 import { noticeStyle } from '../../../assets/stylesheets/local/settingPageStyle';
 import { color_string } from '../../../assets/stylesheets/global/Color';
 
-export default class MembershipPage extends Component {
+class MembershipPage extends Component {
   static propTypes = {
     navigation: PropTypes.any.isRequired,
     title: PropTypes.string,
     body: PropTypes.array,
   };
 
-  setAction() {
-    const { navigation } = this.props;
-    const { body } = navigation.state.params;
-    switch (body.status) {
+  updateButton(props) {
+    const { auth, navigation, dispatch } = props;
+
+    switch (auth.status) {
       case status.BASIC:
       case status.FREE_TRIAL:
       case status.SUSPENDED:
-        return {
-          text: membership_string.terminateMembership,
-          onPress: () =>
-            navigation.dispatch({
-              type: ModalAction.SHOW_MODAL,
-              data: {
-                type: 'select',
-                text: membership_string.reallyTerminate,
-                buttonText: membership_string.terminate,
-                onPress: () =>
-                  cancelSubscribe(navigation.dispatch).then(() => {
-                    navigation.goBack();
-                    navigation.dispatch({ type: NavbarAction.ENABLE_NAVBAR });
-                  }),
-              },
-            }),
-        };
+        this.setState({
+          button: {
+            text: membership_string.terminateMembership,
+            onPress: () =>
+              navigation.dispatch({
+                type: ModalAction.SHOW_MODAL,
+                data: {
+                  type: 'select',
+                  text: membership_string.reallyTerminate,
+                  buttonText: membership_string.terminate,
+                  onPress: () => cancelSubscribe(dispatch),
+                },
+              }),
+          },
+        });
+        break;
       case status.WILL_TERMINATE:
-        return {
-          text: membership_string.restoreMembership,
-          onPress: () =>
-            restoreSubscribe(navigation.dispatch).then(() => {
-              navigation.goBack();
-              navigation.dispatch({ type: NavbarAction.ENABLE_NAVBAR });
-            }),
-        };
+        this.setState({
+          button: {
+            text: membership_string.restoreMembership,
+            onPress: () => restoreSubscribe(dispatch),
+          },
+        });
+        break;
       case status.NEW:
       case status.UNSUBSCRIBING:
-        return {
-          text: membership_string.applyMembership,
-          onPress: () => navigation.dispatch({ type: AppAction.SUBSCRIBE }),
-        };
+        this.setState({
+          button: {
+            text: membership_string.applyMembership,
+            onPress: () => dispatch({ type: AppAction.SUBSCRIBE }),
+          },
+        });
+        break;
     }
   }
 
+  state = { button: null };
+
+  componentWillMount() {
+    this.updateButton(this.props);
+  }
+
+  componentWillReceiveProps(props) {
+    this.updateButton(props);
+  }
+
   render() {
-    const { navigation } = this.props;
-    const { title, body } = navigation.state.params;
-    const button = this.setAction();
-    const infoContents = body.currentSubscription
+    const { navigation, auth } = this.props;
+    const { title } = navigation.state.params;
+
+    const infoContents = auth.currentSubscription
       ? [
           {
             title: membership_string.plan,
-            value: body.currentSubscription
-              ? body.status === status.WILL_TERMINATE
-                ? getDday(body.freeTrial.createdAt) ===
-                  getDday(body.currentSubscription.paidAt)
+            value: auth.currentSubscription
+              ? auth.status === status.WILL_TERMINATE
+                ? getDday(auth.freeTrial.createdAt) ===
+                  getDday(auth.currentSubscription.paidAt)
                   ? status.FREE_TRIAL
                   : status.BASIC
-                : body.status
+                : auth.status
               : 'None',
           },
           {
-            title: body.nextSubscription
+            title: auth.nextSubscription
               ? membership_string.renewal
               : membership_string.endDate,
             value: getTime(
-              body.nextSubscription
-                ? body.nextSubscription.from
-                : body.currentSubscription.to
+              auth.nextSubscription
+                ? auth.nextSubscription.from
+                : auth.currentSubscription.to
             ).timestamp.format('YYYY.MM.DD'),
           },
           {
             title: membership_string.reservationCount,
-            value: 2 - body.currentSubscription.used,
+            value: 2 - auth.currentSubscription.used,
           },
         ]
       : [
           {
             title: membership_string.plan,
-            value: body.currentSubscription
-              ? body.status === status.FREE_TRIAL
+            value: auth.currentSubscription
+              ? auth.status === status.FREE_TRIAL
                 ? status.FREE_TRIAL
                 : status.BASIC
               : 'None',
@@ -127,18 +138,18 @@ export default class MembershipPage extends Component {
           title={membership_string.membershipInfo}
           contents={infoContents}
         />
-        {body.currentSubscription && (
+        {auth.currentSubscription && (
           <_SettingCard
             type="string"
             title={membership_string.payment}
             contents={[
               {
                 title: membership_string.paymentInfo,
-                value: body.cardName,
+                value: auth.cardName,
               },
               {
                 title: '',
-                value: `**** **** **** ${body.lastFourDigits}`,
+                value: `**** **** **** ${auth.lastFourDigits}`,
               },
             ]}
           />
@@ -146,11 +157,19 @@ export default class MembershipPage extends Component {
         <View style={container.textContainer}>
           <_SquareButton
             backgroundColor={color_string.green_dark_dark}
-            text={this.setAction().text}
-            onPress={this.setAction().onPress}
+            text={this.state.button.text}
+            onPress={this.state.button.onPress}
           />
         </View>
       </StackPage>
     );
   }
 }
+
+const mapStateToProps = state => {
+  return {
+    auth: state.auth.data,
+  };
+};
+
+export default connect(mapStateToProps)(MembershipPage);

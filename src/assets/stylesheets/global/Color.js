@@ -27,6 +27,10 @@ export const color = StyleSheet.create({
     color: '#bababa',
     backgroundColor: 'transparent',
   },
+  gray_dark: {
+    color: '#666666',
+    backgroundColor: 'transparent',
+  },
   // blue
   blue_facebook: {
     color: '#1E396F',

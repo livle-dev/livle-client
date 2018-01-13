@@ -40,7 +40,7 @@ export const promotionStyle = StyleSheet.create({
   },
   // container
   gradientContainer: {
-    height: percent('height', 100),
+    height: percent('height', 90),
     backgroundColor: color_string.green_light,
   },
   infoContainer: {

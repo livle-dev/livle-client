@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import FCM from 'react-native-fcm';
 // Styles
 import { loginStyle } from '../../../assets/stylesheets/local/loginPageStyle';
 import {
@@ -27,11 +28,13 @@ import { session_string } from '../../../assets/strings';
 import Icon from '../../../assets/images/Icon';
 
 export default class LoginPage extends Component {
-  state = { email: '', password: '', error: null };
+  state = { email: '', password: '', error: null, fcmToken: null };
 
   componentDidMount() {
     const { dispatch } = this.props;
     dispatch({ type: LoadingAction.HIDE_LOADING });
+    FCM.getFCMToken().then(token => this.setState({ fcmToken: token }));
+    FCM.setBadgeNumber(0);
   }
 
   _handleEmail = text =>
@@ -41,9 +44,9 @@ export default class LoginPage extends Component {
     });
   _handlePassword = text => this.setState({ password: text });
   _submit = () => {
-    const { email, password } = this.state;
+    const { email, password, fcmToken } = this.state;
     if (!this.state.error && this.state.password)
-      login(email, password)(this.props.dispatch);
+      login(email, password, fcmToken)(this.props.dispatch);
   };
 
   render() {
@@ -77,7 +80,11 @@ export default class LoginPage extends Component {
               <_SquareButton
                 backgroundColor={color_string.green_dark}
                 text={session_string.signUp}
-                onPress={() => navigation.navigate('Signup')}
+                onPress={() =>
+                  navigation.navigate('Signup', {
+                    fcmToken: this.state.fcmToken,
+                  })
+                }
                 index={0}
               />
               <_SquareButton
@@ -91,7 +98,7 @@ export default class LoginPage extends Component {
               <_SquareButton
                 backgroundColor={color_string.blue_facebook}
                 text={session_string.facebook}
-                onPress={() => facebookLogin(dispatch)}
+                onPress={() => facebookLogin(this.state.fcmToken)(dispatch)}
               />
             </View>
           </View>

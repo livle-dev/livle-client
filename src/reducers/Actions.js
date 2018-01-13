@@ -1,6 +1,5 @@
 // Session
 export const AuthAction = {
-  SET_FCM_TOKEN: 'SET_FCM_TOKEN',
   UPDATE_USER_DATA: 'UPDATE_USER_DATA',
 };
 
@@ -10,6 +9,7 @@ export const AppAction = {
   LOGOUT: 'LOGOUT',
   PROMOTION: 'PROMOTION',
   SUBSCRIBE: 'SUBSCRIBE',
+  RESET: 'RESET',
 };
 export const HomeAction = {
   GO: 'NAV_GO',
@@ -18,6 +18,12 @@ export const HomeAction = {
 };
 export const MainAction = {
   UPDATE_INDEX: 'UPDATE_INDEX',
+};
+
+// Notification
+export const PushNotifAction = {
+  START_NOTIF: 'START_NOTIF',
+  LIST_UPDATE_NOTIF: 'LIST_UPDATE_NOTIF',
 };
 
 // Ticket

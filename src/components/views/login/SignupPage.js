@@ -71,9 +71,10 @@ class SignupPage extends Component {
     this._checkError('confirmPassword', text === this.state.password);
   _handleNickname = text => this._checkError('nickname', text);
   _submit = isConfirmed => {
+    const { fcmToken } = this.props.navigation.state.params;
     const { email, password, nickname } = this.state;
     if (isConfirmed)
-      signUp(email, password, nickname)(this.props.dispatch)
+      signUp(email, password, nickname, fcmToken)(this.props.dispatch)
         .then(() => {})
         .catch(status => {
           switch (status) {

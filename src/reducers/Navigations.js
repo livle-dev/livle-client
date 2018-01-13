@@ -18,6 +18,7 @@ const initialState = AppScreen.router.getStateForAction(
 export function appReducer(state = initialState, action) {
   let nextState;
   switch (action.type) {
+    case AppAction.RESET:
     case AppAction.LOGIN:
       nextState = AppScreen.router.getStateForAction(
         NavigationActions.reset({
@@ -99,8 +100,8 @@ export function navNavbar(state = initialNavbarState, action) {
 }
 
 const initialMainState = {
-  cardIndex: 0,
-  calendarIndex: 0,
+  cardIndex: null,
+  calendarIndex: null,
 };
 export function navMainCard(state = initialMainState, action) {
   switch (action.type) {

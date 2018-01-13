@@ -270,7 +270,7 @@ export default class SubscribePage extends Component {
                 inputRef={c => (this.inputExpiry[0] = c)}
                 placeholder="월"
                 onChangeText={this._handleExpiry}
-                maxLength={3}
+                maxLength={2}
                 onFocus={e => {
                   this._updateIndex('expiry', 0);
                   this._scrollToInput(findNodeHandle(e.target));
@@ -281,7 +281,7 @@ export default class SubscribePage extends Component {
                 inputRef={c => (this.inputExpiry[1] = c)}
                 placeholder="년"
                 onChangeText={this._handleExpiry}
-                maxLength={3}
+                maxLength={2}
                 onFocus={e => {
                   this._updateIndex('expiry', 1);
                   this._scrollToInput(findNodeHandle(e.target));
@@ -301,9 +301,7 @@ export default class SubscribePage extends Component {
                     this.state.birth,
                     this.state.password,
                     this.state.expiry
-                  )(navigation.dispatch).then(() => {
-                    navigation.goBack();
-                  });
+                  )(navigation.dispatch);
                 else
                   navigation.dispatch({
                     type: ModalAction.SHOW_MODAL,

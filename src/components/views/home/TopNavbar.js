@@ -1,22 +1,46 @@
 // Libraries
 import React, { Component } from 'react';
-import { View, Image, StatusBar, TouchableOpacity } from 'react-native';
+import { View, Image, StatusBar, TouchableOpacity, Text } from 'react-native';
 import Carousel from 'react-native-snap-carousel';
 import { connect } from 'react-redux';
 // Actions
 import { HomeAction } from '../../../reducers/Actions';
 // Styles
-import { styles, container } from '../../../assets/stylesheets/global/Style';
-import { percent } from '../../../assets/stylesheets/global/Scale';
+import {
+  width,
+  styles,
+  container,
+} from '../../../assets/stylesheets/global/Style';
+import Scale, {
+  width_height_ratio,
+} from '../../../assets/stylesheets/global/Scale';
 // Icons
 import { NAV_ICONS } from '../../../assets/images/Icon';
 
+// function Badge({ length }) {
+//   return length > 0 ? (
+//     <View style={[container.absoluteContainer, styles.alignCenter]}>
+//       <Text style={styles.textDefault}>{length}</Text>
+//     </View>
+//   ) : null;
+// }
+
 class TopNavbar extends Component {
   state = {
+    // reservationLength: 0,
     navState: [
-      { navigate: () => this.props.toGo() },
-      { navigate: () => this.props.toMain() },
-      { navigate: () => this.props.toSetting() },
+      {
+        width: Scale.NAVBAR_ICON_HEIGHT * width_height_ratio(176, 211),
+        navigate: () => this.props.toGo(),
+      },
+      {
+        width: Scale.NAVBAR_ICON_HEIGHT * width_height_ratio(104, 100),
+        navigate: () => this.props.toMain(),
+      },
+      {
+        width: Scale.NAVBAR_ICON_HEIGHT * width_height_ratio(94, 96),
+        navigate: () => this.props.toSetting(),
+      },
     ],
   };
 
@@ -28,17 +52,25 @@ class TopNavbar extends Component {
 
     return (
       <TouchableOpacity
-        style={[styles.flex_1, styles.verticalCenter]}
+        style={[{ width: width.navbar }, styles.flex_1, styles.alignCenter]}
         activeOpacity={1}
         onPress={() => {
           item.navigate();
           this.carousel.snapToItem(index);
-        }}
-      >
-        <Image key={renderIcon} source={renderIcon} style={styles.navbarLogo} />
+        }}>
+        <Image
+          key={renderIcon}
+          source={renderIcon}
+          style={[styles.navbarLogo, { width: item.width }]}
+        />
+        {/*index === 0 && <Badge index={this.state.reservationLength} />*/}
       </TouchableOpacity>
     );
   };
+
+  // componentWillReceiveProps(props) {
+  //   this.setState({ reservationLength: props.reservation.length });
+  // }
 
   render() {
     const { navIndex, disableNavbar } = this.props;
@@ -48,8 +80,7 @@ class TopNavbar extends Component {
         style={[
           disableNavbar ? styles.displayNone : container.navbarContainer,
           styles.alignCenter,
-        ]}
-      >
+        ]}>
         <StatusBar translucent barStyle="light-content" />
         <View style={styles.flex_1}>
           <Carousel
@@ -58,8 +89,8 @@ class TopNavbar extends Component {
             }}
             data={this.state.navState}
             renderItem={this._renderButton}
-            sliderWidth={percent('width', 100)}
-            itemWidth={percent('width', 42)}
+            sliderWidth={width.full}
+            itemWidth={width.navbar}
             firstItem={navIndex}
             scrollEnabled={false}
           />
@@ -73,6 +104,7 @@ const mapStateToProps = state => {
   return {
     navIndex: state.navNavbar.index,
     disableNavbar: state.disableNavbar.disable,
+    // reservation: state.ticket.reservation,
   };
 };
 

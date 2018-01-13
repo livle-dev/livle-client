@@ -9,8 +9,9 @@ import {
   ModalAction,
 } from './Actions';
 // Reducers
-import { auth } from './Session';
 import { appReducer, homeReducer, navNavbar, navMainCard } from './Navigations';
+import { notif } from './Notification';
+import { auth } from './Session';
 import { ticket } from './Ticket';
 
 // REDUCERS
@@ -42,7 +43,6 @@ function showMessageBar(state = { show: false, message: '' }, action) {
       /**
        * action.message = PropTypes.string.isRequired
        **/
-      console.log(action.message);
       return { show: true, message: action.message };
     case MessageBarAction.HIDE_MESSAGE_BAR:
       return { show: false, message: '' };
@@ -81,6 +81,8 @@ const Reducer = combineReducers({
   homeReducer: homeReducer,
   navNavbar: navNavbar,
   navMainCard: navMainCard,
+  // Notification
+  notif: notif,
   // Ticket
   ticket: ticket,
   // Tool

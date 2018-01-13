@@ -18,10 +18,14 @@ export const settingStyle = StyleSheet.create({
     font_size.fs_4,
     font_style.semi_bold,
   ]),
+  subTitleText: StyleSheet.flatten([
+    color.gray_dark,
+    font_size.fs_4,
+    font_style.regular,
+  ]),
   // content
   contentContainer: {
-    marginTop: 36,
-    marginBottom: 36,
+    marginVertical: 36,
   },
   contentTitleText: StyleSheet.flatten([
     color.gray_light,
