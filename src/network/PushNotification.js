@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { AsyncStorage } from 'react-native';
 import FCM, { FCMEvent } from 'react-native-fcm';
 import { AuthAction } from '../reducers/Actions';
 import { consts } from '../assets/strings';
@@ -9,6 +10,16 @@ const getBadgeNumber = async () => await FCM.getBadgeNumber();
 export const NotifId = {
   RESERVATION: 'RESERVATION',
 };
+
+export async function getNotifSetting() {
+  const result = await AsyncStorage.getItem(consts.asyncNotif);
+  let item = await JSON.parse(result);
+  if (!item) item = { alarm_go: true, alarm_update_list: true };
+  return item;
+}
+export function setNotifSetting(setting) {
+  AsyncStorage.setItem(consts.asyncNotif, JSON.stringify(setting));
+}
 
 export const PresentNotification = async (
   title,
@@ -62,10 +73,9 @@ export default class PushNotification extends Component {
 
     // FCM.getInitialNotification().then(notif => console.log(notif));
     // FCM.getScheduledLocalNotifications().then(notif => console.log(notif));
-    // getBadgeNumber().then(number => console.log(number));
 
     // This method give received notifications to mobile to display.
-    this.notificationListener = FCM.on(FCMEvent.Notification, notif => {
+    FCM.on(FCMEvent.Notification, notif => {
       if (notif.local_notification || notif.opened_from_tray) {
         /**
          * opened_from_tray
@@ -83,7 +93,7 @@ export default class PushNotification extends Component {
     });
 
     // this method call when FCM token is update(FCM token update any time so will get updated token from this method)
-    this.refreshListener = FCM.on(FCMEvent.RefreshToken, token => {
+    FCM.on(FCMEvent.RefreshToken, token => {
       console.log('refreshListener', token);
     });
   }
@@ -92,11 +102,6 @@ export default class PushNotification extends Component {
   sendRemote(notif) {
     const { fcm } = notif;
     PresentNotification(fcm.title, fcm.body);
-  }
-
-  componentWillUnmount() {
-    this.refreshListener.remove();
-    this.notificationListener.remove();
   }
 
   render() {

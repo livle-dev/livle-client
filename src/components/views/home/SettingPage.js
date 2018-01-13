@@ -6,7 +6,12 @@ import { connect } from 'react-redux';
 import _SettingCard from '../partials/_SettingCard';
 import _SquareButton from '../partials/_SquareButton';
 // Network
-import { logout, withdraw } from '../../../network';
+import {
+  logout,
+  withdraw,
+  getNotifSetting,
+  setNotifSetting,
+} from '../../../network';
 // Action
 import { ModalAction } from '../../../reducers/Actions';
 // Functions
@@ -18,6 +23,7 @@ import {
   help_support_string,
   privacy_string,
   terms_string,
+  consts,
 } from '../../../assets/strings';
 // Styles
 import {
@@ -29,8 +35,8 @@ import { color_string } from '../../../assets/stylesheets/global/Color';
 
 class SettingPage extends Component {
   state = {
-    alarm_go: false,
-    alarm_update_list: false,
+    alarm_go: true,
+    alarm_update_list: true,
     membership_status: null,
   };
 
@@ -56,6 +62,23 @@ class SettingPage extends Component {
     this.setState({
       membership_status: `${dueDate} / 남은횟수 ${remainReservation} 회`,
     });
+  }
+
+  componentDidMount() {
+    getNotifSetting().then(item => {
+      this.setState({
+        alarm_go: item.alarm_go,
+        alarm_update_list: item.alarm_update_list,
+      });
+    });
+  }
+
+  componentWillUpdate(props, state) {
+    const item = {
+      alarm_go: state.alarm_go,
+      alarm_update_list: state.alarm_update_list,
+    };
+    setNotifSetting(item);
   }
 
   componentWillReceiveProps(props) {
