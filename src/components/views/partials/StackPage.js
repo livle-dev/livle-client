@@ -1,6 +1,12 @@
 // Libraries
 import React from 'react';
-import { View, ScrollView, TouchableOpacity, Text } from 'react-native';
+import {
+  View,
+  ScrollView,
+  TouchableOpacity,
+  BackHandler,
+  Text,
+} from 'react-native';
 import PropTypes from 'prop-types';
 // Actions
 import { NavbarAction } from '../../../reducers/Actions';
@@ -14,6 +20,12 @@ import {
 } from '../../../assets/stylesheets/global/Style';
 import { color_string } from '../../../assets/stylesheets/global/Color';
 
+const goBack = (hideNavbar, navigation) => {
+  if (hideNavbar) navigation.dispatch({ type: NavbarAction.ENABLE_NAVBAR });
+  navigation.goBack();
+  return true;
+};
+
 const StackPage = props => {
   const {
     title,
@@ -26,6 +38,10 @@ const StackPage = props => {
     children,
   } = props;
   if (hideNavbar) navigation.dispatch({ type: NavbarAction.DISABLE_NAVBAR });
+
+  BackHandler.addEventListener('hardwareBackPress', () =>
+    goBack(hideNavbar, navigation)
+  );
 
   return (
     <View style={[styles.blackBackground, containerStyle]}>
@@ -45,11 +61,7 @@ const StackPage = props => {
           src="ic_back"
           height={24}
           style={[container.backButtonContainer, styles.verticalCenter]}
-          onPress={() => {
-            navigation.goBack();
-            if (hideNavbar)
-              navigation.dispatch({ type: NavbarAction.ENABLE_NAVBAR });
-          }}
+          onPress={() => goBack(hideNavbar, navigation)}
         />
       </View>
       {disableScroll ? (

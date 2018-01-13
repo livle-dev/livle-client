@@ -148,7 +148,6 @@ export const facebookLogin = fcmToken => dispatch => {
 export const updateSession = dispatch => {
   return _getToken().then(response => {
     if (response) {
-      dispatch({ type: LoadingAction.SHOW_LOADING });
       return axios
         .get('/user')
         .then(response => {
@@ -156,10 +155,8 @@ export const updateSession = dispatch => {
             type: AuthAction.UPDATE_USER_DATA,
             data: response.data,
           });
-          dispatch({ type: LoadingAction.HIDE_LOADING });
         })
         .catch(err => {
-          dispatch({ type: LoadingAction.HIDE_LOADING });
           console.log(err.response);
         });
     }
