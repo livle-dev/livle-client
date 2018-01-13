@@ -56,7 +56,7 @@ const dispatchUserData = data => dispatch => {
 async function getLivleData(dispatch) {
   const fcmToken = await FCM.getFCMToken();
   return axios
-    .get('/user', { body: { fcmToken: fcmToken } })
+    .get('/user', { params: { fcmToken: fcmToken } })
     .then(response => {
       const { data } = response;
       dispatchUserData(data)(dispatch);
@@ -257,7 +257,7 @@ export const changePassword = (token, password) => dispatch => {
 export const withdraw = (email, password) => dispatch => {
   dispatch({ type: LoadingAction.SHOW_LOADING });
   return axios
-    .delete('/user', { body: { email: email, password: password } })
+    .delete('/user', { data: { email: email, password: password } })
     .then(() => {
       dispatch({ type: AppAction.LOGOUT });
       dispatch({ type: LoadingAction.HIDE_LOADING });
@@ -269,11 +269,12 @@ export const withdraw = (email, password) => dispatch => {
     })
     .catch(err => {
       dispatch({ type: LoadingAction.HIDE_LOADING });
+      console.log(err.response);
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
           type: 'blink',
-          text: err.response.data.message,
+          text: err.response.data,
         },
       });
       return Promise.reject();

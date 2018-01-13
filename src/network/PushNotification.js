@@ -6,6 +6,10 @@ import { consts } from '../assets/strings';
 
 const setBadgeNumber = number => FCM.setBadgeNumber(number);
 const getBadgeNumber = async () => await FCM.getBadgeNumber();
+const subscribeNewConcert = subscribe => {
+  if (subscribe) FCM.subscribeToTopic('/topics/new-concert');
+  else FCM.unsubscribeFromTopic('/topics/new-concert');
+};
 
 export const NotifId = {
   RESERVATION: 'RESERVATION',
@@ -14,10 +18,12 @@ export const NotifId = {
 export async function getNotifSetting() {
   const result = await AsyncStorage.getItem(consts.asyncNotif);
   let item = await JSON.parse(result);
-  if (!item) item = { alarm_go: true, alarm_update_list: true };
+  if (!item) item = { alarm_go: true, alarm_new_concert: true };
+  subscribeNewConcert(item.alarm_new_concert);
   return item;
 }
 export function setNotifSetting(setting) {
+  subscribeNewConcert(item.alarm_new_concert);
   AsyncStorage.setItem(consts.asyncNotif, JSON.stringify(setting));
 }
 

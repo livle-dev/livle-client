@@ -36,7 +36,7 @@ import { color_string } from '../../../assets/stylesheets/global/Color';
 class SettingPage extends Component {
   state = {
     alarm_go: true,
-    alarm_update_list: true,
+    alarm_new_concert: true,
     membership_status: null,
   };
 
@@ -68,7 +68,7 @@ class SettingPage extends Component {
     getNotifSetting().then(item => {
       this.setState({
         alarm_go: item.alarm_go,
-        alarm_update_list: item.alarm_update_list,
+        alarm_new_concert: item.alarm_new_concert,
       });
     });
   }
@@ -76,7 +76,7 @@ class SettingPage extends Component {
   componentWillUpdate(props, state) {
     const item = {
       alarm_go: state.alarm_go,
-      alarm_update_list: state.alarm_update_list,
+      alarm_new_concert: state.alarm_new_concert,
     };
     setNotifSetting(item);
   }
@@ -137,8 +137,8 @@ class SettingPage extends Component {
             },
             {
               title: setting_string.listUpdate,
-              value: this.state.alarm_update_list,
-              option: value => this.setState({ alarm_update_list: value }),
+              value: this.state.alarm_new_concert,
+              option: value => this.setState({ alarm_new_concert: value }),
             },
           ]}
         />
