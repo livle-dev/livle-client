@@ -18,6 +18,7 @@ const initialState = AppScreen.router.getStateForAction(
 export function appReducer(state = initialState, action) {
   let nextState;
   switch (action.type) {
+    case AppAction.RESET:
     case AppAction.LOGIN:
       nextState = AppScreen.router.getStateForAction(
         NavigationActions.reset({

@@ -73,7 +73,7 @@ export default class GoPage extends Component {
   }
 
   componentWillUpdate(props, s) {
-    updateSession(props.dispatch);
+    updateSession(props.dispatch); // for update 'used' count
   }
 
   render() {

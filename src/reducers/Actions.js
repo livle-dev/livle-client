@@ -9,6 +9,7 @@ export const AppAction = {
   LOGOUT: 'LOGOUT',
   PROMOTION: 'PROMOTION',
   SUBSCRIBE: 'SUBSCRIBE',
+  RESET: 'RESET',
 };
 export const HomeAction = {
   GO: 'NAV_GO',

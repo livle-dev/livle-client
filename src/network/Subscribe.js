@@ -1,10 +1,12 @@
 import axios from './axios';
 import {
+  AppAction,
   AuthAction,
   LoadingAction,
   MessageBarAction,
   ModalAction,
 } from '../reducers/Actions';
+import { getAllTicket } from './Ticket';
 import { membership_string } from '../assets/strings';
 
 export const subscribe = (cardNumber, birth, password, expiry) => dispatch => {
@@ -25,12 +27,15 @@ export const subscribe = (cardNumber, birth, password, expiry) => dispatch => {
         type: AuthAction.UPDATE_USER_DATA,
         data: response.data,
       });
-      dispatch({ type: LoadingAction.HIDE_LOADING });
+      dispatch({ type: AppAction.RESET });
+      return Promise.resolve(dispatch);
+    })
+    .then(dispatch => {
       dispatch({
         type: MessageBarAction.SHOW_MESSAGE_BAR,
         message: membership_string.compleltApplying,
       });
-      return Promise.resolve();
+      getAllTicket(dispatch);
     })
     .catch(err => {
       dispatch({ type: LoadingAction.HIDE_LOADING });

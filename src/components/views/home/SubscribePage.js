@@ -301,9 +301,7 @@ export default class SubscribePage extends Component {
                     this.state.birth,
                     this.state.password,
                     this.state.expiry
-                  )(navigation.dispatch).then(() => {
-                    navigation.goBack();
-                  });
+                  )(navigation.dispatch);
                 else
                   navigation.dispatch({
                     type: ModalAction.SHOW_MODAL,
