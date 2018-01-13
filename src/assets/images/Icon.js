@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
+import { styles } from '../stylesheets/global/Style';
 import {
   width_height_ratio,
   height_width_ratio,
@@ -106,6 +107,7 @@ const Icon = ({
     <TouchableOpacity
       activeOpacity={disabled ? 1 : 0.4}
       onPress={!disabled ? onPress : undefined}
+      style={styles.alignCenter}
       {...options}>
       <Image
         source={data.source}

@@ -141,6 +141,7 @@ const reserveTicket = id => dispatch => {
       return Promise.resolve();
     })
     .catch(err => {
+      dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
@@ -149,7 +150,7 @@ const reserveTicket = id => dispatch => {
 ERROR ${err.response.status}`,
         },
       });
-      return Promise.reject(err.response.data);
+      return Promise.reject();
     });
 };
 
