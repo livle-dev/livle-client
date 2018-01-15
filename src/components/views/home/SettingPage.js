@@ -42,21 +42,21 @@ class SettingPage extends Component {
   };
 
   updateSubscriptionInfo(userInfo) {
-    let dueDate;
     if (
       userInfo &&
       userInfo.status !== status.NEW &&
       userInfo.status !== status.UNSUBSCRIBE
     ) {
+      let dueDate;
       switch (userInfo.status) {
         case status.WILL_TERMINATE:
+        case status.SUSPENDED:
           dueDate = `${getTime(
             userInfo.currentSubscription.to
           ).timestamp.format('MM월 DD일')}까지 유효`;
           break;
         case status.BASIC:
         case status.FREE_TRIAL:
-        case status.SUSPENDED:
           dueDate = `${getTime(userInfo.nextSubscription.from).timestamp.format(
             'MM월 DD일'
           )}에 갱신`;
