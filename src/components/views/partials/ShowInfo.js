@@ -15,9 +15,9 @@ export default function({ data, showDate }) {
     <View style={[styles.flex_1, styles.alignCenter]}>
       <Text style={[mainCard.textTitle, styles.textCenter]}>{title}</Text>
       <Text style={[mainCard.textArtists, styles.textCenter]}>
-        {artists.map((artist, i) => {
-          return `${artist.name}${i + 1 < artists.length && ', '}`;
-        })}
+        {artists.map(
+          (artist, i) => `${artist.name}${i + 1 < artists.length ? ', ' : ''}`
+        )}
       </Text>
       {showDate && (
         <Text style={[mainCard.textDefault, styles.textCenter]}>
