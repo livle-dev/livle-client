@@ -47,13 +47,15 @@ export function ticket(state = initialState, action) {
        * action.data = PropTypes.object.isRequired
        **/
       const updateTicket = state.ticket;
-      const updateData = action.data;
-      updateData.forEach(item => {
+      const updateData = action.data.filter(item => {
         let ticket = updateTicket.data.find(
           ticket => ticket.id === item.ticketId
         );
+        if (!ticket) return false;
+
         ticket.reservationId = item.id;
         addTicketData(item, ticket);
+        return true;
       });
       return { ticket: updateTicket, reservation: updateData };
     }
