@@ -43,29 +43,38 @@ class SettingPage extends Component {
 
   updateSubscriptionInfo(userInfo) {
     let dueDate;
-    switch (userInfo.status) {
-      case status.WILL_TERMINATE:
-        dueDate = `${getTime(userInfo.currentSubscription.to).timestamp.format(
-          'MM월 DD일'
-        )}까지 유효`;
-        break;
-      case status.BASIC:
-      case status.FREE_TRIAL:
-      case status.SUSPENDED:
-        dueDate = `${getTime(userInfo.nextSubscription.from).timestamp.format(
-          'MM월 DD일'
-        )}에 갱신`;
-        break;
-      default:
-        return;
+    if (
+      userInfo &&
+      userInfo.status !== status.NEW &&
+      userInfo.status !== status.UNSUBSCRIBE
+    ) {
+      switch (userInfo.status) {
+        case status.WILL_TERMINATE:
+          dueDate = `${getTime(
+            userInfo.currentSubscription.to
+          ).timestamp.format('MM월 DD일')}까지 유효`;
+          break;
+        case status.BASIC:
+        case status.FREE_TRIAL:
+        case status.SUSPENDED:
+          dueDate = `${getTime(userInfo.nextSubscription.from).timestamp.format(
+            'MM월 DD일'
+          )}에 갱신`;
+          break;
+        default:
+          return;
+      }
+      const remainReservation = 2 - userInfo.currentSubscription.used;
+      this.setState({
+        membership_status: `${dueDate} / 남은횟수 ${remainReservation} 회`,
+      });
+    } else if (!this.state.membership_status) {
+      this.setState({ membership_status: null });
     }
-    const remainReservation = 2 - userInfo.currentSubscription.used;
-    this.setState({
-      membership_status: `${dueDate} / 남은횟수 ${remainReservation} 회`,
-    });
   }
 
   componentDidMount() {
+    this.updateSubscriptionInfo(this.props.userInfo);
     getNotifSetting().then(item => {
       this.setState({
         alarm_go: item.alarm_go,
@@ -85,15 +94,7 @@ class SettingPage extends Component {
   }
 
   componentWillReceiveProps(props) {
-    const { userInfo } = props;
-    if (
-      userInfo &&
-      userInfo.status !== status.NEW &&
-      userInfo.status !== status.UNSUBSCRIBE
-    )
-      this.updateSubscriptionInfo(userInfo);
-    else if (!this.state.membership_status)
-      this.setState({ membership_status: null });
+    this.updateSubscriptionInfo(props.userInfo);
   }
 
   render() {
