@@ -18,7 +18,7 @@ import { color } from '../../../assets/stylesheets/global/Color';
 // Views
 import ShowReservation from '../partials/ShowReservation';
 // Network
-import { updateSession } from '../../../network';
+import { updateSession, getNotifSetting } from '../../../network';
 // String
 import { ticket_string } from '../../../assets/strings';
 // Icons
@@ -80,7 +80,9 @@ export default class GoPage extends Component {
     const { isKeyboardShow } = this.state;
     const { reservation, dispatch } = this.props;
     const hasItem = reservation.length > 0;
-    FCM.setBadgeNumber(reservation.length);
+    getNotifSetting().then(item =>
+      FCM.setBadgeNumber(item.show_reservation_badge ? reservation.length : 0)
+    );
 
     return (
       <KeyboardAwareScrollView

@@ -7,6 +7,7 @@ import {
   ImageBackground,
   Platform,
   TouchableOpacity,
+  Keyboard,
 } from 'react-native';
 // Styles
 import { goStyle } from '../../../assets/stylesheets/local/goPageStyle';
@@ -85,7 +86,11 @@ export default class ShowReservation extends Component {
               }
               text={ticket_string.confirmEntry}
               disabled={this.state.code.length < 4}
-              onPress={() => checkCode(item.id, this.state.code)(dispatch)}
+              onPress={() =>
+                checkCode(item.id, this.state.code)(dispatch).then(() =>
+                  Keyboard.dismiss()
+                )
+              }
             />
           </View>
         ) : (

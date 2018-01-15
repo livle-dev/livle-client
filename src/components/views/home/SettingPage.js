@@ -37,6 +37,7 @@ class SettingPage extends Component {
   state = {
     alarm_go: true,
     alarm_new_concert: true,
+    show_reservation_badge: true,
     membership_status: null,
   };
 
@@ -69,6 +70,7 @@ class SettingPage extends Component {
       this.setState({
         alarm_go: item.alarm_go,
         alarm_new_concert: item.alarm_new_concert,
+        show_reservation_badge: item.show_reservation_badge,
       });
     });
   }
@@ -77,6 +79,7 @@ class SettingPage extends Component {
     const item = {
       alarm_go: state.alarm_go,
       alarm_new_concert: state.alarm_new_concert,
+      show_reservation_badge: state.show_reservation_badge,
     };
     setNotifSetting(item);
   }
@@ -128,7 +131,7 @@ class SettingPage extends Component {
         />
         <_SettingCard
           type="toggle"
-          title={setting_string.pushAlarm}
+          title={setting_string.alarm}
           contents={[
             {
               title: setting_string.goAlarm,
@@ -139,6 +142,11 @@ class SettingPage extends Component {
               title: setting_string.listUpdate,
               value: this.state.alarm_new_concert,
               option: value => this.setState({ alarm_new_concert: value }),
+            },
+            {
+              title: setting_string.showBadge,
+              value: this.state.show_reservation_badge,
+              option: value => this.setState({ show_reservation_badge: value }),
             },
           ]}
         />

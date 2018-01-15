@@ -168,7 +168,7 @@ const reserveTicket = id => dispatch => {
 ERROR ${err.response.status}`,
         },
       });
-      return Promise.reject();
+      return Promise.reject(err.response);
     });
 };
 
@@ -182,7 +182,7 @@ export const getReserveTicket = dispatch => {
       });
     })
     .catch(err => {
-      console.log(err.response);
+      return Promise.reject(err.response);
     });
 };
 
@@ -220,7 +220,7 @@ export const cancelTicket = id => dispatch => {
           });
           break;
       }
-      return Promise.reject();
+      return Promise.reject(err.response);
     });
 };
 
@@ -238,6 +238,7 @@ export const checkCode = (id, code) => dispatch => {
         type: MessageBarAction.SHOW_MESSAGE_BAR,
         message: ticket_string.entryConfirmed,
       });
+      return Promise.resolve();
     })
     .catch(err => {
       const { response } = err;
@@ -254,5 +255,6 @@ export const checkCode = (id, code) => dispatch => {
           });
           break;
       }
+      return Promise.reject(response);
     });
 };

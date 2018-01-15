@@ -19,7 +19,12 @@ export const NotifId = {
 export async function getNotifSetting() {
   const result = await AsyncStorage.getItem(consts.asyncNotif);
   let item = await JSON.parse(result);
-  if (!item) item = { alarm_go: true, alarm_new_concert: true };
+  if (!item)
+    item = {
+      alarm_go: true,
+      alarm_new_concert: true,
+      show_reservation_badge: true,
+    };
   subscribeNewConcert(item.alarm_new_concert);
   return item;
 }
