@@ -1,5 +1,11 @@
 import axios from './axios';
-import { getTime, getDday, isFuture, status } from '../assets/functions';
+import {
+  getTime,
+  getDday,
+  isFuture,
+  status,
+  isConcertToday,
+} from '../assets/functions';
 import {
   AppAction,
   TicketAction,
@@ -103,7 +109,19 @@ ${getTime(auth.data.suspendedBy).timestamp.format(ticket_string.penaltyTime)} ${
 const checkTicket = (subscription, data) => dispatch => {
   if (subscription.used < 2) {
     if (data.vacancies > 0) {
-      reserveTicket(data.id)(dispatch);
+      if (isConcertToday(data)) {
+        dispatch({
+          type: ModalAction.SHOW_MODAL,
+          data: {
+            type: 'select',
+            text:
+              '공연시작 4시간 전부터는 예약을 취소할 수 없습니다. 예약하시겠습니까?',
+            onPress: reserveTicket(data.id)(dispatch),
+          },
+        });
+      } else {
+        reserveTicket(data.id)(dispatch);
+      }
     } else {
       dispatch({
         type: ModalAction.SHOW_MODAL,
@@ -191,15 +209,16 @@ export const cancelTicket = id => dispatch => {
       const { status } = err.response;
       dispatch({ type: LoadingAction.HIDE_LOADING });
       switch (status) {
+        case 403:
         case 405:
-          return dispatch({
+          dispatch({
             type: ModalAction.SHOW_MODAL,
             data: {
               type: 'alert',
               text: ticket_string.unableCancelReservation,
-              showLogo: true,
             },
           });
+          break;
       }
       return Promise.reject();
     });
@@ -208,7 +227,7 @@ export const cancelTicket = id => dispatch => {
 export const checkCode = (id, code) => dispatch => {
   dispatch({ type: LoadingAction.SHOW_LOADING });
   return axios
-    .post(`/reservation/${id}/alert`, { code: code })
+    .post(`/reservation/${id}/check`, { code: code })
     .then(response => {
       dispatch({
         type: TicketAction.UPDATE_RESERVATION,

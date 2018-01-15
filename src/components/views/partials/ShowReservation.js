@@ -85,7 +85,7 @@ export default class ShowReservation extends Component {
               }
               text={ticket_string.confirmEntry}
               disabled={this.state.code.length < 4}
-              onPress={() => checkCode(this.state.code)(dispatch)}
+              onPress={() => checkCode(item.id, this.state.code)(dispatch)}
             />
           </View>
         ) : (

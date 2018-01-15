@@ -26,9 +26,9 @@ export default function({ data, showDate }) {
       )}
       <Text style={[mainCard.textDefault, styles.textCenter]}>{place}</Text>
       <Text style={[mainCard.textDefault, styles.textCenter]}>
-        {getTime(startAt).timestamp.format('hh : mm')}
+        {getTime(startAt).timestamp.format('HH : mm')}
         {' - '}
-        {getTime(endAt).timestamp.format('hh : mm')}
+        {getTime(endAt).timestamp.format('HH : mm')}
       </Text>
     </View>
   );

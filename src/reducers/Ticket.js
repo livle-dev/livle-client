@@ -6,7 +6,7 @@ import {
   getNotifSetting,
 } from '../network/PushNotification';
 // Function
-import { getTime, isFuture } from '../assets/functions';
+import { isConcertToday } from '../assets/functions';
 // Actions
 import { TicketAction } from './Actions';
 
@@ -72,22 +72,13 @@ export function ticket(state = initialState, action) {
       updateData.cancelledAt = null;
 
       getNotifSetting().then(item => {
-        if (item.alarm_go) {
-          const fourHourBefore = getTime(ticket.startAt).timestamp.subtract(
-            4,
-            'hours'
+        if (item.alarm_go && !isConcertToday(ticket))
+          scheduleLocalNotification(
+            NotifId.RESERVATION,
+            updateData.id,
+            `공연 ${ticket.title}이 4시간 뒤에 시작합니다. 즐거운 관람 되세요!`,
+            fourHourBefore
           );
-          if (isFuture(fourHourBefore)) {
-            scheduleLocalNotification(
-              NotifId.RESERVATION,
-              updateData.id,
-              `공연 ${
-                ticket.title
-              }이 4시간 뒤에 시작합니다. 즐거운 관람 되세요!`,
-              fourHourBefore
-            );
-          }
-        }
       });
 
       return {
