@@ -54,9 +54,9 @@ export const getAllTicket = dispatch => {
         calendarIndex: dataIndex[0].calendar_index,
       });
 
-      return Promise.resolve(dispatch);
+      return Promise.resolve();
     })
-    .then(dispatch => getReserveTicket(dispatch))
+    .then(() => getReserveTicket(dispatch))
     .catch(err => {
       console.log(err.response);
       return Promise.reject(err.response.status);
@@ -107,6 +107,7 @@ ${getTime(auth.data.suspendedBy).timestamp.format(ticket_string.penaltyTime)} ${
 };
 
 const checkTicket = (subscription, data) => dispatch => {
+  dispatch({ type: LoadingAction.HIDE_LOADING });
   if (subscription.used < 2) {
     if (data.vacancies > 0) {
       if (isConcertToday(data)) {
@@ -116,7 +117,7 @@ const checkTicket = (subscription, data) => dispatch => {
             type: 'select',
             text:
               '공연시작 4시간 전부터는 예약을 취소할 수 없습니다. 예약하시겠습니까?',
-            onPress: reserveTicket(data.id)(dispatch),
+            onPress: () => reserveTicket(data.id)(dispatch),
           },
         });
       } else {
@@ -129,7 +130,6 @@ const checkTicket = (subscription, data) => dispatch => {
       });
     }
   } else {
-    dispatch({ type: LoadingAction.HIDE_LOADING });
     dispatch({
       type: ModalAction.SHOW_MODAL,
       data: {
@@ -141,6 +141,7 @@ const checkTicket = (subscription, data) => dispatch => {
 };
 
 const reserveTicket = id => dispatch => {
+  dispatch({ type: LoadingAction.SHOW_LOADING });
   return axios
     .post(`/ticket/${id}/reserve`)
     .then(response => {
@@ -168,11 +169,11 @@ const reserveTicket = id => dispatch => {
 ERROR ${err.response.status}`,
         },
       });
-      return Promise.reject(err.response);
+      return Promise.reject();
     });
 };
 
-export const getReserveTicket = dispatch => {
+const getReserveTicket = dispatch => {
   return axios
     .get(`/reservation`)
     .then(response => {
@@ -182,7 +183,7 @@ export const getReserveTicket = dispatch => {
       });
     })
     .catch(err => {
-      return Promise.reject(err.response);
+      return Promise.reject();
     });
 };
 
@@ -210,7 +211,6 @@ export const cancelTicket = id => dispatch => {
       dispatch({ type: LoadingAction.HIDE_LOADING });
       switch (status) {
         case 403:
-        case 405:
           dispatch({
             type: ModalAction.SHOW_MODAL,
             data: {
@@ -220,7 +220,7 @@ export const cancelTicket = id => dispatch => {
           });
           break;
       }
-      return Promise.reject(err.response);
+      return Promise.reject();
     });
 };
 
@@ -255,6 +255,6 @@ export const checkCode = (id, code) => dispatch => {
           });
           break;
       }
-      return Promise.reject(response);
+      return Promise.reject();
     });
 };
