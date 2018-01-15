@@ -6,7 +6,7 @@ import {
   getNotifSetting,
 } from '../network/PushNotification';
 // Function
-import { isConcertToday } from '../assets/functions';
+import { fourHourBeforeConcert, isConcertToday } from '../assets/functions';
 // Actions
 import { TicketAction } from './Actions';
 
@@ -77,7 +77,7 @@ export function ticket(state = initialState, action) {
             NotifId.RESERVATION,
             updateData.id,
             `공연 ${ticket.title}이 4시간 뒤에 시작합니다. 즐거운 관람 되세요!`,
-            fourHourBefore
+            fourHourBeforeConcert(ticket)
           );
       });
 
