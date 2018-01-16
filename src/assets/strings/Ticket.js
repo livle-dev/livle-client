@@ -17,6 +17,8 @@ Show your ticket at concert hall`,
     penaltyBack: `as a panelty for No-Show`,
     unableCancelReservation:
       'Reservations cannot be canceled until 4 hours before concert begins',
+    alreadyCheckedIn:
+      "Not able to cancel this reservation because you've already checked in",
     reservationCanceled: 'Reservation has been canceled',
     invalidCode: 'Invalid Code',
     fullCapacity: 'Seats has been fully booked',
@@ -40,6 +42,7 @@ make your heart shaking everyday`,
     penaltyBack: `까지 예약하실 수 없습니다`,
     unableCancelReservation:
       '공연시작 4시간 전부터는 예약을 취소할 수 없습니다',
+    alreadyCheckedIn: '이미 체크인이 되어 예약을 취소할 수 없습니다',
     reservationCanceled: '예약이 취소되었습니다',
     invalidCode: '잘못된 코드입니다',
     fullCapacity: '좌석이 매진되었습니다',

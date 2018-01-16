@@ -1,12 +1,18 @@
 import FCM from 'react-native-fcm';
 // Network
 import {
+  PresentNotification,
   scheduleLocalNotification,
   NotifId,
   getNotifSetting,
 } from '../network/PushNotification';
 // Function
-import { fourHourBeforeConcert, isConcertToday } from '../assets/functions';
+import {
+  fourHourBeforeConcert,
+  fifteenMinuteBeforeConcert,
+  isConcertToday,
+  isConcertNow,
+} from '../assets/functions';
 // Actions
 import { TicketAction } from './Actions';
 
@@ -74,13 +80,35 @@ export function ticket(state = initialState, action) {
       updateData.cancelledAt = null;
 
       getNotifSetting().then(item => {
-        if (item.alarm_go && !isConcertToday(ticket))
-          scheduleLocalNotification(
-            NotifId.RESERVATION,
-            updateData.id,
-            `공연 ${ticket.title}이 4시간 뒤에 시작합니다. 즐거운 관람 되세요!`,
-            fourHourBeforeConcert(ticket)
-          );
+        if (item.alarm_go) {
+          if (!isConcertNow(ticket))
+            scheduleLocalNotification(
+              `공연 ${
+                ticket.title
+              }이 잠시 후에 시작합니다. 즐거운 관람 되세요!`,
+              NotifId.RESERVATION,
+              updateData.id,
+              fifteenMinuteBeforeConcert(ticket)
+            );
+          else
+            PresentNotification(
+              `공연 ${
+                ticket.title
+              }이 잠시 후에 시작합니다. 즐거운 관람 되세요!`,
+              NotifId.RESERVATION,
+              updateData.id
+            );
+
+          if (!isConcertToday(ticket))
+            scheduleLocalNotification(
+              `공연 ${
+                ticket.title
+              }이 4시간 뒤에 시작합니다. 즐거운 관람 되세요!`,
+              NotifId.RESERVATION,
+              updateData.id,
+              fourHourBeforeConcert(ticket)
+            );
+        }
       });
 
       return {

@@ -31,8 +31,6 @@ const Container = ({ children, ...option }) => {
 class VideoPlayer extends Component {
   state = {
     height: (mainWidth.innerContainer - mainWidth.innerPadding) * (9 / 16),
-    isPlayed: false,
-    playTime: 0.0,
   };
 
   StandalonePlayer = () => {
@@ -40,15 +38,9 @@ class VideoPlayer extends Component {
       apiKey: api_key.youtube,
       videoId: this.props.videoId,
       autoplay: true,
-      startTime: this.state.playTime,
     })
-      .then(() => {
-        return Promise.resolve();
-      })
-      .catch(err => {
-        console.log(err);
-        return Promise.reject();
-      });
+      .then(() => Promise.resolve())
+      .catch(err => Promise.reject(err));
   };
 
   render() {
@@ -62,24 +54,13 @@ class VideoPlayer extends Component {
         ref={c => (this.youtubePlayer = c)}
         controls={2}
         play={false}
+        resumePlayAndroid={false}
         // style
         style={{ alignSelf: 'stretch', height: height }}
         showFullscreenButton={true}
         // callback
-        onReady={this.handleReady}
         onChangeState={e => {
-          if (e.state === 'playing') {
-            if (this.state.isPlayed) {
-              // after run standalone
-              setTimeout(() => {
-                this.setState({ isPlayed: false });
-              }, 600);
-            } else {
-              // before run standalone
-              this.setState({ isPlayed: true });
-              this.StandalonePlayer();
-            }
-          }
+          if (e.state === 'playing') this.StandalonePlayer();
         }}
         {...option}
       />

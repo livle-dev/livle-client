@@ -58,8 +58,8 @@ export const getAllTicket = dispatch => {
     })
     .then(() => getReserveTicket(dispatch))
     .catch(err => {
-      console.log(err.response);
-      return Promise.reject(err.response.status);
+      const { status } = err.response;
+      return Promise.reject(status);
     });
 };
 
@@ -160,16 +160,17 @@ const reserveTicket = id => dispatch => {
       return Promise.resolve();
     })
     .catch(err => {
+      const { status } = err.response;
       dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
           type: 'alert',
           text: `${global_string.errorOccured}
-ERROR ${err.response.status}`,
+ERROR ${status}`,
         },
       });
-      return Promise.reject();
+      return Promise.reject(status);
     });
 };
 
@@ -183,7 +184,7 @@ const getReserveTicket = dispatch => {
       });
     })
     .catch(err => {
-      return Promise.reject();
+      return Promise.reject(err.response.status);
     });
 };
 
@@ -219,8 +220,17 @@ export const cancelTicket = id => dispatch => {
             },
           });
           break;
+        case 405:
+          dispatch({
+            type: ModalAction.SHOW_MODAL,
+            data: {
+              type: 'alert',
+              text: ticket_string.alreadyCheckedIn,
+            },
+          });
+          break;
       }
-      return Promise.reject();
+      return Promise.reject(status);
     });
 };
 
@@ -241,9 +251,9 @@ export const checkCode = (id, code) => dispatch => {
       return Promise.resolve();
     })
     .catch(err => {
-      const { response } = err;
+      const { status } = err.response;
       dispatch({ type: LoadingAction.HIDE_LOADING });
-      switch (response.status) {
+      switch (status) {
         case 403:
           dispatch({
             type: ModalAction.SHOW_MODAL,
@@ -255,6 +265,6 @@ export const checkCode = (id, code) => dispatch => {
           });
           break;
       }
-      return Promise.reject();
+      return Promise.reject(status);
     });
 };

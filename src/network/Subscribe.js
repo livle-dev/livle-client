@@ -7,7 +7,7 @@ import {
   ModalAction,
 } from '../reducers/Actions';
 import { getAllTicket } from './Ticket';
-import { membership_string } from '../assets/strings';
+import { global_string, membership_string } from '../assets/strings';
 
 export const subscribe = (
   cardNumber,
@@ -51,12 +51,11 @@ export const subscribe = (
           type: ModalAction.SHOW_MODAL,
           data: {
             type: 'select',
-            text: `${membership_string.alreadyUsedFreeTrial}
-ERROR: ${status}`,
+            text: membership_string.alreadyUsedFreeTrial,
+            buttonText: global_string.confirm,
             onPress: () => subscribe(cardNumber, birth, password, expiry, true),
           },
         });
-
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
