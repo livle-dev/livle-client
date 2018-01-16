@@ -1,5 +1,11 @@
 import axios from './axios';
-import { getTime, getDday, isFuture, status } from '../assets/functions';
+import {
+  getTime,
+  getDday,
+  isFuture,
+  status,
+  isConcertToday,
+} from '../assets/functions';
 import {
   AppAction,
   TicketAction,
@@ -48,12 +54,12 @@ export const getAllTicket = dispatch => {
         calendarIndex: dataIndex[0].calendar_index,
       });
 
-      return Promise.resolve(dispatch);
+      return Promise.resolve();
     })
-    .then(dispatch => getReserveTicket(dispatch))
+    .then(() => getReserveTicket(dispatch))
     .catch(err => {
-      console.log(err.response);
-      return Promise.reject(err.response.status);
+      const { status } = err.response;
+      return Promise.reject(status);
     });
 };
 
@@ -101,9 +107,22 @@ ${getTime(auth.data.suspendedBy).timestamp.format(ticket_string.penaltyTime)} ${
 };
 
 const checkTicket = (subscription, data) => dispatch => {
+  dispatch({ type: LoadingAction.HIDE_LOADING });
   if (subscription.used < 2) {
     if (data.vacancies > 0) {
-      reserveTicket(data.id)(dispatch);
+      if (isConcertToday(data)) {
+        dispatch({
+          type: ModalAction.SHOW_MODAL,
+          data: {
+            type: 'select',
+            text:
+              '공연시작 4시간 전부터는 예약을 취소할 수 없습니다. 예약하시겠습니까?',
+            onPress: () => reserveTicket(data.id)(dispatch),
+          },
+        });
+      } else {
+        reserveTicket(data.id)(dispatch);
+      }
     } else {
       dispatch({
         type: ModalAction.SHOW_MODAL,
@@ -111,7 +130,6 @@ const checkTicket = (subscription, data) => dispatch => {
       });
     }
   } else {
-    dispatch({ type: LoadingAction.HIDE_LOADING });
     dispatch({
       type: ModalAction.SHOW_MODAL,
       data: {
@@ -123,6 +141,7 @@ const checkTicket = (subscription, data) => dispatch => {
 };
 
 const reserveTicket = id => dispatch => {
+  dispatch({ type: LoadingAction.SHOW_LOADING });
   return axios
     .post(`/ticket/${id}/reserve`)
     .then(response => {
@@ -141,20 +160,21 @@ const reserveTicket = id => dispatch => {
       return Promise.resolve();
     })
     .catch(err => {
+      const { status } = err.response;
       dispatch({ type: LoadingAction.HIDE_LOADING });
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {
           type: 'alert',
           text: `${global_string.errorOccured}
-ERROR ${err.response.status}`,
+ERROR ${status}`,
         },
       });
-      return Promise.reject();
+      return Promise.reject(status);
     });
 };
 
-export const getReserveTicket = dispatch => {
+const getReserveTicket = dispatch => {
   return axios
     .get(`/reservation`)
     .then(response => {
@@ -164,7 +184,7 @@ export const getReserveTicket = dispatch => {
       });
     })
     .catch(err => {
-      console.log(err.response);
+      return Promise.reject(err.response.status);
     });
 };
 
@@ -191,24 +211,33 @@ export const cancelTicket = id => dispatch => {
       const { status } = err.response;
       dispatch({ type: LoadingAction.HIDE_LOADING });
       switch (status) {
-        case 405:
-          return dispatch({
+        case 403:
+          dispatch({
             type: ModalAction.SHOW_MODAL,
             data: {
               type: 'alert',
               text: ticket_string.unableCancelReservation,
-              showLogo: true,
             },
           });
+          break;
+        case 405:
+          dispatch({
+            type: ModalAction.SHOW_MODAL,
+            data: {
+              type: 'alert',
+              text: ticket_string.alreadyCheckedIn,
+            },
+          });
+          break;
       }
-      return Promise.reject();
+      return Promise.reject(status);
     });
 };
 
 export const checkCode = (id, code) => dispatch => {
   dispatch({ type: LoadingAction.SHOW_LOADING });
   return axios
-    .post(`/reservation/${id}/alert`, { code: code })
+    .post(`/reservation/${id}/check`, { code: code })
     .then(response => {
       dispatch({
         type: TicketAction.UPDATE_RESERVATION,
@@ -219,11 +248,12 @@ export const checkCode = (id, code) => dispatch => {
         type: MessageBarAction.SHOW_MESSAGE_BAR,
         message: ticket_string.entryConfirmed,
       });
+      return Promise.resolve();
     })
     .catch(err => {
-      const { response } = err;
+      const { status } = err.response;
       dispatch({ type: LoadingAction.HIDE_LOADING });
-      switch (response.status) {
+      switch (status) {
         case 403:
           dispatch({
             type: ModalAction.SHOW_MODAL,
@@ -235,5 +265,6 @@ export const checkCode = (id, code) => dispatch => {
           });
           break;
       }
+      return Promise.reject(status);
     });
 };

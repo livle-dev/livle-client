@@ -1,12 +1,18 @@
 import FCM from 'react-native-fcm';
 // Network
 import {
+  PresentNotification,
   scheduleLocalNotification,
   NotifId,
   getNotifSetting,
 } from '../network/PushNotification';
 // Function
-import { getTime, isFuture } from '../assets/functions';
+import {
+  fourHourBeforeConcert,
+  fifteenMinuteBeforeConcert,
+  isConcertToday,
+  isConcertNow,
+} from '../assets/functions';
 // Actions
 import { TicketAction } from './Actions';
 
@@ -47,13 +53,15 @@ export function ticket(state = initialState, action) {
        * action.data = PropTypes.object.isRequired
        **/
       const updateTicket = state.ticket;
-      const updateData = action.data;
-      updateData.forEach(item => {
+      const updateData = action.data.filter(item => {
         let ticket = updateTicket.data.find(
           ticket => ticket.id === item.ticketId
         );
+        if (!ticket) return false;
+
         ticket.reservationId = item.id;
         addTicketData(item, ticket);
+        return true;
       });
       return { ticket: updateTicket, reservation: updateData };
     }
@@ -73,20 +81,33 @@ export function ticket(state = initialState, action) {
 
       getNotifSetting().then(item => {
         if (item.alarm_go) {
-          const fourHourBefore = getTime(ticket.startAt).timestamp.subtract(
-            4,
-            'hours'
-          );
-          if (isFuture(fourHourBefore)) {
+          if (!isConcertNow(ticket))
             scheduleLocalNotification(
+              `공연 ${
+                ticket.title
+              }이 잠시 후에 시작합니다. 즐거운 관람 되세요!`,
               NotifId.RESERVATION,
               updateData.id,
+              fifteenMinuteBeforeConcert(ticket)
+            );
+          else
+            PresentNotification(
+              `공연 ${
+                ticket.title
+              }이 잠시 후에 시작합니다. 즐거운 관람 되세요!`,
+              NotifId.RESERVATION,
+              updateData.id
+            );
+
+          if (!isConcertToday(ticket))
+            scheduleLocalNotification(
               `공연 ${
                 ticket.title
               }이 4시간 뒤에 시작합니다. 즐거운 관람 되세요!`,
-              fourHourBefore
+              NotifId.RESERVATION,
+              updateData.id,
+              fourHourBeforeConcert(ticket)
             );
-          }
         }
       });
 

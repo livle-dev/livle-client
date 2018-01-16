@@ -7,9 +7,15 @@ import {
   ModalAction,
 } from '../reducers/Actions';
 import { getAllTicket } from './Ticket';
-import { membership_string } from '../assets/strings';
+import { global_string, membership_string } from '../assets/strings';
 
-export const subscribe = (cardNumber, birth, password, expiry) => dispatch => {
+export const subscribe = (
+  cardNumber,
+  birth,
+  password,
+  expiry,
+  skipTrial = false
+) => dispatch => {
   const assembleCard = `${cardNumber[0]}-${cardNumber[1]}-${cardNumber[2]}-${
     cardNumber[3]
   }`;
@@ -21,6 +27,7 @@ export const subscribe = (cardNumber, birth, password, expiry) => dispatch => {
       password: password,
       birth: birth,
       expiry: assembleExpiry,
+      skipTrial: skipTrial,
     })
     .then(response => {
       dispatch({
@@ -28,9 +35,9 @@ export const subscribe = (cardNumber, birth, password, expiry) => dispatch => {
         data: response.data,
       });
       dispatch({ type: AppAction.RESET });
-      return Promise.resolve(dispatch);
+      return Promise.resolve();
     })
-    .then(dispatch => {
+    .then(() => {
       dispatch({
         type: MessageBarAction.SHOW_MESSAGE_BAR,
         message: membership_string.compleltApplying,
@@ -39,16 +46,16 @@ export const subscribe = (cardNumber, birth, password, expiry) => dispatch => {
     })
     .catch(err => {
       dispatch({ type: LoadingAction.HIDE_LOADING });
-      if (err.response.status === 406) {
-        dispatch({
+      if (status === 406)
+        return dispatch({
           type: ModalAction.SHOW_MODAL,
           data: {
-            type: 'alert',
-            text: `${membership_string.failedVerifyPayment}
-ERROR: ${err.response.status}`,
+            type: 'select',
+            text: membership_string.alreadyUsedFreeTrial,
+            buttonText: global_string.confirm,
+            onPress: () => subscribe(cardNumber, birth, password, expiry, true),
           },
         });
-      }
       dispatch({
         type: ModalAction.SHOW_MODAL,
         data: {

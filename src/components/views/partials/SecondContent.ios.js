@@ -44,6 +44,7 @@ class VideoPlayer extends Component {
         // style
         style={{ alignSelf: 'stretch', height: this.state.height }}
         showFullscreenButton={true}
+        modestbranding={true}
         showinfo={false}
         {...option}
       />

@@ -6,8 +6,11 @@ import { video } from '../../../assets/images/Background';
 export default () => (
   <Video
     source={video}
+    muted={true}
     repeat
     resizeMode="cover"
     style={container.absoluteContainer}
+    // iOS
+    playInBackground={true}
   />
 );

@@ -19,7 +19,12 @@ export const NotifId = {
 export async function getNotifSetting() {
   const result = await AsyncStorage.getItem(consts.asyncNotif);
   let item = await JSON.parse(result);
-  if (!item) item = { alarm_go: true, alarm_new_concert: true };
+  if (!item)
+    item = {
+      alarm_go: true,
+      alarm_new_concert: true,
+      show_reservation_badge: true,
+    };
   subscribeNewConcert(item.alarm_new_concert);
   return item;
 }
@@ -29,13 +34,14 @@ export function setNotifSetting(setting) {
 }
 
 export const PresentNotification = async (
-  title,
   body,
-  click_action = null,
-  id = null
+  type = null,
+  id = null,
+  click_action = null
 ) => {
   // const currentBadge = await getBadgeNumber();
   let notifSetting = {
+    id: `${type}${id}`,
     title: 'LIVLE',
     body: body,
     priority: 'high',
@@ -48,13 +54,13 @@ export const PresentNotification = async (
     wake_screen: true, // wake up screen when notification arrives
     lights: true, // LED blinking
   };
+  if (type && id) notifSetting.id = `${type}${id}`;
   if (click_action) notifSetting.click_action = click_action;
-  if (id) notifSetting.id = id;
 
   FCM.presentLocalNotification(notifSetting);
 };
 
-export const scheduleLocalNotification = async (type, id, body, moment) => {
+export const scheduleLocalNotification = async (body, type, id, moment) => {
   FCM.scheduleLocalNotification({
     fire_date: moment.toDate().getTime(),
     id: `${type}${id}`, // this is what you use to lookup and delete notification. In android notification with same ID will override each other
@@ -108,7 +114,7 @@ export default class PushNotification extends Component {
   // This method display the notification on mobile screen.
   sendRemote(notif) {
     const { fcm } = notif;
-    PresentNotification(fcm.title, fcm.body);
+    PresentNotification(fcm.body);
   }
 
   render() {

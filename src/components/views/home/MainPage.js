@@ -18,7 +18,7 @@ class CardLists extends Component {
   }
 
   render() {
-    const { data, dataIndex, updateIndex } = this.props;
+    const { data, dataIndex, updateIndex, storeInfo } = this.props;
 
     return (
       <Carousel
@@ -31,7 +31,7 @@ class CardLists extends Component {
             <_MainCard
               data={item}
               curIndex={index}
-              cardIndex={this.props.cardIndex}
+              cardIndex={storeInfo.cardIndex}
             />
           );
         }}
