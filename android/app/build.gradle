@@ -148,6 +148,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-google-analytics-bridge')
     compile project(':react-native-fcm')
     compile 'com.google.firebase:firebase-core:11.8.0'
     //this decides your firebase SDK version
