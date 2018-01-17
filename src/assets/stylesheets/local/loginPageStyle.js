@@ -10,7 +10,7 @@ export const loginStyle = StyleSheet.create({
   },
   defaultText: StyleSheet.flatten([
     color.green_light,
-    font_size.fs_2,
+    font_size.fs_18,
     font_style.reqular,
   ]),
   boldText: StyleSheet.flatten([font_style.bold]),

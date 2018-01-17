@@ -59,22 +59,22 @@ export const promotionStyle = StyleSheet.create({
   // font
   textTitle: StyleSheet.flatten([
     color.white,
-    font_size.fs_input_num,
+    font_size.fs_48,
     font_style.bold,
   ]),
   textTicket: StyleSheet.flatten([
     color.white,
-    font_size.fs_4,
+    font_size.fs_14,
     font_style.regular,
   ]),
   textContent: StyleSheet.flatten([
     color.white,
-    font_size.fs_2,
+    font_size.fs_18,
     font_style.bold,
   ]),
   textPromotion: StyleSheet.flatten([
     color.white,
-    font_size.fs_5,
+    font_size.fs_12,
     font_style.semi_bold,
   ]),
 });

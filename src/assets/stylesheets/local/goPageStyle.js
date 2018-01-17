@@ -38,17 +38,17 @@ export const goStyle = StyleSheet.create({
   },
   // texts
   check_text: StyleSheet.flatten([
-    font_size.fs_2,
+    font_size.fs_18,
     font_style.semi_bold,
     color.green_light,
   ]),
   no_reservation_text: StyleSheet.flatten([
-    font_size.fs_2,
+    font_size.fs_18,
     font_style.bold,
     color.white,
   ]),
   cancel_text: StyleSheet.flatten([
-    font_size.fs_1,
+    font_size.fs_20,
     font_style.semi_bold,
     color.white,
   ]),

@@ -60,7 +60,7 @@ export const styles = StyleSheet.create({
         height: 36,
       },
     }),
-    ...StyleSheet.flatten([font_style.regular, font_size.fs_2, color.white]),
+    ...StyleSheet.flatten([font_style.regular, font_size.fs_18, color.white]),
   },
   numBox: {
     width: 50,
@@ -81,22 +81,22 @@ export const styles = StyleSheet.create({
   },
   textNumInput: StyleSheet.flatten([
     color.white,
-    font_size.fs_2,
+    font_size.fs_18,
     font_style.regular,
   ]),
   textDefault: StyleSheet.flatten([
     color.white,
-    font_size.fs_3,
+    font_size.fs_16,
     font_style.semi_bold,
   ]),
   textError: StyleSheet.flatten([
     color.green_light,
-    font_size.fs_5,
+    font_size.fs_12,
     font_style.light,
   ]),
   textTitle: StyleSheet.flatten([
     color.white,
-    font_size.fs_title,
+    font_size.fs_24,
     font_style.semi_bold,
   ]),
   // backgrounds
