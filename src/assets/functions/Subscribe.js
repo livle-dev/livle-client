@@ -58,3 +58,8 @@ export function subscriptionStatus(auth) {
     }
   }
 }
+
+export function countRemainTicket(subscription) {
+  const limit = subscription.limit || 2;
+  return limit - subscription.used;
+}
