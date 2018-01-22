@@ -41,6 +41,7 @@
 		AA377C7D3880448AA49B4C76 /* libRNFIRMessaging.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F57D3048374643279CAE7675 /* libRNFIRMessaging.a */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
 		C4DA3399D57C492EB0644708 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 88A2D8D558EF48E191005792 /* FBSDKCoreKit.framework */; };
+		C775E898D6184DB39880A1E4 /* libRNPhotoView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9015AD38E9BE4132970E9AE2 /* libRNPhotoView.a */; };
 		C94DDE4D48F34A9587F7860C /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 50939D899FBF4F00A40F95CE /* libBVLinearGradient.a */; };
 		E84C8A6A6D93C78657E4863C /* libPods-livle_clientTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75641210946B5E51FCDD36F1 /* libPods-livle_clientTests.a */; };
 		E8DF95BFB24666A78C0C20F0 /* libPods-livle_client.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D0236E81653A2AE5D8681329 /* libPods-livle_client.a */; };
@@ -264,6 +265,13 @@
 			remoteGlobalIDString = 7B5D9D0A1B6AD0EA00CF3A83;
 			remoteInfo = ReactNativeLocalization;
 		};
+		552DD18E2015EE1A007C748A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2B87B14C8DB640E197FE8F05 /* RNPhotoView.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNPhotoView;
+		};
 		55684CC2200E359C007BAF75 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 55684CB5200E359C007BAF75 /* RCTGoogleAnalyticsBridge.xcodeproj */;
@@ -404,6 +412,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = livle_client/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = livle_client/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
+		2B87B14C8DB640E197FE8F05 /* RNPhotoView.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNPhotoView.xcodeproj; path = "../node_modules/react-native-photo-view/ios/RNPhotoView.xcodeproj"; sourceTree = "<group>"; };
 		2FE7BE5B78F549D2939D832A /* libRCTYouTube.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTYouTube.a; sourceTree = "<group>"; };
 		31EF95BB435D3960D84BA696 /* Pods-livle_clientTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-livle_clientTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-livle_clientTests/Pods-livle_clientTests.debug.xcconfig"; sourceTree = "<group>"; };
 		34B42653E53343598D105A62 /* libRCTFBSDK.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTFBSDK.a; sourceTree = "<group>"; };
@@ -429,6 +438,7 @@
 		853A0C8F12304B3B9F832854 /* YTPlayerView-iframe-player.html */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "YTPlayerView-iframe-player.html"; path = "../node_modules/react-native-youtube/assets/YTPlayerView-iframe-player.html"; sourceTree = "<group>"; };
 		883848F8638F4C7AB329CAA5 /* RCTYouTube.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTYouTube.xcodeproj; path = "../node_modules/react-native-youtube/RCTYouTube.xcodeproj"; sourceTree = "<group>"; };
 		88A2D8D558EF48E191005792 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = ./ios/Frameworks/FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		9015AD38E9BE4132970E9AE2 /* libRNPhotoView.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNPhotoView.a; sourceTree = "<group>"; };
 		A29B1DECAD9A4509B29E9D70 /* ReactNativeLocalization.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeLocalization.xcodeproj; path = "../node_modules/react-native-localization/ReactNativeLocalization.xcodeproj"; sourceTree = "<group>"; };
 		A99DD85F26694D5197925B64 /* libReactNativeLocalization.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libReactNativeLocalization.a; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
@@ -483,6 +493,7 @@
 				8460409859A6459BA1621340 /* libRCTVideo.a in Frameworks */,
 				AA377C7D3880448AA49B4C76 /* libRNFIRMessaging.a in Frameworks */,
 				E8DF95BFB24666A78C0C20F0 /* libPods-livle_client.a in Frameworks */,
+				C775E898D6184DB39880A1E4 /* libRNPhotoView.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -633,6 +644,7 @@
 				50939D899FBF4F00A40F95CE /* libBVLinearGradient.a */,
 				6E75A4458D1C4696AB9A5137 /* libRCTVideo.a */,
 				F57D3048374643279CAE7675 /* libRNFIRMessaging.a */,
+				9015AD38E9BE4132970E9AE2 /* libRNPhotoView.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -641,6 +653,14 @@
 			isa = PBXGroup;
 			children = (
 				5521D4AF1FE24C6600A7A57D /* libReactNativeLocalization.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		552DD18B2015EE1A007C748A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				552DD18F2015EE1A007C748A /* libRNPhotoView.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -734,6 +754,7 @@
 				DBA3CFD961A44DF1AA946865 /* BVLinearGradient.xcodeproj */,
 				51BA267DCEA442489D2CC800 /* RCTVideo.xcodeproj */,
 				E514A230D36B4F06819B8813 /* RNFIRMessaging.xcodeproj */,
+				2B87B14C8DB640E197FE8F05 /* RNPhotoView.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -966,6 +987,10 @@
 					ProductGroup = 557CB4501FFDAD8A004A59F6 /* Products */;
 					ProjectRef = E514A230D36B4F06819B8813 /* RNFIRMessaging.xcodeproj */;
 				},
+				{
+					ProductGroup = 552DD18B2015EE1A007C748A /* Products */;
+					ProjectRef = 2B87B14C8DB640E197FE8F05 /* RNPhotoView.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -1184,6 +1209,13 @@
 			fileType = archive.ar;
 			path = libReactNativeLocalization.a;
 			remoteRef = 5521D4AE1FE24C6600A7A57D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		552DD18F2015EE1A007C748A /* libRNPhotoView.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNPhotoView.a;
+			remoteRef = 552DD18E2015EE1A007C748A /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		55684CC3200E359C007BAF75 /* libRCTGoogleAnalyticsBridge.a */ = {
@@ -1487,12 +1519,14 @@
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-video/ios",
 					"$(SRCROOT)/../node_modules/react-native-fcm/ios",
+					"$(SRCROOT)/../node_modules/react-native-photo-view/ios/**",
 				);
 				INFOPLIST_FILE = livle_clientTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1526,12 +1560,14 @@
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-video/ios",
 					"$(SRCROOT)/../node_modules/react-native-fcm/ios",
+					"$(SRCROOT)/../node_modules/react-native-photo-view/ios/**",
 				);
 				INFOPLIST_FILE = livle_clientTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
@@ -1569,6 +1605,7 @@
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-video/ios",
 					"$(SRCROOT)/../node_modules/react-native-fcm/ios",
+					"$(SRCROOT)/../node_modules/react-native-photo-view/ios/**",
 				);
 				INFOPLIST_FILE = livle_client/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
@@ -1603,6 +1640,7 @@
 					"$(SRCROOT)/../node_modules/react-native-linear-gradient/BVLinearGradient",
 					"$(SRCROOT)/../node_modules/react-native-video/ios",
 					"$(SRCROOT)/../node_modules/react-native-fcm/ios",
+					"$(SRCROOT)/../node_modules/react-native-photo-view/ios/**",
 				);
 				INFOPLIST_FILE = livle_client/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;

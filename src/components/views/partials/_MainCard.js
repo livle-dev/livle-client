@@ -11,7 +11,7 @@ import { canReserveTicket, cancelTicket } from '../../../network';
 import FirstContent from './FirstContent';
 import SecondContent from './SecondContent';
 // Actions
-import { TicketAction } from '../../../reducers/Actions';
+import { TicketAction, ImageFullAction } from '../../../reducers/Actions';
 // Strings
 import { main_string } from '../../../assets/strings';
 // Styles
@@ -64,6 +64,7 @@ class _MainCard extends Component {
         return index === 0 ? (
           <FirstContent
             data={item}
+            showImageFull={this.props.showImageFull}
             showDetail={() => this.carousel.snapToNext()}
           />
         ) : (
@@ -118,14 +119,11 @@ class _MainCard extends Component {
   state = { showTopButton: false };
 
   componentDidMount() {
-    const { data, dispatch } = this.props;
+    const { data, updateTicket } = this.props;
     vacancies = pusher.subscribe('vacancies');
-    vacancies.bind(`ticket-${data.id}`, vacancies => {
-      dispatch({
-        type: TicketAction.UPDATE_TICKET,
-        data: { id: data.id, vacancies: vacancies },
-      });
-    });
+    vacancies.bind(`ticket-${data.id}`, vacancies =>
+      updateTicket(data.id, vacancies)
+    );
   }
 
   componentWillReceiveProps(props) {
@@ -135,7 +133,6 @@ class _MainCard extends Component {
   render() {
     const { auth, data, dispatch } = this.props;
     const { isGo, showTopButton } = this.state;
-
     const hasReservation = data.reservationId !== null;
 
     return (
@@ -163,4 +160,20 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(_MainCard);
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatch: dispatch,
+    updateTicket: (id, vacancies) =>
+      dispatch({
+        type: TicketAction.UPDATE_TICKET,
+        data: { id: id, vacancies: vacancies },
+      }),
+    showImageFull: uri =>
+      dispatch({
+        type: ImageFullAction.SHOW_IMAGE,
+        uri: uri,
+      }),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(_MainCard);

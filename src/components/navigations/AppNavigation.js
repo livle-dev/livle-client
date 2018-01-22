@@ -6,7 +6,6 @@ import { View } from 'react-native';
 // View
 import PromotionPage from '../views/PromotionPage';
 import SubscribePage from '../views/SubscribePage';
-import ImageFullscreen from '../views/ImageFullscreen';
 // Navigations
 import HomeNavigation from './home/HomeNavigation';
 import LoginNavigation from './login/LoginNavigation';
@@ -22,7 +21,6 @@ export const AppScreen = StackNavigator(
     Login: { screen: LoginNavigation },
     Promotion: { screen: PromotionPage },
     Subscribe: { screen: SubscribePage },
-    ImageFullscreen: { screen: ImageFullscreen },
   },
   {
     initialRouteName: 'Home',

@@ -12,6 +12,7 @@ export const width = {
   defaultPadding: 24,
 };
 export const height = {
+  full: percent('height', 100),
   button: 60,
   messagebar: Platform.select({
     ios: Scale.STATUSBAR_HEIGHT + percent('height', 4),

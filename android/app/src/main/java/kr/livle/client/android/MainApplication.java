@@ -3,6 +3,7 @@ package kr.livle.client.android;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactnative.photoview.PhotoViewPackage;
 import com.idehub.GoogleAnalyticsBridge.GoogleAnalyticsBridgePackage;
 import com.evollu.react.fcm.FIRMessagingPackage;
 import com.brentvatne.react.ReactVideoPackage;
@@ -37,6 +38,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new PhotoViewPackage(),
             new GoogleAnalyticsBridgePackage(),
             new FIRMessagingPackage(),
             new ReactVideoPackage(),

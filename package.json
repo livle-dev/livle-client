@@ -21,6 +21,7 @@
     "react-native-keyboard-aware-scroll-view": "^0.4.2",
     "react-native-linear-gradient": "^2.4.0",
     "react-native-localization": "^0.2.1",
+    "react-native-photo-view": "^1.5.2",
     "react-native-snap-carousel": "^3.5.0",
     "react-native-video": "^2.0.0",
     "react-native-youtube": "^1.0.1",

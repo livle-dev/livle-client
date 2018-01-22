@@ -3,6 +3,7 @@ import { combineReducers, createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 // Actions
 import {
+  ImageFullAction,
   NavbarAction,
   LoadingAction,
   MessageBarAction,
@@ -21,6 +22,20 @@ function disableNavbar(state = { disable: false }, action) {
       return { disable: false };
     case NavbarAction.DISABLE_NAVBAR:
       return { disable: true };
+    default:
+      return state;
+  }
+}
+
+function imageFullscreen(state = { show: false, uri: null }, action) {
+  switch (action.type) {
+    case ImageFullAction.SHOW_IMAGE:
+      /**
+       * action.uri = PropTypes.string.isRequired
+       **/
+      return { show: true, uri: action.uri };
+    case ImageFullAction.HIDE_IMAGE:
+      return { show: false, uri: null };
     default:
       return state;
   }
@@ -87,6 +102,7 @@ const Reducer = combineReducers({
   ticket: ticket,
   // Tool
   disableNavbar: disableNavbar,
+  imageFullscreen: imageFullscreen,
   showLoading: showLoading,
   showMessageBar: showMessageBar,
   showModal: showModal,
