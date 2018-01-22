@@ -3,15 +3,15 @@ import React, { Component } from 'react';
 import { View, Text, ImageBackground } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 // Views
-import StackPage from '../partials/StackPage';
-import _SquareButton from '../partials/_SquareButton';
+import StackPage from './partials/StackPage';
+import _SquareButton from './partials/_SquareButton';
 // Icons
-import Icon from '../../../assets/images/Icon';
-import { ticket, promotion } from '../../../assets/images/Background';
+import Icon from '../../assets/images/Icon';
+import { ticket, promotion } from '../../assets/images/Background';
 // Styles
-import { styles, container } from '../../../assets/stylesheets/global/Style';
-import { color, color_string } from '../../../assets/stylesheets/global/Color';
-import { promotionStyle } from '../../../assets/stylesheets/local/promotionPageStyle';
+import { styles, container } from '../../assets/stylesheets/global/Style';
+import { color, color_string } from '../../assets/stylesheets/global/Color';
+import { promotionStyle } from '../../assets/stylesheets/local/promotionPageStyle';
 
 const TicketRow = ({ text }) => {
   return (

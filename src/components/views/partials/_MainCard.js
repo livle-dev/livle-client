@@ -42,8 +42,6 @@ const HoverButtons = ({ isGo, showTopButton, clickTop, ...option }) => {
   );
 };
 
-const SnapCard = ({ data, ...option }) => {};
-
 class _MainCard extends Component {
   /* UTILS */
   _snapToTop() {
