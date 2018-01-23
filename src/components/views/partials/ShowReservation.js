@@ -34,12 +34,7 @@ import Icon from '../../../assets/images/Icon';
 function GoCheckEnter({ isConfirmed, handleCode }) {
   return isConfirmed ? (
     <View style={styles.alignCenter}>
-      <Icon
-        src="ic_check"
-        disabled={true}
-        width={60}
-        style={goStyle.confirm_icon}
-      />
+      <Icon src="ic_check" width={60} style={goStyle.confirm_icon} />
       <Text style={goStyle.check_text}>{ticket_string.entryConfirmed}</Text>
     </View>
   ) : (

@@ -15,12 +15,12 @@ export const settingStyle = StyleSheet.create({
   },
   titleText: StyleSheet.flatten([
     color.white,
-    font_size.fs_4,
+    font_size.fs_14,
     font_style.semi_bold,
   ]),
   subTitleText: StyleSheet.flatten([
     color.gray_dark,
-    font_size.fs_4,
+    font_size.fs_14,
     font_style.regular,
   ]),
   // content
@@ -29,12 +29,12 @@ export const settingStyle = StyleSheet.create({
   },
   contentTitleText: StyleSheet.flatten([
     color.gray_light,
-    font_size.fs_2,
+    font_size.fs_18,
     font_style.regular,
   ]),
   contentValueText: StyleSheet.flatten([
     color.white,
-    font_size.fs_2,
+    font_size.fs_18,
     font_style.regular,
   ]),
   numInputcontainer: {
@@ -52,7 +52,7 @@ export const noticeStyle = StyleSheet.create({
     marginTop: 20,
     ...StyleSheet.flatten([
       color.gray_light,
-      font_size.fs_4,
+      font_size.fs_14,
       font_style.regular,
     ]),
   },

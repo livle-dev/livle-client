@@ -50,17 +50,21 @@ export const mainCard = StyleSheet.create({
     marginBottom: 28,
   },
   // text styles
-  textTitle: StyleSheet.flatten([color.white, font_size.fs_0, font_style.bold]),
+  textTitle: StyleSheet.flatten([
+    color.white,
+    font_size.fs_28,
+    font_style.bold,
+  ]),
   textArtists: {
     marginTop: 32,
     marginBottom: 16,
-    ...StyleSheet.flatten([color.white, font_size.fs_3, font_style.semi_bold]),
+    ...StyleSheet.flatten([color.white, font_size.fs_16, font_style.semi_bold]),
   },
   textVacancies: {
     marginBottom: 16,
     ...StyleSheet.flatten([
       color.green_light,
-      font_size.fs_1,
+      font_size.fs_20,
       font_style.semi_bold,
     ]),
   },
@@ -68,7 +72,7 @@ export const mainCard = StyleSheet.create({
     marginTop: 8,
     ...StyleSheet.flatten([
       color.gray_light,
-      font_size.fs_3,
+      font_size.fs_16,
       font_style.regular,
     ]),
   },

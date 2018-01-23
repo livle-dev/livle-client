@@ -16,12 +16,12 @@ export const calendarStyle = StyleSheet.create({
   // text styles
   dateText: StyleSheet.flatten([
     color.green_light,
-    font_size.fs_calendar,
+    font_size.fs_30,
     font_style.bold,
   ]),
   dayText: StyleSheet.flatten([
     color.green_light,
-    font_size.fs_3,
+    font_size.fs_16,
     font_style.bold,
   ]),
   deactivate: StyleSheet.flatten(color.gray_light),

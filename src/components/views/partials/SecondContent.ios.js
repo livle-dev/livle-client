@@ -28,29 +28,23 @@ const Container = ({ children, ...option }) => {
   );
 };
 
-class VideoPlayer extends Component {
-  state = {
-    height: (mainWidth.innerContainer - mainWidth.innerPadding) * (9 / 16),
-  };
-
-  render() {
-    const { videoId, innerRef, ...option } = this.props;
-
-    return (
-      <YouTube
-        videoId={videoId}
-        ref={innerRef}
-        controls={1}
-        // style
-        style={{ alignSelf: 'stretch', height: this.state.height }}
-        showFullscreenButton={true}
-        modestbranding={true}
-        showinfo={false}
-        {...option}
-      />
-    );
-  }
-}
+const VideoPlayer = ({ videoId, innerRef, ...option }) => {
+  const width = mainWidth.innerContainer - 2 * mainWidth.innerPadding;
+  const height = width * (9 / 16);
+  return (
+    <YouTube
+      videoId={videoId}
+      ref={innerRef}
+      controls={1}
+      // style
+      style={{ width: width, height: height, marginVertical: 12 }}
+      showFullscreenButton={true}
+      modestbranding={true}
+      showinfo={false}
+      {...option}
+    />
+  );
+};
 
 export default class SecondContent extends Component {
   state = { isMounted: false, isPlaying: false };

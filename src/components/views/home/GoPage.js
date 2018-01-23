@@ -36,7 +36,6 @@ function NoReservation() {
           src={'logo_livle'}
           width={width.logo}
           iconStyle={{ marginBottom: 80 }}
-          disabled={true}
         />
         <Text style={[goStyle.no_reservation_text, styles.textCenter]}>
           {ticket_string.noReservation}

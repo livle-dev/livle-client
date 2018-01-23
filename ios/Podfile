@@ -7,6 +7,8 @@ target 'livle_client' do
 
   # Pods for livle_client
   pod 'FirebaseMessaging'
+  pod 'react-native-google-analytics-bridge', :path => '../node_modules/react-native-google-analytics-bridge'
+
   target 'livle_clientTests' do
     inherit! :search_paths
 

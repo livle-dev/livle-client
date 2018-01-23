@@ -3,15 +3,15 @@ import React, { Component } from 'react';
 import { View, Text, ImageBackground } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 // Views
-import StackPage from '../partials/StackPage';
-import _SquareButton from '../partials/_SquareButton';
+import StackPage from './partials/StackPage';
+import _SquareButton from './partials/_SquareButton';
 // Icons
-import Icon from '../../../assets/images/Icon';
-import { ticket, promotion } from '../../../assets/images/Background';
+import Icon from '../../assets/images/Icon';
+import { ticket, promotion } from '../../assets/images/Background';
 // Styles
-import { styles, container } from '../../../assets/stylesheets/global/Style';
-import { color, color_string } from '../../../assets/stylesheets/global/Color';
-import { promotionStyle } from '../../../assets/stylesheets/local/promotionPageStyle';
+import { styles, container } from '../../assets/stylesheets/global/Style';
+import { color, color_string } from '../../assets/stylesheets/global/Color';
+import { promotionStyle } from '../../assets/stylesheets/local/promotionPageStyle';
 
 const TicketRow = ({ text }) => {
   return (
@@ -21,12 +21,7 @@ const TicketRow = ({ text }) => {
         styles.rowDirection,
         styles.horizontalCenter,
       ]}>
-      <Icon
-        src="ic_check_white"
-        height={12}
-        disabled={true}
-        style={{ marginRight: 8 }}
-      />
+      <Icon src="ic_check_white" height={12} iconStyle={{ marginRight: 8 }} />
       <Text style={promotionStyle.textTicket}>{text}</Text>
     </View>
   );
@@ -44,12 +39,7 @@ export default class PromotionPage extends Component {
         <LinearGradient
           colors={['#767976', '#4EAA4C', '#32D675', '#4BFFA3']}
           style={[promotionStyle.gradientContainer, styles.alignCenter]}>
-          <Icon
-            src="logo_livle"
-            height={16}
-            disabled={true}
-            style={promotionStyle.iconMargin}
-          />
+          <Icon src="logo_livle" height={16} iconStyle={{ marginBottom: 8 }} />
           <ImageBackground
             source={promotion}
             style={[promotionStyle.promotionSize, styles.alignCenter]}
@@ -62,7 +52,6 @@ export default class PromotionPage extends Component {
           <Icon
             src="ic_ticket_blink"
             height={80}
-            disabled={true}
             style={promotionStyle.blinkMargin}
           />
         </LinearGradient>
