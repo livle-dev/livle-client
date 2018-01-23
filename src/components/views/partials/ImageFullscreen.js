@@ -6,6 +6,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import PhotoView from 'react-native-photo-view';
 // Actions
 import { ImageFullAction, LoadingAction } from '../../../reducers/Actions';
+// Icons
+import Icon from '../../../assets/images/Icon';
 // Styles
 import {
   styles,
@@ -48,9 +50,12 @@ class ImageFullscreen extends Component {
           <LinearGradient
             colors={['rgba(8, 8, 8, 0.4)', 'transparent']}
             style={[fullscreenStyle.dismissContainer, styles.verticalCenter]}>
-            <TouchableOpacity onPress={() => hideFullscreen()}>
-              <Text style={styles.textDefault}>닫기</Text>
-            </TouchableOpacity>
+            <Icon
+              src="ic_close"
+              onPress={() => hideFullscreen()}
+              width={20}
+              fitToIcon
+            />
           </LinearGradient>
         )}
       </TouchableOpacity>

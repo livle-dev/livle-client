@@ -60,7 +60,6 @@ export default class LoginPage extends Component {
             src="logo_livle"
             width={width.logo}
             iconStyle={{ marginBottom: 108 }}
-            disabled={true}
           />
           <_GreenInput
             placeholder={session_string.email}

@@ -14,9 +14,6 @@ export const promotionStyle = StyleSheet.create({
     resizeMode: 'cover',
   },
   // margin
-  iconMargin: {
-    marginBottom: 8,
-  },
   blinkMargin: {
     marginTop: percent('height', 9),
   },

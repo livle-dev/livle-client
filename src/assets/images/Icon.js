@@ -98,43 +98,44 @@ const Icon = ({
   iconStyle,
   width,
   height,
-  disabled,
+  fitToIcon,
   onPress,
   ...options
 }) => {
   const data = icon_info[src];
-  return (
+  const iconWidth =
+    width || height * width_height_ratio(data.originWidth, data.originHeight);
+  const iconHeight =
+    height || width * height_width_ratio(data.originWidth, data.originHeight);
+  const iconSize = { width: iconWidth, height: iconHeight };
+
+  return onPress ? (
     <TouchableOpacity
-      activeOpacity={disabled ? 1 : 0.4}
-      onPress={!disabled ? onPress : undefined}
-      style={styles.alignCenter}
+      onPress={onPress}
+      style={fitToIcon ? iconSize : styles.alignCenter}
       {...options}>
       <Image
         source={data.source}
-        style={[
-          {
-            width:
-              width ||
-              height * width_height_ratio(data.originWidth, data.originHeight),
-            height:
-              height ||
-              width * height_width_ratio(data.originWidth, data.originHeight),
-          },
-          StyleSheet.flatten(iconStyle),
-        ]}
+        style={[iconSize, StyleSheet.flatten(iconStyle)]}
       />
     </TouchableOpacity>
+  ) : (
+    <Image
+      source={data.source}
+      style={[iconSize, StyleSheet.flatten(iconStyle)]}
+    />
   );
 };
 
 Icon.propTypes = {
   src: PropTypes.string.isRequired,
-  iconStyle: PropTypes.object,
   // width 또는 height 중 1개만 입력
   width: PropTypes.number,
   height: PropTypes.number,
+  fitToIcon: PropTypes.bool,
+
   onPress: PropTypes.func,
-  disabled: PropTypes.bool,
+  iconStyle: PropTypes.object,
 };
 
 export default Icon;

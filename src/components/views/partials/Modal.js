@@ -82,7 +82,6 @@ const Content = ({ data, dismiss }) => {
                 src="logo_livle"
                 width={width.logo}
                 iconStyle={{ marginBottom: 36 }}
-                disabled={true}
               />
             )}
             <Text style={[styles.textCenter, styles.textDefault]}>{text}</Text>
