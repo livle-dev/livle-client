@@ -37,10 +37,6 @@ export const TicketAction = {
 };
 
 // Tool
-export const ImageFullAction = {
-  SHOW_IMAGE: 'SHOW_IMAGE',
-  HIDE_IMAGE: 'HIDE_IMAGE',
-};
 export const NavbarAction = {
   DISABLE_NAVBAR: 'DISABLE_NAVBAR',
   ENABLE_NAVBAR: 'ENABLE_NAVBAR',

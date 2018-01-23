@@ -4,6 +4,7 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 // Views
 import ShowInfo from './ShowInfo';
+import FullscreenImage from './FullscreenImage';
 // Strings
 import { main_string } from '../../../assets/strings';
 // Styles
@@ -17,11 +18,11 @@ import Icon from '../../../assets/images/Icon';
 export default ({ data, showDetail, showImageFull }) => {
   return (
     <View style={[mainCard.innerContainer, styles.horizontalCenter]}>
-      <TouchableOpacity
-        activeOpacity={1}
-        onPress={() => showImageFull(data.image)}>
-        <Image style={mainCard.imgContainer} source={{ uri: data.image }} />
-      </TouchableOpacity>
+      <FullscreenImage
+        source={{ uri: data.image }}
+        title={data.title}
+        style={mainCard.imgContainer}
+      />
       <ShowInfo data={data} />
       <TouchableOpacity
         style={[mainCard.moreButton, styles.horizontalCenter]}

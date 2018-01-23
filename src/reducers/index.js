@@ -27,20 +27,6 @@ function disableNavbar(state = { disable: false }, action) {
   }
 }
 
-function imageFullscreen(state = { show: false, uri: null }, action) {
-  switch (action.type) {
-    case ImageFullAction.SHOW_IMAGE:
-      /**
-       * action.uri = PropTypes.string.isRequired
-       **/
-      return { show: true, uri: action.uri };
-    case ImageFullAction.HIDE_IMAGE:
-      return { show: false, uri: null };
-    default:
-      return state;
-  }
-}
-
 function showLoading(state = { show: false }, action) {
   switch (action.type) {
     case LoadingAction.SHOW_LOADING:
@@ -102,7 +88,6 @@ const Reducer = combineReducers({
   ticket: ticket,
   // Tool
   disableNavbar: disableNavbar,
-  imageFullscreen: imageFullscreen,
   showLoading: showLoading,
   showMessageBar: showMessageBar,
   showModal: showModal,

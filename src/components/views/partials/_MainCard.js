@@ -168,10 +168,11 @@ const mapDispatchToProps = dispatch => {
         type: TicketAction.UPDATE_TICKET,
         data: { id: id, vacancies: vacancies },
       }),
-    showImageFull: uri =>
+    showImageFull: (uri, title) =>
       dispatch({
         type: ImageFullAction.SHOW_IMAGE,
         uri: uri,
+        title: title,
       }),
   };
 };

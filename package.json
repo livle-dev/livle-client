@@ -19,6 +19,7 @@
     "react-native-fcm": "^11.2.0",
     "react-native-google-analytics-bridge": "^5.4.1",
     "react-native-keyboard-aware-scroll-view": "^0.4.2",
+    "react-native-lightbox": "^0.7.0",
     "react-native-linear-gradient": "^2.4.0",
     "react-native-localization": "^0.2.1",
     "react-native-photo-view": "^1.5.2",

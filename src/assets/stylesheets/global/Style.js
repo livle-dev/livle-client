@@ -138,7 +138,7 @@ export const container = {
   // containers
   fullContainer: {
     width: width.full,
-    height: percent('height', 100),
+    height: height.full,
   },
   absoluteContainer: {
     position: 'absolute',

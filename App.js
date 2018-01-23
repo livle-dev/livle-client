@@ -10,7 +10,6 @@ import store from './src/reducers';
 import PushNotification from './src/network/PushNotification';
 // Views
 import Loading from './src/components/views/partials/Loading';
-import ImageFullscreen from './src/components/views/partials/ImageFullscreen';
 import MessageBar from './src/components/views/partials/MessageBar';
 import Modal from './src/components/views/partials/Modal';
 
@@ -22,7 +21,6 @@ export default class App extends Component {
           <AppNavigation />
           {/* Global Components */}
           <PushNotification dispatch={store.dispatch} />
-          <ImageFullscreen />
           <Loading />
           <MessageBar />
           <Modal />
