@@ -16,7 +16,12 @@ import {
   NavbarAction,
 } from '../../../reducers/Actions';
 // Functions
-import { getTime, getDday, status } from '../../../assets/functions';
+import {
+  getTime,
+  getDday,
+  status,
+  countRemainTicket,
+} from '../../../assets/functions';
 // Strings
 import { membership_string } from '../../../assets/strings';
 // Styles
@@ -113,7 +118,7 @@ class MembershipPage extends Component {
           },
           {
             title: membership_string.reservationCount,
-            value: 2 - auth.currentSubscription.used,
+            value: countRemainTicket(auth.currentSubscription),
           },
         ]
       : [

@@ -4,8 +4,8 @@ import { StackNavigator, addNavigationHelpers } from 'react-navigation';
 import { connect } from 'react-redux';
 import { View } from 'react-native';
 // View
-import PromotionPage from '../views/home/PromotionPage';
-import SubscribePage from '../views/home/SubscribePage';
+import PromotionPage from '../views/PromotionPage';
+import SubscribePage from '../views/SubscribePage';
 // Navigations
 import HomeNavigation from './home/HomeNavigation';
 import LoginNavigation from './login/LoginNavigation';

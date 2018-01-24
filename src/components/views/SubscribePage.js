@@ -3,25 +3,25 @@ import React, { Component } from 'react';
 import { Text, View, TextInput, findNodeHandle } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 // Views
-import StackPage from '../partials/StackPage';
-import _SettingCard from '../partials/_SettingCard';
-import _SquareButton from '../partials/_SquareButton';
+import StackPage from './partials/StackPage';
+import _SettingCard from './partials/_SettingCard';
+import _SquareButton from './partials/_SquareButton';
 // Strings
-import { membership_string } from '../../../assets/strings';
+import { membership_string } from '../../assets/strings';
 // Network
-import { subscribe } from '../../../network';
+import { subscribe } from '../../network';
 // Functions
-import { getTime } from '../../../assets/functions';
+import { getTime } from '../../assets/functions';
 // Actions
-import { ModalAction } from '../../../reducers/Actions';
+import { ModalAction } from '../../reducers/Actions';
 // Styles
 import {
   styles,
   navbar,
   container,
-} from '../../../assets/stylesheets/global/Style';
-import { settingStyle } from '../../../assets/stylesheets/local/settingPageStyle';
-import { color, color_string } from '../../../assets/stylesheets/global/Color';
+} from '../../assets/stylesheets/global/Style';
+import { settingStyle } from '../../assets/stylesheets/local/settingPageStyle';
+import { color, color_string } from '../../assets/stylesheets/global/Color';
 
 const Numbox = ({
   inputRef,

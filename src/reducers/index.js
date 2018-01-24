@@ -3,6 +3,7 @@ import { combineReducers, createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 // Actions
 import {
+  ImageFullAction,
   NavbarAction,
   LoadingAction,
   MessageBarAction,

@@ -15,7 +15,7 @@ import {
 // Action
 import { ModalAction } from '../../../reducers/Actions';
 // Functions
-import { getTime, status } from '../../../assets/functions';
+import { getTime, status, countRemainTicket } from '../../../assets/functions';
 // Strings
 import {
   setting_string,
@@ -64,9 +64,10 @@ class SettingPage extends Component {
         default:
           return;
       }
-      const remainReservation = 2 - userInfo.currentSubscription.used;
       this.setState({
-        membership_status: `${dueDate} / 남은횟수 ${remainReservation} 회`,
+        membership_status: `${dueDate} / 남은횟수 ${countRemainTicket(
+          userInfo.currentSubscription
+        )} 회`,
       });
     } else if (!this.state.membership_status) {
       this.setState({ membership_status: null });

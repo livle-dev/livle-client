@@ -14,7 +14,7 @@ function SingleNumbox({ inputRef, ...option }) {
       style={[
         styles.numBox,
         font_style.regular,
-        font_size.fs_input_num,
+        font_size.fs_48,
         color.white,
         { backgroundColor: color_string.green_light },
       ]}

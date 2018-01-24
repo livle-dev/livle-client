@@ -5,6 +5,7 @@ import {
   isFuture,
   status,
   isConcertToday,
+  countRemainTicket,
 } from '../assets/functions';
 import {
   AppAction,
@@ -108,7 +109,7 @@ ${getTime(auth.data.suspendedBy).timestamp.format(ticket_string.penaltyTime)} ${
 
 const checkTicket = (subscription, data) => dispatch => {
   dispatch({ type: LoadingAction.HIDE_LOADING });
-  if (subscription.used < 2) {
+  if (countRemainTicket(subscription) > 0) {
     if (data.vacancies > 0) {
       if (isConcertToday(data)) {
         dispatch({

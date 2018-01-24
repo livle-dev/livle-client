@@ -27,7 +27,7 @@ const _SquareButton = ({
     activeOpacity={disabled ? 1 : 0.4}
     onPress={!disabled ? onPress : undefined}
     {...option}>
-    <Text style={[font_style.semi_bold, font_size.fs_2, color.white]}>
+    <Text style={[font_style.semi_bold, font_size.fs_18, color.white]}>
       {text}
     </Text>
   </TouchableOpacity>
