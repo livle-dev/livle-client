@@ -14,7 +14,7 @@ export const help_support_string = [
     title: `고객센터`,
     text: `메일: contacts@livle.kr
 
-전화번호: 070-8163-4068 (운영시간 09:00 ~ 18:00)
+전화번호: 070-7697-0992 (운영시간 09:00 ~ 18:00)
 
 Kakao 플러스친구: @Livle (운영시간 09:00 ~ 22:00)`,
   },
