@@ -1,5 +1,16 @@
 export const help_support_string = [
   {
+    title: '회사정보',
+    text: `상호명: 라이블
+
+대표자명: 최지인
+
+사업자번호: 391-59-00243
+
+주소: 경기도 성남시 분당구 판교로 289번길 20
+`,
+  },
+  {
     title: `고객센터`,
     text: `메일: contacts@livle.kr
 
