@@ -18,11 +18,14 @@ import Icon from '../../../assets/images/Icon';
 export default ({ data, showDetail, showImageFull }) => {
   return (
     <View style={[mainCard.innerContainer, styles.horizontalCenter]}>
-      <FullscreenImage
+      {/*
+        <FullscreenImage
         source={{ uri: data.image }}
         title={data.title}
         style={mainCard.imgContainer}
       />
+      */}
+      <Image source={{ uri: data.image }} style={mainCard.imgContainer} />
       <ShowInfo data={data} />
       <TouchableOpacity
         style={[mainCard.moreButton, styles.horizontalCenter]}
