@@ -1,5 +1,13 @@
 # LivleClient
 
+### 프로젝트 소개
+국내 유일의 콘서트 멤버십 어플리케이션!
+라이블은 음악을 사랑하는 사람들을 위한 콘서트 멤버십 서비스입니다. 월 17,900원에 라이블에서 제공하는 콘서트를 2번 예매할 수 있으며, 공연 시작 일주일 전에 공연 목록에 업데이트됩니다. 사용자는 좌우로 카드를 스와이프해 공연 목록들을 볼 수 있고, 예매부터 입장까지 간편하게 이용할 수 있습니다.
+
+### 데모영상
+* Android : https://www.youtube.com/watch?v=XPbcDu-hz1U
+* iOS : https://www.youtube.com/watch?v=LyOhPPJiAAY
+
 #### Using Packages
 
 * npm
