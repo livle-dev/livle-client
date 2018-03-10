@@ -1,15 +1,20 @@
-# LivleClient
-
-### 프로젝트 소개
+# LIVLE
 국내 유일의 콘서트 멤버십 어플리케이션!
 라이블은 음악을 사랑하는 사람들을 위한 콘서트 멤버십 서비스입니다. 월 17,900원에 라이블에서 제공하는 콘서트를 2번 예매할 수 있으며, 공연 시작 일주일 전에 공연 목록에 업데이트됩니다. 사용자는 좌우로 카드를 스와이프해 공연 목록들을 볼 수 있고, 예매부터 입장까지 간편하게 이용할 수 있습니다.
 
-### 데모영상
-* Android : https://www.youtube.com/watch?v=XPbcDu-hz1U
-* iOS : https://www.youtube.com/watch?v=LyOhPPJiAAY
+# Related Projects
+* Server       : https://github.com/livle-dev/livle-server
+* Partner Page : https://github.com/livle-dev/livle-partner
+* Landing Page : https://github.com/livle-dev/livle-landing
 
-#### Using Packages
+# Demo
+`Android` : https://www.youtube.com/watch?v=XPbcDu-hz1U
+[![](http://img.youtube.com/vi/XPbcDu-hz1U/0.jpg)](https://www.youtube.com/watch?v=XPbcDu-hz1U)
 
+`iOS` : https://www.youtube.com/watch?v=LyOhPPJiAAY
+[![](http://img.youtube.com/vi/LyOhPPJiAAY/0.jpg)](https://www.youtube.com/watch?v=LyOhPPJiAAY)
+
+# Using Packages
 * npm
 * react-native & react
 * prop-types
@@ -23,8 +28,7 @@
 * react-native-video
 * react-native-youtube
 
-#### After Clone Project
-
+# Quick Start
 > global (if you didn't setting react-native before)
 
 ```
@@ -51,7 +55,10 @@
 ~ $ react-native run-android
 ```
 
-#### Custom Directories
+# Project Structure
+![](http://drive.google.com/uc?export=view&id=1OSAwR9WeHGqZjJCp3ovsmXRk_JSsN4ua)
+
+# File Structure
 
 ```
 |-- src
@@ -130,3 +137,9 @@ Redux를 이용해 해당 컴포넌트를 조작한다.
 -> resizeMode등 Image 컴포넌트에서 쓰이는 속성은 imageStyle에서 선언해야 한다.
 -> width, height는 별도로 선언해줄 필요가 없다.
 ```
+
+# Contributer
+![](http://drive.google.com/uc?export=view&id=1PexrKHr5vVgiM-hXCP-tOf7HVaaF_AQx)
+* `Jiwoon Won` email: wonjiwn@naver.com, github: https://github.com/JWWon
+* `Jaeseong Seo` email: 07js23@gmail.com, github: https://github.com/js-seo
+* `Sanghyuk Son` email: saanghyuk@gmail.com, github: https://github.com/saanghyuk
