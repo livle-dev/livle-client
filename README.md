@@ -29,6 +29,9 @@
 * react-native-youtube
 
 # Quick Start
+
+#### NOTICE!: `Currently service is no longer active, so you can't test this project`
+
 > global (if you didn't setting react-native before)
 
 ```
